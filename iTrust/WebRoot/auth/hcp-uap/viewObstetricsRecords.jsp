@@ -1,0 +1,69 @@
+<%@taglib uri="/WEB-INF/tags.tld" prefix="itrust"%>
+<%@page errorPage="/auth/exceptionHandler.jsp"%>
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="edu.ncsu.csc.itrust.action.EditPatientAction"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.beans.ReportRequestBean"%>
+<%@page import="edu.ncsu.csc.itrust.action.ViewMyReportRequestsAction"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.beans.PatientBean"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO"%>
+
+<%@include file="/global.jsp"%>
+
+<%
+	pageTitle = "iTrust - View Obstetrics Records";
+%>
+
+<%@include file="/header.jsp"%>
+
+<%
+	/* Require a Patient ID first */
+	String pidString = (String) session.getAttribute("pid");
+	if (pidString == null || pidString.equals("") || 1 > pidString.length()) {
+		out.println("pidstring is null");
+		response.sendRedirect("/iTrust/auth/getPatientID.jsp?forward=hcp-uap/viewObstetricsRecords.jsp");
+		return;
+	}
+
+%>
+<br /><br />
+<input type="hidden" name="add" id="add" />
+<table class="fTable" align="center">
+	<tr>
+		<th colspan="10">Report Requests</th>
+	</tr>
+	<tr class="subHeader">
+    		<td>ID</td>
+   			<td>Patient ID</td>
+  			<td>Creation Date</td>
+  			<td>Action</td>
+  	</tr>
+<% 
+	long pid = Long.parseLong(pidString);
+	System.out.println("pid: " + pid);
+	ObstetricsDAO dao = new ObstetricsDAO(prodDAO);
+	List<ObstetricsBean> records = dao.getAllObstetrics(pid);
+	System.out.println(records.size());
+	int index = 0;
+	for (ObstetricsBean bean : records) {
+		
+%>
+		<tr>
+			<td><%=StringEscapeUtils.escapeHtml("" + (bean.getID()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pid))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (bean.getCreated_on()))%></td>
+			<td><a
+				href="viewObstetrics.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (index))%>&requestID=<%=StringEscapeUtils.escapeHtml("" + (bean.getID()))%>">View</a></td>
+		</tr>
+<%
+	index++;
+	}
+%>
+
+
+<%@include file="/footer.jsp"%>
