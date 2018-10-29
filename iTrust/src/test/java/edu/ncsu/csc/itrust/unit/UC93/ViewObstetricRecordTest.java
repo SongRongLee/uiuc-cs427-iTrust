@@ -27,6 +27,11 @@ public class ViewObstetricRecordTest extends HelperSeleniumTest{
 		java.util.logging.Logger.getLogger("org.apache.http").setLevel(java.util.logging.Level.OFF);
 	}
 	
+	/**
+	 * Just a sample test
+	 * Please ignore this test
+	 * @throws Exception
+	 */
 	@Test
 	public void testSample() throws Exception{
 		WebDriver wd = login("9000000003","pw");
@@ -39,6 +44,7 @@ public class ViewObstetricRecordTest extends HelperSeleniumTest{
 		//wd.findElement(By.id("searchBox")).sendKeys("1");
 		wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");
 		wd.findElement(By.id("mainForm")).submit();
+		
 		/*
 		wd.findElement(By.name("FIRST_NAME")).clear();
 		wd.findElement(By.name("FIRST_NAME")).sendKeys("Random");
@@ -54,15 +60,22 @@ public class ViewObstetricRecordTest extends HelperSeleniumTest{
 		//assertEquals("iTrust - Edit Patient", wd.getTitle());
 		//assertEquals("http://localhost:8080/iTrust/auth/hcp-uap/editPatient.jsp", wd.getCurrentUrl());
 		//wd.findElements(By.tagName("input")).get(1).click();
-		/*
-		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
+		assertEquals("iTrust - Edit Patient", wd.getTitle());
+		
+		WebElement tableElem = wd.findElements(By.tagName("table")).get(1);
 		List<WebElement> tableData = tableElem.findElements(By.tagName("tr"));
 		Iterator<WebElement> rowsOnTable = tableData.iterator();
+		
 		WebElement row = rowsOnTable.next();
-		assertEquals("MID", row.getText());
-		assertTrue(row.getText().contains("First Name"));
-		assertTrue(row.getText().contains("Last Name"));
-		*/
+		assertTrue(row.getText().contains("Patient Information"));
+
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("First Name:"));
+		assertTrue(row.findElement(By.tagName("input")).toString().contains("Random"));
+		
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Last Name:"));
+		
 		
 		
 		/*
@@ -83,85 +96,119 @@ public class ViewObstetricRecordTest extends HelperSeleniumTest{
 		assertEquals("Person", wd.findElement(By.xpath("//table/tbody/tr[2]/td[3]")).getText());
 		wd.findElement(By.xpath("//button[contains(text(),'1')]")).click();
 		*/
-		assertEquals("iTrust - Edit Patient", wd.getTitle());
+		
 
 	}
 	
 	
+	/**
+	 * Tests the ability for the HCP that is logged in to view a patients Obstetrics information if that obstetric information exists
+	 * if any exists
+	 * @throws Exception
+	 */
 	
 	@Test
-	public void ViewObstetricsRecordsTest() throws Exception{
+	public void testViewObstetricsRecords() throws Exception{
+		//log in as HCP3
 		WebDriver wd = login("9000000003","pw");
 		assertEquals("iTrust - HCP Home", wd.getTitle());
 		
 		wd.findElement(By.linkText("Patient Records")).click();
 		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
 		
-		wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");
+		//Select a Patient and view the Patient's Obstetrics Records 
+		wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");/////////change to PatientID that has Ob info!
 		wd.findElement(By.id("mainForm")).submit();
-		assertEquals("iTrust - Obstetrics Records", wd.getTitle());
-		/*
-		WebTable ObsTable = wr.getTableStartingWith("Date");
+		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
+		
+		//get the Obstetrics Records Table
+		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
+		List<WebElement> tableData = tableElem.findElements(By.tagName("tr"));
+		Iterator<WebElement> rowsOnTable = tableData.iterator();
+		
+		WebElement row = rowsOnTable.next();
 		//Check the fields of the table
-		assertEquals("Date", ObsTable.getCellAsText(0, 0));
-		assertEquals("LMP", ObsTable.getCellAsText(0, 1));
-		assertEquals("EDD", ObsTable.getCellAsText(0, 2));
-		assertEquals("Number of Weeks Pregnant", ObsTable.getCellAsText(0, 3));
+		//field1 : date - list the date of each record 
+		//field2 : (blank) - for each record there is a "view" button which has the id "viewButton"  
+		assertTrue(row.getText().contains("Date"));
 		
-		//Check the datas of the table
+		//click on an existing record and enter the view page
+		tableElem.findElements(By.id("viewButton")).get(0).click();
+		assertEquals("iTrust - View an Obstetrics Record", wd.getTitle());
 		
-		assertEquals("", ObsTable.getCellAsText(1, 0));
-		assertEquals("", ObsTable.getCellAsText(1, 1));
-		assertEquals("", ObsTable.getCellAsText(1, 2));
-		assertEquals("", ObsTable.getCellAsText(1, 3));
+		//Check the fields of the table
+		tableElem = wd.findElements(By.tagName("table")).get(0);
+		tableData = tableElem.findElements(By.tagName("tr"));
+		rowsOnTable = tableData.iterator();
 		
-		
-		
-		//click on a single record
-		wr.getForms()[0].getButtons()[0].click();
-		wr = wc.getCurrentPage();
-		
-		assertEquals("iTrust - Obstetrics Record", wr.getTitle());
-		WebTable ObTable = wr.getTables()[0];
-		//Check the datas of the table
-		assertEquals("", ObTable.getCellAsText(0, 0));
-		assertEquals("", ObTable.getCellAsText(0, 1));
-		assertEquals("", ObTable.getCellAsText(0, 2));
-		assertEquals("", ObTable.getCellAsText(0, 3));
-		*/
+		//first row is a title of the table
+		row = rowsOnTable.next();
+		//fields starts from second row
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Date"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("EDD"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Year of conception"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Number of weeks pregnant"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Number of hours in labor"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Weight gain during pregnancy"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Delivery type"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Number of children"));
+		assertTrue(row.getText().contains(""));/////////fill in the data
 	}
 	
-	/*
-	@Test
-	public void EditObstetricsRecordsTest() throws Exception{
-		WebConversation wc = login("9000000012","pw");
-		WebResponse wr = wc.getCurrentPage();
-		assertEquals("iTrust - HCP Home", wr.getTitle());
+	/**
+	 * View Obstetrics information for a female patient who doesn't have any obstetrics information
+	 * @throws Exception
+	 */
+	public void testViewObstetricsEmptyRequest() throws Exception{
+		WebDriver wd = login("9000000003","pw");
+		assertEquals("iTrust - HCP Home", wd.getTitle());
 		
-		wr = wr.getLinkWith("Patient Records").click();
-		assertEquals("iTrust - Please Select an Obstetrics Patient", wr.getTitle());
-		wr.getForms()[1].setParameter("FIRST_NAME", "Random");
-		wr.getForms()[1].setParameter("LAST_NAME", "Person");
-		wr.getForms()[1].getButtons()[0].click();
-		wr = wc.getCurrentPage();
+		wd.findElement(By.linkText("Patient Records")).click();
+		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
 		
-		wr.getForms()[2].getButtons()[0].click();
-		wr = wc.getCurrentPage();
+		//Select a female Patient who doesn't have any obstetrics information
+		wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");/////////change to PatientID of a female patient and has no Ob info!
+		wd.findElement(By.id("mainForm")).submit();
+		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
 		
-		assertEquals("iTrust - Obstetrics Records", wr.getTitle());
-		//Click on Edit button
-		wr.getForms()[0].getButtons()[0].click();//put the button in the form!
-		wr = wc.getCurrentPage();
+		//there should be no Obstetrics Record
+		assertEquals("No Obstetric Information", wd.findElement(By.id("obRecordError")).getText());
+}
+	
+	/**
+	 * View Obstetrics information for a male patient who doesn't have any obstetrics information
+	 * @throws Exception
+	 */
+	
+	public void testViewObstetricsMaleRequest() throws Exception{
+		WebDriver wd = login("9000000003","pw");
+		assertEquals("iTrust - HCP Home", wd.getTitle());
 		
-		assertEquals("iTrust - Edit Obstetrics Record", wr.getTitle());
-		WebTable ObsTable = wr.getTableStartingWith("Date");
-		//Check the fields of the table
-		assertEquals("Date", ObsTable.getCellAsText(0, 0));
-		assertEquals("LMP", ObsTable.getCellAsText(0, 1));
-		assertEquals("EDD", ObsTable.getCellAsText(0, 2));
-		assertEquals("Number of Weeks Pregnant", ObsTable.getCellAsText(0, 3));
-		assertEquals("10/27/2018", ObsTable.getCellAsText(1, 0));
+		wd.findElement(By.linkText("Patient Records")).click();
+		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
+		
+		//Select a male Patient and view the Patient's Obstetrics Records 
+		wd.findElement(By.name("UID_PATIENTID")).sendKeys("108");
+		wd.findElement(By.id("mainForm")).submit();
+		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
+		
+		//there should be no Obstetrics Record
+		assertEquals("The patient is not eligible for obstetric care.", wd.findElement(By.id("obRecordError")).getText());
 	}
-	*/
 
 }
