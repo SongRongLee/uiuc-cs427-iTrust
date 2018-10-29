@@ -1,22 +1,27 @@
 package edu.ncsu.csc.itrust.unit.UC93;
 
-
-import java.net.ConnectException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import com.meterware.httpunit.HttpUnitOptions;
-import com.meterware.httpunit.WebConversation;
-import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.WebResponse;
+import junit.framework.TestCase;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.beans.TransactionBean;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.selenium.Driver;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
-import junit.framework.TestCase;
 
-public class HelperTest extends TestCase{
+/**
+ * There's nothing special about this class other than adding a few handy test
+ * utility methods and variables. When extending this class, be sure to invoke
+ * super.setUp() first.
+ */
+abstract public class HelperSeleniumTest extends TestCase {
 	/*
 	 * The URL for iTrust, change as needed
 	 */
@@ -37,9 +42,6 @@ public class HelperTest extends TestCase{
 
 	@Override
 	protected void setUp() throws Exception {
-		//HttpUnitOptions.clearScriptErrorMessages();
-		//HttpUnitOptions.setScriptingEnabled(false);
-		//HttpUnitOptions.setExceptionsThrownOnScriptError(false);
 		gen.clearAllTables();
 	}
 
@@ -55,42 +57,26 @@ public class HelperTest extends TestCase{
 	 * @return {@link WebConversation}
 	 * @throws Exception
 	 */
-	public WebConversation login(String username, String password) throws Exception {
-		/*
+	public WebDriver login(String username, String password) throws Exception {
 		// begin at the iTrust home page
-		WebConversation wc = new WebConversation();
+		WebDriver wd = new Driver();
 
-		WebResponse wr = wc.getResponse(ADDRESS);
-		
+		// Implicitly wait at most 2 seconds for each element to load
+		wd.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+
+		wd.get(ADDRESS);
 		// log in using the given username and password
-		WebForm form = wr.getForms()[0];
-		form.setParameter("j_username", username);
-		form.setParameter("j_password", password);
-		WebResponse homepage = wr.getForms()[0].submit();
-		
-		if (homepage.getTitle().equals("iTrust - Login")) {
+		WebElement user = wd.findElement(By.name("j_username"));
+		WebElement pass = wd.findElement(By.name("j_password"));
+		user.sendKeys(username);
+		pass.sendKeys(password);
+		pass.submit();
+
+		if (wd.getTitle().equals("iTrust - Login")) {
 			throw new IllegalArgumentException("Error logging in, user not in database?");
 		}
 
-		return wc;
-		*/
-		try {
-			// begin at the iTrust home page
-			WebConversation wc = new WebConversation();
-			WebResponse loginResponse = wc.getResponse(ADDRESS);
-			// log in using the given username and password
-			WebForm form = loginResponse.getForms()[0];
-			form.setParameter("j_username", username);
-			form.setParameter("j_password", password);
-			WebResponse homePage = loginResponse.getForms()[0].submit();
-			if (homePage.getTitle().equals("iTrust Login")) {
-				throw new IllegalArgumentException("Error logging in, user not in database?");
-			}
-			assertLogged(TransactionType.LOGIN_SUCCESS, Long.parseLong(username), Long.parseLong(username), "");
-			return wc;
-		} catch (ConnectException e) {
-			throw new ConnectException("Tomcat must be running to run HTTP tests.");
-}
+		return wd;
 	}
 
 	/**
@@ -186,5 +172,4 @@ public class HelperTest extends TestCase{
 			}
 		}
 	}
-
 }
