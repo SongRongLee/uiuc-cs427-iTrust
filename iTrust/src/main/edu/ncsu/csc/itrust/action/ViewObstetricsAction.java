@@ -2,8 +2,10 @@ package edu.ncsu.csc.itrust.action;
 
 import java.util.List;
 import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
+import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
@@ -35,6 +37,16 @@ public class ViewObstetricsAction extends PatientBaseAction {
 		this.authDAO = factory.getAuthDAO();
 		this.obstetricsDAO = factory.getObstetricsDAO();
 		this.loggedInMID = loggedInMID;
+	}
+	
+	/**
+	 * Returns a PatientBean for the patient
+	 * 
+	 * @return the PatientBean
+	 * @throws DBException
+	 */
+	public PatientBean getPatient() throws DBException {
+		return patientDAO.getPatient(this.getPid());
 	}
 	
 	/**

@@ -62,6 +62,7 @@ public class PatientBean implements Serializable, Comparable<PatientBean> {
 	private String spiritualPractices = "";
 	private String alternateName = "";
 	private String dateOfDeactivationStr = "";
+	private Boolean obstetricEligible = false;
 
 
 	public BloodType getBloodType() {
@@ -486,6 +487,14 @@ public class PatientBean implements Serializable, Comparable<PatientBean> {
 		this.dateOfDeactivationStr = dateOfDeactivationStr;
 	}
 
+	public Boolean getObstetricEligible() {
+		return this.obstetricEligible;
+	}
+
+	public void setObstetricEligible(Boolean obstetricEligible) {
+		this.obstetricEligible = obstetricEligible;
+	}
+	
 	@Override
 	public int compareTo(PatientBean o) {
 		return (int)(o.MID-this.MID);
