@@ -29,7 +29,6 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 	public List<PregnancyBean> loadList(ResultSet rs) throws SQLException {
 		List<PregnancyBean> list = new ArrayList<PregnancyBean>();
 		while (rs.next()) {
-			System.out.println("calling single");
 			list.add(loadSingle(rs));
 		}
 		return list;
@@ -38,14 +37,11 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 	private void loadCommon(ResultSet rs, PregnancyBean p) throws SQLException{
 		p.setID(rs.getInt("ID"));
 		p.setPatientID(rs.getInt("PatientID"));
-		System.out.println("finished setting ids");
 		p.setDate(rs.getDate("Date_delivery"));
-		System.out.println("finished setting date");
 		p.setYOC(rs.getInt("YOC"));
 		p.setNum_weeks_pregnant(rs.getInt("Num_weeks_pregnant"));
 		p.setNum_hours_labor(rs.getInt("Num_hours_labor"));
 		p.setDelivery_type(rs.getString("Delivery_type"));
-		System.out.println("finished setting all");
 	}
 	
 	/**
