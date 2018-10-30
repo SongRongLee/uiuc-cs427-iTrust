@@ -3,7 +3,7 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="edu.ncsu.csc.itrust.action.ViewObstericsAction"%>
+<%@page import="edu.ncsu.csc.itrust.action.ViewObstetricsAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.ReportRequestBean"%>
 <%@page import="edu.ncsu.csc.itrust.action.ViewMyReportRequestsAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
