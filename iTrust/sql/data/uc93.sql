@@ -2,7 +2,7 @@
 INSERT INTO pregnancyrecords(
 ID,
 PatientID,
-Date,
+Date_delivery,
 num_weeks_pregnant,
 num_hours_labor, 
 delivery_type, 
@@ -20,7 +20,7 @@ VALUES (
 INSERT INTO pregnancyrecords(
 ID,
 PatientID,
-Date,
+Date_delivery,
 num_weeks_pregnant,
 num_hours_labor, 
 delivery_type, 
