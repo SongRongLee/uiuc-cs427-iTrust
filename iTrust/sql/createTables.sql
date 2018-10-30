@@ -503,3 +503,23 @@ CREATE TABLE medicalProcedure
 	FOREIGN KEY (visitId) 	REFERENCES officeVisit(visitID),
 	FOREIGN KEY (cptCode) 	REFERENCES cptCode(code)
 ) ENGINE=MyISAM;
+
+CREATE TABLE obstetricsrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  LMP date NOT NULL,
+  number_of_weeks_pregnant int(11) NOT NULL,
+  created_on date NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE pregnancyrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  Date datetime NOT NULL,
+  num_weeks_pregnant int(11) NOT NULL,
+  num_hours_labor double DEFAULT NULL,
+  delivery_type varchar(45) NOT NULL,
+  YOC int(11) NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;

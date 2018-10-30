@@ -3,7 +3,7 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="edu.ncsu.csc.itrust.action.EditPatientAction"%>
+<%@page import="edu.ncsu.csc.itrust.action.ViewObstetricsAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.ReportRequestBean"%>
 <%@page import="edu.ncsu.csc.itrust.action.ViewMyReportRequestsAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
@@ -29,6 +29,12 @@
 		response.sendRedirect("/iTrust/auth/getPatientID.jsp?forward=hcp-uap/viewObstetricsRecords.jsp");
 		return;
 	}
+	
+	ViewObstetricsAction action = new ViewObstetricsAction(prodDAO,
+			loggedInMID.longValue(), pidString);
+	
+	long pid = action.getPid();
+	loggingAction.logEvent(TransactionType.VIEW_INITIAL_OBSTETRIC_RECORD, loggedInMID.longValue(), pid, "EDD");
 
 %>
 <br /><br />
@@ -44,24 +50,19 @@
   			<td>Action</td>
   	</tr>
 <% 
-	long pid = Long.parseLong(pidString);
-	System.out.println("pid: " + pid);
-	ObstetricsDAO dao = new ObstetricsDAO(prodDAO);
-	List<ObstetricsBean> records = dao.getAllObstetrics(pid);
-	System.out.println(records.size());
+	List<ObstetricsBean> records = action.getAllObstetrics(pid);
 	int index = 0;
-	for (ObstetricsBean bean : records) {
-		
+	for (ObstetricsBean obsbean : records) {
 %>
 		<tr>
-			<td><%=StringEscapeUtils.escapeHtml("" + (bean.getID()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (obsbean.getID()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pid))%></td>
-			<td><%=StringEscapeUtils.escapeHtml("" + (bean.getCreated_on()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (obsbean.getCreated_on()))%></td>
 			<td><a
-				href="viewObstetrics.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (index))%>&requestID=<%=StringEscapeUtils.escapeHtml("" + (bean.getID()))%>">View</a></td>
+				href="viewObstetrics.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (index))%>&requestID=<%=StringEscapeUtils.escapeHtml("" + (obsbean.getID()))%>">View</a></td>
 		</tr>
 <%
-	index++;
+		index++;
 	}
 %>
 
