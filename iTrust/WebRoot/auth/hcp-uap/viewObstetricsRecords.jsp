@@ -22,16 +22,19 @@
 <%@include file="/header.jsp"%>
 
 <%
-	/* Require a Patient ID first */
-	String pidString = (String) session.getAttribute("pid");
-	if (pidString == null || pidString.equals("") || 1 > pidString.length()) {
-		out.println("pidstring is null");
-		response.sendRedirect("/iTrust/auth/getPatientID.jsp?forward=hcp-uap/viewObstetricsRecords.jsp");
-		return;
-	}
-	
-	ViewObstetricsAction action = new ViewObstetricsAction(prodDAO,
-			loggedInMID.longValue(), pidString);
+/* Require a Patient ID first */
+String pidString = (String) session.getAttribute("pid");
+if (pidString == null || pidString.equals("") || 1 > pidString.length()) {
+	out.println("pidstring is null");
+	response.sendRedirect("/iTrust/auth/getPatientID.jsp?forward=hcp-uap/viewObstetricsRecords.jsp");
+	return;
+}
+
+ViewObstetricsAction action = new ViewObstetricsAction(prodDAO,
+		loggedInMID.longValue(), pidString);
+
+PatientBean p = action.getPatient();
+if (p.getObstetricEligible()){
 	
 	long pid = action.getPid();
 	loggingAction.logEvent(TransactionType.VIEW_INITIAL_OBSTETRIC_RECORD, loggedInMID.longValue(), pid, "EDD");
@@ -48,12 +51,12 @@
    			<td>Patient ID</td>
   			<td>Creation Date</td>
   			<td>Action</td>
-  	</tr>
-<% 
+	  	</tr>
+	<% 
 	List<ObstetricsBean> records = action.getAllObstetrics(pid);
 	int index = 0;
 	for (ObstetricsBean obsbean : records) {
-%>
+	%>
 		<tr>
 			<td><%=StringEscapeUtils.escapeHtml("" + (obsbean.getID()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pid))%></td>
@@ -61,9 +64,15 @@
 			<td><a
 				href="viewObstetrics.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (index))%>&requestID=<%=StringEscapeUtils.escapeHtml("" + (obsbean.getID()))%>">View</a></td>
 		</tr>
-<%
+	<%
 		index++;
 	}
+}
+else{
+	%>
+	Implement error messages here.
+	<% 
+}
 %>
 
 
