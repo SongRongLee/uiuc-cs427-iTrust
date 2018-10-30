@@ -51,3 +51,5 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS WardRoomCheckout;
 DROP TABLE IF EXISTS WardRooms;
 DROP TABLE IF EXISTS Wards;
+DROP TABLE IF EXISTS obstetricsrecords;
+DROP TABLE IF EXISTS pregnancyrecords;
