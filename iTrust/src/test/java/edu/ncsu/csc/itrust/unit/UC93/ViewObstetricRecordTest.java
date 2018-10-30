@@ -119,11 +119,14 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(row.getText().contains("EDD"));
 		assertTrue(row.getText().contains("12/24/2016"));
 		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Current number of weeks pregnant"));
+		assertTrue(row.getText().contains("35-5"));
+		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Year of conception"));
-		assertTrue(row.getText().contains("2016"));
+		assertTrue(row.getText().contains("2014"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Number of weeks pregnant"));
-		assertTrue(row.getText().contains("35-5"));
+		assertTrue(row.getText().contains("40-0"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Number of hours in labor"));
 		assertTrue(row.getText().contains("20.0"));

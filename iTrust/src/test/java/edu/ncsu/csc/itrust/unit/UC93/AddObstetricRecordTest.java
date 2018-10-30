@@ -55,7 +55,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		WebElement form = wd.findElement(By.id("addObRecordForm"));
 		assertTrue(form.findElement(By.name("Date")).toString().contains(dateFormat.format(date)));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
-		form.findElement(By.name("YearOfConception")).sendKeys("2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("2012");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
 		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
@@ -81,11 +82,14 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(row.getText().contains("EDD"));
 		assertTrue(row.getText().contains("05/11/2019"));
 		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Current number of weeks pregnant"));
+		assertTrue(row.getText().contains("12-2"));
+		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Year of conception"));
-		assertTrue(row.getText().contains("2018"));
+		assertTrue(row.getText().contains("2012"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Number of weeks pregnant"));
-		assertTrue(row.getText().contains("12-2"));
+		assertTrue(row.getText().contains("40-0"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Number of hours in labor"));
 		assertTrue(row.getText().contains("25.0"));
@@ -98,6 +102,196 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Number of children"));
 		assertTrue(row.getText().contains("2"));
+	}
+	
+	/**
+	 * Tests if error message is printed when enter blank input
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testBlankObstetricsInput() throws Exception{
+		// Log in as OBHCP0
+		WebDriver wd = login("9000000012","pw");
+		assertEquals("iTrust - HCP Home", wd.getTitle());
+				
+		wd.findElement(By.linkText("Patient Records")).click();
+		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
+				
+		// Select a Patient and view the Patient's Obstetrics Records 
+		wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");
+		wd.findElement(By.id("mainForm")).submit();
+		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
+				
+		// Click on the add button which has the id "addButton"
+		wd.findElement(By.id("addButton")).click();
+		assertEquals("iTrust - Add an Obstetrics Record", wd.getTitle());
+		
+		// Enter blank LMP
+		WebElement form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("YearOfConception")).sendKeys("2012");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter blank YearOfConception
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter blank WeeksPregnant
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("2012");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter blank HoursLabor
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("2012");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter blank WeightGain
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("2012");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter blank DeliveryType
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("2012");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter blank NumChildren
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("2012");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));		
+	}
+	
+	/**
+	 * Tests invalid input.
+	 * Case 1: LMP 123
+	 * Case 2: YearOfConception 992
+	 * Case 3: WeeksPregnant 37-50
+	 * Case 4: HoursLabor 250.0
+	 * Case 5: NumChildren 20
+	 * Valid case: LMP 08/05/2018, YearOfConception 1992, WeeksPregnant 37-5, HoursLabor 25.0, NumChildren 2
+	 * @throws Exception
+	 */
+	@Test
+	public void testBadObstetricsInput() throws Exception{
+		// Log in as OBHCP0
+		WebDriver wd = login("9000000012","pw");
+		assertEquals("iTrust - HCP Home", wd.getTitle());
+				
+		wd.findElement(By.linkText("Patient Records")).click();
+		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
+				
+		// Select a Patient and view the Patient's Obstetrics Records 
+		wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");
+		wd.findElement(By.id("mainForm")).submit();
+		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
+				
+		// Click on the add button which has the id "addButton"
+		wd.findElement(By.id("addButton")).click();
+		assertEquals("iTrust - Add an Obstetrics Record", wd.getTitle());
+		
+		// Enter bad LMP
+		WebElement form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("123");
+		form.findElement(By.name("YearOfConception")).sendKeys("1992");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter bad YearOfConception
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("992");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter bad WeeksPregnant
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("1992");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37-50");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+		
+		// Enter bad HoursLabor
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("1992");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
+		form.findElement(By.name("HoursLabor")).sendKeys("250.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("2");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
+
+		// Enter bad NumChildren
+		form = wd.findElement(By.id("addObRecordForm"));
+		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form.findElement(By.name("YearOfConception")).sendKeys("1992");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
+		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeightGain")).sendKeys("10");
+		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
+		form.findElement(By.name("NumChildren")).sendKeys("20");
+		form.submit();
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));		
 	}
 	
 
