@@ -41,7 +41,7 @@
 <input type="hidden" name="add" id="add" />
 <table class="fTable" align="center">
 	<tr>
-		<th colspan="10">Report Requests</th>
+		<th colspan="10">Obstetrics Records</th>
 	</tr>
 	<tr class="subHeader">
     		<td>ID</td>

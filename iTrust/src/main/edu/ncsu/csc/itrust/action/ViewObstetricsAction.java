@@ -40,11 +40,22 @@ public class ViewObstetricsAction extends PatientBaseAction {
 	/**
 	 * Return a list of obstetrics record that pid represents
 	 * 
-	 * @param pid The id of the patient we are looking up for.
+	 * @param pid The id of the patient we are looking for.
 	 * @return a list of ObstetricsBean
 	 * @throws ITrustException
 	 */
 	public List<ObstetricsBean> getAllObstetrics(long pid) throws ITrustException {
 		return obstetricsDAO.getAllObstetrics(pid);
+	}
+	
+	/**
+	 * Return an obstetrics record that oid represents
+	 * 
+	 * @param oid The id of the obstetrics record we are looking for.
+	 * @return an ObstetricsBean
+	 * @throws ITrustException
+	 */
+	public ObstetricsBean getObstetricsRecord(long oid) throws ITrustException {
+		return obstetricsDAO.getObstetrics(oid);
 	}
 }

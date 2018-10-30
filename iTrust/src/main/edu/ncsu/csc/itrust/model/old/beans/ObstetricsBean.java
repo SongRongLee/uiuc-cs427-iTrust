@@ -46,6 +46,11 @@ public class ObstetricsBean implements Serializable, Comparable<ObstetricsBean> 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		return dateFormat.format(created_on);
 	}
+	
+	public Date getCreated_onAsDate() {
+		return created_on;
+	}
+	
 	public String getLMP() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		return dateFormat.format(LMP);

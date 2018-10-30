@@ -48,6 +48,10 @@ public class PregnancyBean implements Serializable, Comparable<PregnancyBean> {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		return dateFormat.format(date);
 	}
+	
+	public Date getDateAsDate() {
+		return date;
+	}
 
 
 	public void setDate(Date date) {
