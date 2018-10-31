@@ -76,7 +76,12 @@ if (p.getObstetricEligible()){
 			</tr>
 		<%
 			index++;
+			/* HELP - Checking HCP Specialization: OB/GYN */
 		}
+		%>
+		<td><a id="addButton"
+		     href="addObstetricsRecord.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (1))%>">Add Record</a></td>
+		<%
 }
 else{
 	%>
