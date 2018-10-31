@@ -82,10 +82,10 @@ else{
 	%>
 	<br />
 	<div align=center>
-		<span class="iTrustMessage">The patient is not eligible for obstetric care. Do you want to enable it?</span>
+		<span class="iTrustMessage" id="ViewObRecordError">The patient is not eligible for obstetric care. Do you want to enable it?</span>
 		<form action="viewObstetricsRecords.jsp" method="post">
-		    <input type="submit" name="enableObstetric" value="yes" />
-		    <input type="submit" name="cancel" value="no" />
+		    <input type="submit" id="SetEligible" name="enableObstetric" value="yes" />
+		    <input type="submit" id="CancelEligible" name="cancel" value="no" />
 		</form>
 	</div>
 	<br />
