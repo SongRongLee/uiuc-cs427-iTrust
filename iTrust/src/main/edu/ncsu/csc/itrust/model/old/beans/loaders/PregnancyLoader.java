@@ -37,7 +37,7 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 	private void loadCommon(ResultSet rs, PregnancyBean p) throws SQLException{
 		p.setID(rs.getInt("ID"));
 		p.setPatientID(rs.getInt("PatientID"));
-		p.setDate(rs.getDate("Date"));
+		p.setDate(rs.getDate("Date_delivery"));
 		p.setYOC(rs.getInt("YOC"));
 		p.setNum_weeks_pregnant(rs.getInt("Num_weeks_pregnant"));
 		p.setNum_hours_labor(rs.getInt("Num_hours_labor"));

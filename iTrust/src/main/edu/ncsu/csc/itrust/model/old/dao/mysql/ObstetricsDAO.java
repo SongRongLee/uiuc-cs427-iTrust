@@ -83,8 +83,9 @@ public class ObstetricsDAO {
 			
 			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ?");
 			ps1.setLong(1, pid);
-			ResultSet rs1 = ps.executeQuery();
-			List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
+			ResultSet rs1 = ps1.executeQuery();
+			//List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
+			List<PregnancyBean> pregnancies = pregnancyLoader.loadList(rs1);
 			rs1.close();
 			
 			obstetric.setPregnancies(pregnancies);
@@ -102,7 +103,8 @@ public class ObstetricsDAO {
 	 * @throws DBException
 	 */
 	public List<ObstetricsBean> getAllObstetrics(long pid) throws DBException {
-		try (Connection conn = factory.getConnection();
+		try (
+				Connection conn = factory.getConnection();
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM obstetricsrecords WHERE PatientID = ?")
 				;
 				) {
@@ -112,16 +114,17 @@ public class ObstetricsDAO {
 			List<ObstetricsBean> obstetrics = obstetricsLoader.loadList(rs);
 			rs.close();
 			
-			System.out.println("obstetrics size: " + obstetrics.size());
-			
 			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ?");
 			ps1.setLong(1, pid);
-			ResultSet rs1 = ps.executeQuery();
-			List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
+			ResultSet rs1 = ps1.executeQuery();
+			//List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
+			List<PregnancyBean> pregnancies = pregnancyLoader.loadList(rs1);
 			rs1.close();
 			for (int i = 0; i < obstetrics.size(); i++) {
 				obstetrics.get(i).setPregnancies(pregnancies);
 			}
+			
+			
 			return obstetrics;
 		} catch (SQLException e) {
 			throw new DBException(e);

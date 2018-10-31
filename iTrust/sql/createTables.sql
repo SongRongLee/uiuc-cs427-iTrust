@@ -90,6 +90,7 @@ CREATE TABLE patients(
 	SpiritualPractices varchar(512) default '',
 	AlternateName varchar(32) default '',
 	DateOfDeactivation DATE default NULL,
+	ObstetricEligible BOOLEAN default false,
 	PRIMARY KEY (MID)
 ) ENGINE=MyISAM;
 
@@ -516,7 +517,7 @@ CREATE TABLE obstetricsrecords (
 CREATE TABLE pregnancyrecords (
   ID int(11) NOT NULL AUTO_INCREMENT,
   PatientID int(11) NOT NULL,
-  Date datetime NOT NULL,
+  Date_delivery date NOT NULL,
   num_weeks_pregnant int(11) NOT NULL,
   num_hours_labor double DEFAULT NULL,
   delivery_type varchar(45) NOT NULL,
