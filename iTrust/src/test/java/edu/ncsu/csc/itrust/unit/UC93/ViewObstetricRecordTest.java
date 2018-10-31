@@ -124,11 +124,16 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(row.getText().contains("Estimated Due Date"));
 		assertTrue(row.getText().contains("Num Weeks Pregnant"));
 		assertTrue(row.getText().contains("Report Created On"));
+		
+		// Check the data of the obtetrics record table
 		row = rowsOnTable.next();
-		// Check for some datas?
+		assertTrue(row.getText().contains("1"));
+		assertTrue(row.getText().contains("1"));
+		assertTrue(row.getText().contains("06/01/2019"));
+		assertTrue(row.getText().contains("11"));
 		
 		// Get the prior pregnancies table
-		tableElem = wd.findElements(By.tagName("table")).get(0);
+		tableElem = wd.findElements(By.tagName("table")).get(1);
 		tableData = tableElem.findElements(By.tagName("tr"));
 		rowsOnTable = tableData.iterator();
 				
@@ -144,11 +149,11 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		
 		// Check for a record
 		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("vaginal delivery vacuum assist"));
-		assertTrue(row.getText().contains("40-0"));
-		assertTrue(row.getText().contains("20.0"));
-		assertTrue(row.getText().contains("2014"));
-		assertTrue(row.getText().contains("12/24/2014"));
+		assertTrue(row.getText().contains("caesarean section"));
+		assertTrue(row.getText().contains("41"));
+		assertTrue(row.getText().contains("14"));
+		assertTrue(row.getText().contains("2011"));
+		assertTrue(row.getText().contains("01/07/2012"));
 	}
 	
 	/**
@@ -170,6 +175,49 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		
 		// There should be no Obstetrics Record
 		assertEquals("The patient is not eligible for obstetric care.", wd.findElement(By.id("ViewObRecordError")).getText());
+		
+		// Click on "no" button, prompted to search a patient again
+		wd.findElement(By.id("CancelEligible")).click();
+		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
+	}
+	
+	/**
+	 * Change the patient’s eligibility for patient that is not eligible
+	 * @throws Exception
+	 */
+	public void testViewObstetricsSetEligible() throws Exception{
+		// Login as HCP3
+		WebDriver wd = login("9000000003","pw");
+		assertEquals("iTrust - HCP Home", wd.getTitle());
+		
+		wd.findElement(By.linkText("Patient Records")).click();
+		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
+		
+		// Select Patient who is not eligible
+		wd.findElement(By.name("UID_PATIENTID")).sendKeys("21");
+		wd.findElement(By.id("mainForm")).submit();
+		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
+		
+		// There should be no Obstetrics Record
+		assertEquals("The patient is not eligible for obstetric care.", wd.findElement(By.id("ViewObRecordError")).getText());
+		
+		// Click on "yes" button, change the patient’s eligibility
+		wd.findElement(By.id("SetEligible")).click();
+		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
+		
+		// Get the obstetrics Records Table
+		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
+		List<WebElement> tableData = tableElem.findElements(By.tagName("tr"));
+		Iterator<WebElement> rowsOnTable = tableData.iterator();
+		
+		// Check the name and fields of the table
+		WebElement row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Obstetrics Records"));
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("ID"));
+		assertTrue(row.getText().contains("Patient ID"));
+		assertTrue(row.getText().contains("Creation Date"));
+		assertTrue(row.getText().contains("Action"));
 	}
 	
 }

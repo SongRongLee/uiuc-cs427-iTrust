@@ -56,14 +56,18 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(form.findElement(By.name("Date")).toString().contains(dateFormat.format(date)));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("2012");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40");
+		form.findElement(By.name("HoursLabor")).sendKeys("20");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
 		form.submit();
 		
-		// Check if redirected to the obstetrics records page
+		// Check if the record is successfully added
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("New Obstetrics Record successfully added!."));
+		
+		// Go back to the obstetrics records page
+		wd.findElements(By.tagName("a")).get(0).click();
 		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
 		
 		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
@@ -76,32 +80,18 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		Iterator<WebElement> rowsOnTable = tableData.iterator();
 		
 		WebElement row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Date"));
-		assertTrue(row.getText().contains("10/29/2018"));
+		assertTrue(row.getText().contains("Obstetrics Record"));
 		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("EDD"));
+		row = rowsOnTable.next();
+		// Check Patient ID
+		assertTrue(row.getText().contains("1"));
+		// Check EDD
 		assertTrue(row.getText().contains("05/11/2019"));
-		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Current number of weeks pregnant"));
-		assertTrue(row.getText().contains("12-2"));
-		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Year of conception"));
-		assertTrue(row.getText().contains("2012"));
-		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Number of weeks pregnant"));
-		assertTrue(row.getText().contains("40-0"));
-		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Number of hours in labor"));
-		assertTrue(row.getText().contains("25.0"));
-		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Weight gain during pregnancy"));
-		assertTrue(row.getText().contains("10"));
-		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Delivery type"));
-		assertTrue(row.getText().contains("vaginal delivery"));
-		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("Number of children"));
-		assertTrue(row.getText().contains("2"));
+		// Check Num Weeks Pregnant
+		assertTrue(row.getText().contains("40"));
+		// Check Report Created On
+		assertTrue(row.getText().contains(dateFormat.format(date)));
+		
 	}
 	
 	/**
@@ -130,8 +120,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		// Enter blank LMP
 		WebElement form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("YearOfConception")).sendKeys("2012");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40");
+		form.findElement(By.name("HoursLabor")).sendKeys("25");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -141,8 +131,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		// Enter blank YearOfConception
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40");
+		form.findElement(By.name("HoursLabor")).sendKeys("25");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -153,7 +143,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("2012");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("HoursLabor")).sendKeys("25");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -164,7 +154,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("2012");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -175,8 +165,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("2012");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40");
+		form.findElement(By.name("HoursLabor")).sendKeys("25");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
 		form.submit();
@@ -186,8 +176,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("2012");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40");
+		form.findElement(By.name("HoursLabor")).sendKeys("25");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
 		form.submit();
@@ -197,8 +187,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("2012");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("40-0");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("40");
+		form.findElement(By.name("HoursLabor")).sendKeys("25");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.submit();
@@ -209,10 +199,10 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 	 * Tests invalid input.
 	 * Case 1: LMP 123
 	 * Case 2: YearOfConception 992
-	 * Case 3: WeeksPregnant 37-50
-	 * Case 4: HoursLabor 250.0
+	 * Case 3: WeeksPregnant 370
+	 * Case 4: HoursLabor 200
 	 * Case 5: NumChildren 20
-	 * Valid case: LMP 08/05/2018, YearOfConception 1992, WeeksPregnant 37-5, HoursLabor 25.0, NumChildren 2
+	 * Valid case: LMP 08/05/2018, YearOfConception 1992, WeeksPregnant 37, HoursLabor 20, NumChildren 2
 	 * @throws Exception
 	 */
 	@Test
@@ -237,8 +227,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		WebElement form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("123");
 		form.findElement(By.name("YearOfConception")).sendKeys("1992");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37");
+		form.findElement(By.name("HoursLabor")).sendKeys("20");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -249,8 +239,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("992");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37");
+		form.findElement(By.name("HoursLabor")).sendKeys("20");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -261,8 +251,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("1992");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("37-50");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("370");
+		form.findElement(By.name("HoursLabor")).sendKeys("20");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -273,8 +263,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("1992");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
-		form.findElement(By.name("HoursLabor")).sendKeys("250.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37");
+		form.findElement(By.name("HoursLabor")).sendKeys("200");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("2");
@@ -285,8 +275,8 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
 		form.findElement(By.name("YearOfConception")).sendKeys("1992");
-		form.findElement(By.name("WeeksPregnant")).sendKeys("37-5");
-		form.findElement(By.name("HoursLabor")).sendKeys("25.0");
+		form.findElement(By.name("WeeksPregnant")).sendKeys("37");
+		form.findElement(By.name("HoursLabor")).sendKeys("20");
 		form.findElement(By.name("WeightGain")).sendKeys("10");
 		form.findElement(By.name("DeliveryType")).sendKeys("vaginal delivery");
 		form.findElement(By.name("NumChildren")).sendKeys("20");
