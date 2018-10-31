@@ -44,7 +44,7 @@ public class ObstetricsBean implements Serializable, Comparable<ObstetricsBean> 
 		PatientID = patientID;
 	}
 	public String getCreated_on() {
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		return dateFormat.format(created_on);
 	}	
 	public Date getCreated_onAsDate() {
@@ -53,6 +53,9 @@ public class ObstetricsBean implements Serializable, Comparable<ObstetricsBean> 
 	public String getLMP() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		return dateFormat.format(LMP);
+	}
+	public Date getLMPAsDate() {
+		return LMP;
 	}
 	public String getEDD() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");

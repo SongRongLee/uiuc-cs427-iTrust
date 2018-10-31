@@ -29,12 +29,15 @@ if (pidString == null || pidString.equals("") || 1 > pidString.length()) {
 	response.sendRedirect("/iTrust/auth/getPatientID.jsp?forward=hcp-uap/viewObstetricsRecords.jsp");
 	return;
 }
-
+/* Get selected patient and current personnel */
 ViewObstetricsAction action = new ViewObstetricsAction(prodDAO,
 		loggedInMID.longValue(), pidString);
+PatientBean p = action.getPatient();
+PersonnelDAO personnelDAO = new PersonnelDAO(prodDAO);
+PersonnelBean personnel = personnelDAO.getPersonnel(loggedInMID);
+String specialty = personnel.getSpecialty();
 
 /* Check if enable posted */
-PatientBean p = action.getPatient();
 if (request.getParameter("enableObstetric") != null) {
 	p.setObstetricEligible(true);
 	action.updateInformation(p);
@@ -48,10 +51,8 @@ if (request.getParameter("enableObstetric") != null) {
 if (p.getObstetricEligible()){
 	
 	long pid = action.getPid();
-	loggingAction.logEvent(TransactionType.VIEW_INITIAL_OBSTETRIC_RECORD, loggedInMID.longValue(), pid, "EDD");
 	%>
 	<br /><br />
-	<input type="hidden" name="add" id="add" />
 	<table class="fTable" align="center">
 		<tr>
 			<th colspan="10">Obstetrics Records</th>
@@ -76,12 +77,20 @@ if (p.getObstetricEligible()){
 			</tr>
 		<%
 			index++;
-			/* HELP - Checking HCP Specialization: OB/GYN */
+		}
+		if (specialty != null && specialty.equals("OB/GYN")){
+		%>
+			<div align=center>
+				<a id="addButton"
+				     href="addObstetricsRecord.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (1))%>">Add Record</a></td>
+			</div>
+			<br />
+		<%
 		}
 		%>
-		<td><a id="addButton"
-		     href="addObstetricsRecord.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (1))%>">Add Record</a></td>
-		<%
+	<table/>
+	<%
+	
 }
 else{
 	%>
@@ -97,6 +106,5 @@ else{
 	<% 
 }
 %>
-
 
 <%@include file="/footer.jsp"%>

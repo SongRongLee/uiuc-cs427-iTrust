@@ -10,6 +10,7 @@ import edu.ncsu.csc.itrust.DBUtil;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.beans.PregnancyBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PregnancyLoader;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.ObstetricsLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
@@ -81,7 +82,7 @@ public class ObstetricsDAO {
 			rs.close();
 			long pid = obstetric.getPatientID();
 			
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ?");
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ? ORDER BY Date_delivery DESC");
 			ps1.setLong(1, pid);
 			ResultSet rs1 = ps1.executeQuery();
 			//List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
@@ -105,7 +106,7 @@ public class ObstetricsDAO {
 	public List<ObstetricsBean> getAllObstetrics(long pid) throws DBException {
 		try (
 				Connection conn = factory.getConnection();
-				PreparedStatement ps = conn.prepareStatement("SELECT * FROM obstetricsrecords WHERE PatientID = ?")
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM obstetricsrecords WHERE PatientID = ? ORDER BY created_on DESC")
 				;
 				) {
 			ps.setLong(1, pid);
@@ -114,7 +115,7 @@ public class ObstetricsDAO {
 			List<ObstetricsBean> obstetrics = obstetricsLoader.loadList(rs);
 			rs.close();
 			
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ?");
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ? ORDER BY Date_delivery DESC");
 			ps1.setLong(1, pid);
 			ResultSet rs1 = ps1.executeQuery();
 			//List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
@@ -130,4 +131,58 @@ public class ObstetricsDAO {
 			throw new DBException(e);
 		}
 	}
+	
+	public List<PregnancyBean> getAllPregnancy(long pid) throws DBException {
+		try (
+				Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ? ORDER BY Date_delivery DESC");
+				) {
+			ps.setLong(1, pid);
+			ResultSet rs = ps.executeQuery();
+			List<PregnancyBean> pregnancies = pregnancyLoader.loadList(rs);
+			rs.close();
+			
+			return pregnancies;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	/**
+	 * Add a obstetric record
+	 * 
+	 * @param newRecord
+	 *            The Obstetrics bean representing the new information
+	 * @throws DBException
+	 */
+	public void addRecord(ObstetricsBean newRecord) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = obstetricsLoader.loadParameters(conn.prepareStatement(
+						"INSERT INTO obstetricsrecords (PatientID, LMP, number_of_weeks_pregnant, created_on)"
+								+ "VALUES (?, ?, ?, ?)"),
+						newRecord)) {
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	/**
+	 * Add a pregnancy record
+	 * 
+	 * @param newRecord
+	 *            The pregnancy bean representing the new information
+	 * @throws DBException
+	 */
+	public void addPregnancy(PregnancyBean newPregnancy) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = pregnancyLoader.loadParameters(conn.prepareStatement(
+						"INSERT INTO pregnancyrecords (PatientID, Date_delivery, num_weeks_pregnant, num_hours_labor, delivery_type, YOC)"
+								+ "VALUES (?, ?, ?, ?, ?, ?)"),
+						newPregnancy)) {
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+
 }

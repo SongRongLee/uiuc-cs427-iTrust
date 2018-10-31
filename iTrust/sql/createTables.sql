@@ -517,7 +517,7 @@ CREATE TABLE obstetricsrecords (
 CREATE TABLE pregnancyrecords (
   ID int(11) NOT NULL AUTO_INCREMENT,
   PatientID int(11) NOT NULL,
-  Date_delivery date NOT NULL,
+  Date_delivery date,
   num_weeks_pregnant int(11) NOT NULL,
   num_hours_labor double DEFAULT NULL,
   delivery_type varchar(45) NOT NULL,

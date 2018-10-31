@@ -64,7 +64,6 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 	@Override
 	public PreparedStatement loadParameters(PreparedStatement ps, PregnancyBean p) throws SQLException {
 		int i = 1;
-		ps.setInt(i++, p.getID());
 		ps.setInt(i++, p.getPatientID());
 		Date date = null;
 		try {
@@ -74,10 +73,10 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 			//TODO
 		}
 		ps.setDate(i++, date);
-		ps.setInt(i++, p.getYOC());
 		ps.setInt(i++, p.getNum_weeks_pregnant());
 		ps.setInt(i++, p.getNum_hours_labor());
 		ps.setString(i++, p.getDelivery_type());
+		ps.setInt(i++, p.getYOC());
 		
 		return ps;
 	}

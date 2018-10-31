@@ -1,65 +1,131 @@
 package edu.ncsu.csc.itrust.action;
 
-import edu.ncsu.csc.itrust.RandomPassword;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
+import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
-import edu.ncsu.csc.itrust.logger.TransactionLogger;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.beans.PregnancyBean;
+import edu.ncsu.csc.itrust.model.old.beans.forms.ObstetricsForm;
+import edu.ncsu.csc.itrust.model.old.beans.forms.PregnancyForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
-import edu.ncsu.csc.itrust.model.old.enums.Role;
-import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
-import edu.ncsu.csc.itrust.model.old.validate.AddPersonnelValidator;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.validate.ObstetricsValidator;
+import edu.ncsu.csc.itrust.model.old.validate.PatientValidator;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
+
 
 /**
- * Used for Add Personnel page (addPersonnel.jsp). This just adds an empty HCP/UAP, creates a random password
- * for them.
- * 
- * Very similar to {@link AddOfficeVisitAction} and {@link AddPatientAction}
+ * View a patient's obstetrics record used by viewObstetricsRecords.jsp
  * 
  * 
  */
-public class AddObstetricsAction {
-	private PersonnelDAO personnelDAO;
+public class AddObstetricsAction extends PatientBaseAction {
+	private ObstetricsValidator validator = new ObstetricsValidator();
+	private PatientDAO patientDAO;
+	private ObstetricsDAO obstetricsDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
+
 	/**
-	 * Sets up the defaults for the class
+	 * The super class validates the patient id
 	 * 
-	 * @param factory factory for creating the defaults.
-	 * @param loggedInMID person currently logged in 
-	 */	
-	public AddObstetricsAction(DAOFactory factory, long loggedInMID) {
-		this.personnelDAO = factory.getPersonnelDAO();
-		this.loggedInMID = loggedInMID;
-		this.authDAO = factory.getAuthDAO();
-	}
-	
-	
-	/**
-	 * Adds the new user.  Event is logged.
-	 * 
-	 * @param p bean containing the information for the new user
-	 * @return MID of the new user.
-	 * @throws FormValidationException
+	 * @param factory The DAOFactory used to create the DAOs for this action.
+	 * @param loggedInMID The MID of the user who is authorizing this action.
+	 * @param pidString The MID of the patient being edited.
 	 * @throws ITrustException
 	 */
-	public long add(ObstetricsBean p) throws FormValidationException, ITrustException {
-		long newMID = personnelDAO.addEmptyPersonnel(Role.UAP);
-		p.setID(123);
-		String pwd = authDAO.addUser(newMID, Role.UAP, RandomPassword.getRandomPassword());
-		p.setPatientID(321);
-		return newMID;
+	public AddObstetricsAction(DAOFactory factory, long loggedInMID, String pidString) throws ITrustException {
+		super(factory, pidString);
+		this.patientDAO = factory.getPatientDAO();
+		this.authDAO = factory.getAuthDAO();
+		this.obstetricsDAO = factory.getObstetricsDAO();
+		this.loggedInMID = loggedInMID;
+	}
+	
+	/**
+	 * Returns a PatientBean for the patient
+	 * 
+	 * @return the PatientBean
+	 * @throws DBException
+	 */
+	public PatientBean getPatient() throws DBException {
+		return patientDAO.getPatient(this.getPid());
+	}
+	
+	/**
+	 * Update ObstetricsBean object and save its information
+	 * 
+	 * @param newRecord, PatientID, LMP, created_on
+	 * @throws ITrustException
+	 * @throws FormValidationException
+	 */
+	public void addRecord(ObstetricsBean newRecord, String PatientID, String LMP, String created_on) throws ITrustException, FormValidationException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		ObstetricsForm form = new ObstetricsForm(PatientID, LMP, created_on);
+		validator.validate(form);
+		
+		// set ObstetricsBean manually after validation
+		newRecord.setPatientID(Integer.parseInt(PatientID));
+		try {
+			newRecord.setLMP(sdf.parse(LMP));
+			newRecord.setCreated_on(sdf.parse(created_on));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+	    long diffInMillies = Math.abs(newRecord.getCreated_onAsDate().getTime() - newRecord.getLMPAsDate().getTime());
+	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		newRecord.setNumber_of_weeks_pregnant((int)diff/7);
+		obstetricsDAO.addRecord(newRecord);
+	}
+	
+	/**
+	 * Update PregnancyBean object and save its information
+	 * 
+	 * @param newRecord, PatientID, LMP, created_on
+	 * @throws ITrustException
+	 * @throws FormValidationException
+	 */
+	public void addPregnancy(PregnancyBean newPregnancy, String PatientID, String Date_delivery, String num_weeks_pregnant,
+			String num_hours_labor, String delivery_type, String YOC) throws ITrustException, FormValidationException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		PregnancyForm form = new PregnancyForm(PatientID, Date_delivery, num_weeks_pregnant, num_hours_labor, delivery_type, YOC);
+		validator.validatePregnancy(form);
+		
+		// set ObstetricsBean manually after validation
+		newPregnancy.setPatientID(Integer.parseInt(PatientID));
+		try {
+			newPregnancy.setDate(sdf.parse(Date_delivery));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		newPregnancy.setNum_weeks_pregnant(Integer.parseInt(num_weeks_pregnant));
+		newPregnancy.setNum_hours_labor(Integer.parseInt(num_hours_labor));
+		newPregnancy.setDelivery_type(delivery_type);
+		newPregnancy.setYOC(Integer.parseInt(YOC));
+
+		obstetricsDAO.addPregnancy(newPregnancy);
 	}
 	
 	
-	public String getLMP() {
-		return "test";
+	/**
+	 * Return an obstetrics record that oid represents
+	 * 
+	 * @param oid The id of the obstetrics record we are looking for.
+	 * @return an ObstetricsBean
+	 * @throws ITrustException
+	 */
+	public ObstetricsBean getObstetricsRecord(long oid) throws ITrustException {
+		return obstetricsDAO.getObstetrics(oid);
 	}
-	
-	public String getCreatedOn() {
-		return "today";
-	}
-	
 }

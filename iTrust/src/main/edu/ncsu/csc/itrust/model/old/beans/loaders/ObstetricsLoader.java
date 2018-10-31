@@ -62,18 +62,9 @@ public class ObstetricsLoader implements BeanLoader<ObstetricsBean> {
 	@Override
 	public PreparedStatement loadParameters(PreparedStatement ps, ObstetricsBean p) throws SQLException {
 		int i = 1;
-		ps.setInt(i++, p.getID());
+		//ps.setInt(i++, p.getID());
 		ps.setInt(i++, p.getPatientID());
 		Date date = null;
-		try {
-			date = new java.sql.Date(DATE_FORMAT.parse(p.getCreated_on())
-				.getTime());
-		} catch (ParseException e) {
-			//TODO
-		}
-		ps.setDate(i++, date);
-		
-		date = null;
 		try {
 			date = new java.sql.Date(DATE_FORMAT.parse(p.getLMP())
 				.getTime());
@@ -81,8 +72,15 @@ public class ObstetricsLoader implements BeanLoader<ObstetricsBean> {
 			//TODO
 		}
 		ps.setDate(i++, date);
-		
 		ps.setInt(i++, p.getNumber_of_weeks_pregnant());
+		date = null;
+		try {
+			date = new java.sql.Date(DATE_FORMAT.parse(p.getCreated_on())
+				.getTime());
+		} catch (ParseException e) {
+			//TODO
+		}
+		ps.setDate(i++, date);
 		
 		return ps;
 	}
