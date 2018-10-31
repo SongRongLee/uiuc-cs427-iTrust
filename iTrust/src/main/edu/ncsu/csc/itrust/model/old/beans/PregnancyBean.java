@@ -45,7 +45,7 @@ public class PregnancyBean implements Serializable, Comparable<PregnancyBean> {
 
 
 	public String getDate() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 		return dateFormat.format(date);
 	}
 	

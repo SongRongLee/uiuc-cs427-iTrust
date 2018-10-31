@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,17 +44,22 @@ public class ObstetricsBean implements Serializable, Comparable<ObstetricsBean> 
 		PatientID = patientID;
 	}
 	public String getCreated_on() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 		return dateFormat.format(created_on);
-	}
-	
+	}	
 	public Date getCreated_onAsDate() {
 		return created_on;
-	}
-	
+	}	
 	public String getLMP() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		return dateFormat.format(LMP);
+	}
+	public String getEDD() {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(LMP);
+		c.add(Calendar.DATE, 280);
+		return dateFormat.format(c.getTime());
 	}
 	public void setCreated_on(Date created_on) {
 		this.created_on = created_on;

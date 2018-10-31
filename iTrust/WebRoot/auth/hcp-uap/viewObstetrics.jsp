@@ -53,14 +53,14 @@
 	<tr class="subHeader">
     		<td>ID</td>
    			<td>Patient ID</td>
-   			<td>Last Menstrual Period</td>
+   			<td>Estimated Due Date</td>
   			<td>Num Weeks Pregnant</td>
   			<td>Report Created On</td>
   	</tr>
   	<tr>
 			<td><%=StringEscapeUtils.escapeHtml("" + (record.getID()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pid))%></td>
-			<td><%=StringEscapeUtils.escapeHtml("" + (record.getLMP()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (record.getEDD()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (record.getNumber_of_weeks_pregnant()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (record.getCreated_on()))%></td>
 	</tr>
@@ -79,13 +79,10 @@
 
 <% 
 	List<PregnancyBean> priorPregnancies = record.getPregnancies();
-	System.out.println("number of prior pregnancies: " + priorPregnancies.size());
 	Date obstetricsDate = record.getCreated_onAsDate();
-	System.out.println("obstetrics date: " + record.getCreated_on());
 
 	for (PregnancyBean pregBean : priorPregnancies) {
 		Date pregDate = pregBean.getDateAsDate();
-		System.out.println("pregnancy date: " + pregBean.getDate());
 		if(pregDate.before(obstetricsDate)) {
 %>
 		<tr>

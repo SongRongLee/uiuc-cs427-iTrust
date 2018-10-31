@@ -61,7 +61,7 @@ if (p.getObstetricEligible()){
 			<td><%=StringEscapeUtils.escapeHtml("" + (obsbean.getID()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pid))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (obsbean.getCreated_on()))%></td>
-			<td><a
+			<td><a id="viewButton"
 				href="viewObstetrics.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (index))%>&requestID=<%=StringEscapeUtils.escapeHtml("" + (obsbean.getID()))%>">View</a></td>
 		</tr>
 	<%
