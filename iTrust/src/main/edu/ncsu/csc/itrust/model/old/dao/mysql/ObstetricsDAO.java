@@ -83,8 +83,9 @@ public class ObstetricsDAO {
 			
 			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM pregnancyrecords WHERE PatientID = ?");
 			ps1.setLong(1, pid);
-			ResultSet rs1 = ps.executeQuery();
-			List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
+			ResultSet rs1 = ps1.executeQuery();
+			//List<PregnancyBean> pregnancies = rs1.next() ? pregnancyLoader.loadList(rs1) : null;
+			List<PregnancyBean> pregnancies = pregnancyLoader.loadList(rs1);
 			rs1.close();
 			
 			obstetric.setPregnancies(pregnancies);
