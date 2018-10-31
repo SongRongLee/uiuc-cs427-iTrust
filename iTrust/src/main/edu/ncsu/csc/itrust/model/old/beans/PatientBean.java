@@ -488,7 +488,7 @@ public class PatientBean implements Serializable, Comparable<PatientBean> {
 	}
 
 	public Boolean getObstetricEligible() {
-		return this.obstetricEligible;
+		return obstetricEligible;
 	}
 
 	public void setObstetricEligible(Boolean obstetricEligible) {

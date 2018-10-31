@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust.action;
 import java.util.List;
 import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
@@ -47,6 +48,19 @@ public class ViewObstetricsAction extends PatientBaseAction {
 	 */
 	public PatientBean getPatient() throws DBException {
 		return patientDAO.getPatient(this.getPid());
+	}
+	
+	/**
+	 * Takes the information out of the PatientBean param and updates the patient's information
+	 * 
+	 * @param p
+	 *            the new patient information
+	 * @throws ITrustException
+	 * @throws FormValidationException
+	 */
+	public void updateInformation(PatientBean p) throws ITrustException, FormValidationException {
+		p.setMID(pid); // for security reasons
+		patientDAO.editPatient(p, loggedInMID);
 	}
 	
 	/**
