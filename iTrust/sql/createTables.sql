@@ -526,3 +526,17 @@ CREATE TABLE pregnancyrecords (
   Date_delivery date,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
+
+CREATE TABLE obstetricsVisit (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  patientID int(11) NOT NULL,
+  scheduledDate datetime NOT NULL,
+  createdDate datetime NOT NULL,
+  numWeeks varchar(5) NOT NULL,
+  weight float NOT NULL,
+  bloodPressure float NOT NULL,
+  FHR int(11) NOT NULL,
+  numChildren int(11) NOT NULL,
+  LLP BOOLEAN NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
