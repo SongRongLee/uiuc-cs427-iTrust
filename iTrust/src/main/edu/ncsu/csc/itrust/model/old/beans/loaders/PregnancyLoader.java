@@ -42,6 +42,8 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 		p.setNum_weeks_pregnant(rs.getInt("Num_weeks_pregnant"));
 		p.setNum_hours_labor(rs.getInt("Num_hours_labor"));
 		p.setDelivery_type(rs.getString("Delivery_type"));
+		p.setWeight_gain(rs.getFloat("weight_gain"));
+		p.setNum_children(rs.getInt("num_children"));
 	}
 	
 	/**
@@ -65,6 +67,12 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 	public PreparedStatement loadParameters(PreparedStatement ps, PregnancyBean p) throws SQLException {
 		int i = 1;
 		ps.setInt(i++, p.getPatientID());
+		ps.setInt(i++, p.getYOC());
+		ps.setInt(i++, p.getNum_weeks_pregnant());
+		ps.setInt(i++, p.getNum_hours_labor());
+		ps.setFloat(i++, p.getWeight_gain());
+		ps.setString(i++, p.getDelivery_type());
+		ps.setInt(i++, p.getNum_children());
 		Date date = null;
 		try {
 			date = new java.sql.Date(DATE_FORMAT.parse(p.getDate())
@@ -73,10 +81,6 @@ public class PregnancyLoader implements BeanLoader<PregnancyBean> {
 			//TODO
 		}
 		ps.setDate(i++, date);
-		ps.setInt(i++, p.getNum_weeks_pregnant());
-		ps.setInt(i++, p.getNum_hours_labor());
-		ps.setString(i++, p.getDelivery_type());
-		ps.setInt(i++, p.getYOC());
 		
 		return ps;
 	}

@@ -91,17 +91,19 @@ public class AddObstetricsAction extends PatientBaseAction {
 	/**
 	 * Update PregnancyBean object and save its information
 	 * 
-	 * @param newRecord, PatientID, LMP, created_on
+	 * @param newPregnancy, PatientID, YOC, num_weeks_pregnant,
+			 num_hours_labor, weight_gain, delivery_type, num_children, Date_delivery
 	 * @throws ITrustException
 	 * @throws FormValidationException
 	 */
-	public void addPregnancy(PregnancyBean newPregnancy, String PatientID, String Date_delivery, String num_weeks_pregnant,
-			String num_hours_labor, String delivery_type, String YOC) throws ITrustException, FormValidationException {
+	public void addPregnancy(PregnancyBean newPregnancy, String PatientID, String YOC, String num_weeks_pregnant,
+			String num_hours_labor, String weight_gain, String delivery_type, String num_children, String Date_delivery) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		PregnancyForm form = new PregnancyForm(PatientID, Date_delivery, num_weeks_pregnant, num_hours_labor, delivery_type, YOC);
+		PregnancyForm form = new PregnancyForm(PatientID, YOC, num_weeks_pregnant, num_hours_labor, weight_gain, 
+				delivery_type, num_children, Date_delivery);
 		validator.validatePregnancy(form);
 		
-		// set ObstetricsBean manually after validation
+		// set PregnancyBean manually after validation
 		newPregnancy.setPatientID(Integer.parseInt(PatientID));
 		try {
 			newPregnancy.setDate(sdf.parse(Date_delivery));
@@ -113,7 +115,9 @@ public class AddObstetricsAction extends PatientBaseAction {
 		newPregnancy.setNum_hours_labor(Integer.parseInt(num_hours_labor));
 		newPregnancy.setDelivery_type(delivery_type);
 		newPregnancy.setYOC(Integer.parseInt(YOC));
-
+		newPregnancy.setWeight_gain(Float.parseFloat(weight_gain));
+		newPregnancy.setNum_children(Integer.parseInt(num_children));
+		
 		obstetricsDAO.addPregnancy(newPregnancy);
 	}
 	

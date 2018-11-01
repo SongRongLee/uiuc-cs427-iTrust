@@ -517,10 +517,12 @@ CREATE TABLE obstetricsrecords (
 CREATE TABLE pregnancyrecords (
   ID int(11) NOT NULL AUTO_INCREMENT,
   PatientID int(11) NOT NULL,
-  Date_delivery date,
+  YOC int(11) NOT NULL,
   num_weeks_pregnant int(11) NOT NULL,
   num_hours_labor double DEFAULT NULL,
+  weight_gain float,
   delivery_type varchar(45) NOT NULL,
-  YOC int(11) NOT NULL,
+  num_children int(11),
+  Date_delivery date,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;

@@ -176,8 +176,9 @@ public class ObstetricsDAO {
 	public void addPregnancy(PregnancyBean newPregnancy) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = pregnancyLoader.loadParameters(conn.prepareStatement(
-						"INSERT INTO pregnancyrecords (PatientID, Date_delivery, num_weeks_pregnant, num_hours_labor, delivery_type, YOC)"
-								+ "VALUES (?, ?, ?, ?, ?, ?)"),
+						"INSERT INTO pregnancyrecords (PatientID, YOC, num_weeks_pregnant, num_hours_labor, weight_gain, "
+						+ "delivery_type, num_children, Date_delivery)"
+								+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
 						newPregnancy)) {
 			stmt.executeUpdate();
 		} catch (SQLException e) {

@@ -23,6 +23,8 @@ public class PregnancyBean implements Serializable, Comparable<PregnancyBean> {
 	private int num_weeks_pregnant = 0;
 	private int num_hours_labor = 0;
 	private String delivery_type = "";
+	private float weight_gain = 0;
+	private int num_children = 0;
 	
 	public int getID() {
 		return ID;
@@ -101,7 +103,21 @@ public class PregnancyBean implements Serializable, Comparable<PregnancyBean> {
 		this.delivery_type = delivery_type;
 	}
 	
-
+	public float getWeight_gain(){
+		return weight_gain;
+	}
+	
+	public void setWeight_gain(float weight_gain){
+		this.weight_gain = weight_gain;
+	}
+	
+	public int getNum_children(){
+		return num_children;
+	}
+	public void setNum_children(int num_children){
+		this.num_children = num_children;
+	}
+	
 	@Override
 	public int compareTo(PregnancyBean o) {
 		return (int)(o.ID-this.ID);

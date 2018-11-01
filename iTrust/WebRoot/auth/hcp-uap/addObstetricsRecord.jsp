@@ -59,7 +59,7 @@
 			loggingAction.logEvent(TransactionType.CREATE_INITIAL_OBSTETRIC_RECORD, loggedInMID.longValue(), pid, newRecord.getEDD());
 			%>
 			<div align=center>
-				<span class="iTrustMessage">New Obstetrics Record successfully added!</span>
+				<span class="iTrustMessage">New Obstetrics Record successfully added! Click <a href="viewObstetricsRecords.jsp">here</a> to view.</span>
 				<br />
 			</div>
 			<%
@@ -84,7 +84,7 @@
 			</tr>
 			<tr>
 				<td class="subHeaderVertical">Patient ID:</td>
-				<td><input type="text" name="PatientID" value=<%=pid%>></td>
+				<td><input type="hidden" name="PatientID" value = "<%=pid%>"><%=pid%></td>
 			</tr>
 			<tr>
 				<td class="subHeaderVertical">LMP:</td>
@@ -93,8 +93,7 @@
 			</tr>
 			<tr>
 				<td class="subHeaderVertical">Creation Date:</td>
-				<td><input type="text" name="created_on" value=<%=dateFormat.format(now)%>>
-				<input type=button value="Select Date" onclick="displayDatePicker('created_on');"></td>
+				<td><input type="hidden" name="created_on" value = "<%=dateFormat.format(now)%>"><%=dateFormat.format(now)%></td>
 				
 			</tr>
 	
@@ -108,8 +107,10 @@
 		/* Create new PregnancyBean manually */
 		PregnancyBean newPregnancy = new PregnancyBean();
 		try{
-			action.addPregnancy(newPregnancy, pidString,request.getParameter("Date_delivery"), request.getParameter("num_weeks_pregnant"),
-					request.getParameter("num_hours_labor"), request.getParameter("delivery_type"), request.getParameter("YOC"));
+			action.addPregnancy(newPregnancy, pidString, request.getParameter("YOC"), request.getParameter("num_weeks_pregnant"),
+					request.getParameter("num_hours_labor"), request.getParameter("weight_gain"), 
+					request.getParameter("delivery_type"), request.getParameter("num_children"), 
+					request.getParameter("Date_delivery"));
 			%>
 			<div align=center>
 			<span class="iTrustMessage">New History Record successfully added!</span>
@@ -124,10 +125,15 @@
 		}
 	}
 	%>
-	<form action="addObstetricsRecord.jsp" method="post" id="addObRecordForm">
+	<form action="addObstetricsRecord.jsp" method="post" id="addPregnancyForm">
 		<input type="hidden" name="form2IsFilled" value="true"> <br />
 		<input type="hidden" name="Date_delivery" value=<%=dateFormat.format(now)%>> <br />
+		<div style="width: 50%; text-align:center;">Please Enter New Obstetrics Record</div>
+		<br />
 		<table class="fTable">
+			<tr>
+				<th colspan=2>New Pregnancy History</th>
+			</tr>
 			<tr>
 				<td class="subHeaderVertical">Year Of Conception:</td>
 				<td><input type="text" name="YOC"></td>
@@ -142,7 +148,7 @@
 			</tr>
 			<tr>
 				<td class="subHeaderVertical">Weight Gain:</td>
-				<td><input type="text" name="WeightGain"></td>
+				<td><input type="text" name="weight_gain"></td>
 			</tr>
 			<tr>
 				<td class="subHeaderVertical">Delivery Type:</td>
@@ -162,11 +168,12 @@
 		<th colspan="10">Prior Pregnancies</th>
 	</tr>
 	<tr class="subHeader">
-    		<td>Delivery Type</td>
+    		<td>Year of Conception</td>
    			<td>Weeks Pregnant</td>
   			<td>Hours of Labor</td>
-  			<td>Year of Conception</td>
-  			<td>Delivery Date</td>
+  			<td>Weight Gain</td>
+  			<td>Delivery Type</td>
+  			<td>Num Children</td>
   	</tr>
 
 	<%
@@ -175,11 +182,12 @@
 	for (PregnancyBean pregBean : priorPregnancies) {
 		%>
 		<tr>
-			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDelivery_type()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getYOC()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_weeks_pregnant()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_hours_labor()))%></td>
-			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getYOC()))%></td>
-			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDate()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getWeight_gain()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDelivery_type()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_children()))%></td>
 		</tr>
 		<%
 	}

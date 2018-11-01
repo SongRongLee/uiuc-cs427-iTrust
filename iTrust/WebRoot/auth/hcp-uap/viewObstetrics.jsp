@@ -70,11 +70,12 @@
 		<th colspan="10">Prior Pregnancies</th>
 	</tr>
 	<tr class="subHeader">
-    		<td>Delivery Type</td>
+			<td>Year of Conception</td>
    			<td>Weeks Pregnant</td>
   			<td>Hours of Labor</td>
-  			<td>Year of Conception</td>
-  			<td>Delivery Date</td>
+  			<td>Weight Gain</td>
+  			<td>Delivery Type</td>
+  			<td>Num Children</td>
   	</tr>
 
 	<% 
@@ -83,14 +84,15 @@
 
 	for (PregnancyBean pregBean : priorPregnancies) {
 		Date pregDate = pregBean.getDateAsDate();
-		if(pregDate.before(obstetricsDate)) {
+		if(pregDate.before(obstetricsDate) || pregDate.equals(obstetricsDate)) {
 	%>
 		<tr>
-			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDelivery_type()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getYOC()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_weeks_pregnant()))%></td>
 			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_hours_labor()))%></td>
-			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getYOC()))%></td>
-			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDate()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getWeight_gain()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDelivery_type()))%></td>
+			<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_children()))%></td>
 		</tr>
 	<%
 		}
