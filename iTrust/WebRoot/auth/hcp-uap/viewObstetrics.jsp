@@ -17,7 +17,7 @@
 <%@include file="/global.jsp"%>
 
 <%
-	pageTitle = "iTrust - View Obstetrics Record";
+	pageTitle = "iTrust - View an Obstetrics Record";
 %>
 
 <%@include file="/header.jsp"%>
@@ -65,7 +65,7 @@
 			<td><%=StringEscapeUtils.escapeHtml("" + (record.getCreated_on()))%></td>
 	</tr>
 </table><br><br>
-<table class="fTable" align="center">
+<table class="fTable" align="center" id="ViewPreg">
 	<tr>
 		<th colspan="10">Prior Pregnancies</th>
 	</tr>

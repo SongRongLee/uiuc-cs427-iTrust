@@ -53,7 +53,7 @@ if (p.getObstetricEligible()){
 	long pid = action.getPid();
 	%>
 	<br /><br />
-	<table class="fTable" align="center">
+	<table class="fTable" align="center" id="OBlist">
 		<tr>
 			<th colspan="10">Obstetrics Records</th>
 		</tr>
