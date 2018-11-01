@@ -159,18 +159,11 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		
 		// Enter blank LMP
 		WebElement form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("YOC")).sendKeys("2012");
-		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
-		form.findElement(By.name("num_hours_labor")).sendKeys("25");
-		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
-		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter blank YearOfConception
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
@@ -180,8 +173,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter blank num_weeks_pregnant
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
@@ -191,8 +183,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter blank num_hours_labor
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
@@ -202,8 +193,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter blank weight_gain
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
@@ -213,8 +203,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter blank delivery_type
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
@@ -224,8 +213,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter blank num_children
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
@@ -266,18 +254,11 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		// Enter bad LMP
 		WebElement form = wd.findElement(By.id("addObRecordForm"));
 		form.findElement(By.name("LMP")).sendKeys("123");
-		form.findElement(By.name("YOC")).sendKeys("1992");
-		form.findElement(By.name("num_weeks_pregnant")).sendKeys("37");
-		form.findElement(By.name("num_hours_labor")).sendKeys("20");
-		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
-		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter bad YearOfConception
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("992");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("37");
 		form.findElement(By.name("num_hours_labor")).sendKeys("20");
@@ -288,8 +269,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter bad num_weeks_pregnant
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("1992");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("370");
 		form.findElement(By.name("num_hours_labor")).sendKeys("20");
@@ -300,8 +280,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
 		
 		// Enter bad num_hours_labor
-		form = wd.findElement(By.id("addObRecordForm"));
-		form.findElement(By.name("LMP")).sendKeys("08/05/2018");
+		form = wd.findElement(By.id("addPregnancyForm"));
 		form.findElement(By.name("YOC")).sendKeys("1992");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("37");
 		form.findElement(By.name("num_hours_labor")).sendKeys("200");
