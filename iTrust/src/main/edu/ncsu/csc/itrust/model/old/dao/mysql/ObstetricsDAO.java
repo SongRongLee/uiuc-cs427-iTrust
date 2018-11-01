@@ -154,13 +154,14 @@ public class ObstetricsDAO {
 	 *            The Obstetrics bean representing the new information
 	 * @throws DBException
 	 */
-	public void addRecord(ObstetricsBean newRecord) throws DBException {
+	public long addRecord(ObstetricsBean newRecord) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = obstetricsLoader.loadParameters(conn.prepareStatement(
 						"INSERT INTO obstetricsrecords (PatientID, LMP, number_of_weeks_pregnant, created_on)"
 								+ "VALUES (?, ?, ?, ?)"),
 						newRecord)) {
 			stmt.executeUpdate();
+			return DBUtil.getLastInsert(conn);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
@@ -173,7 +174,7 @@ public class ObstetricsDAO {
 	 *            The pregnancy bean representing the new information
 	 * @throws DBException
 	 */
-	public void addPregnancy(PregnancyBean newPregnancy) throws DBException {
+	public long addPregnancy(PregnancyBean newPregnancy) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = pregnancyLoader.loadParameters(conn.prepareStatement(
 						"INSERT INTO pregnancyrecords (PatientID, YOC, num_weeks_pregnant, num_hours_labor, weight_gain, "
@@ -181,6 +182,7 @@ public class ObstetricsDAO {
 								+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
 						newPregnancy)) {
 			stmt.executeUpdate();
+			return DBUtil.getLastInsert(conn);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
