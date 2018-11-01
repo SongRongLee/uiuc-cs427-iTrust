@@ -162,6 +162,14 @@ public class DAOFactory {
 	public PatientDAO getPatientDAO() {
 		return new PatientDAO(this);
 	}
+	
+	/**
+	 * 
+	 * @return this DAOFactory's ObstetricsDAO
+	 */
+	public ObstetricsDAO getObstetricsDAO() {
+		return new ObstetricsDAO(this);
+	}
 
 	/**
 	 * 

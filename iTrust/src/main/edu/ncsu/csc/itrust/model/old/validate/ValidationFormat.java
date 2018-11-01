@@ -95,6 +95,7 @@ public enum ValidationFormat {
 			 "Up to 500 alphanumeric characters, with space, and other punctuation"),
 	PRIORITY("[1-3]", "Priority must be between 1 and 3"),
 	WEEKS_PREGNANT("^([0-9]|[1-3][0-9]|4[0-2])-[0-6]{1}$", "Weeks must be between 0 and 42, Days must be between 0 and 6"),
+	WEEKS_ONLY_PREGNANT("^([0-9]|[1-3][0-9]|4[0-2])$", "Weeks must be between 0 and 42"),
 	HOURS_LABOR("[\\d]{0,3}.[\\d]{0,2}", "Hours in labor must between 0.0 and 999.99"),
 	FHR("^[0-9]\\d*", "Must be 0 or positive integer."),
 	FHU("^[0-9]*.^[1-9][0-9]*|^[1-9][0-9]*.?[0-9]*$", "Must be a positive double."),
