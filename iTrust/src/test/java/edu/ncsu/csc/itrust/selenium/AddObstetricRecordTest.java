@@ -52,13 +52,13 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("20");
-		form.findElement(By.name("weight_gain")).sendKeys("10");
+		form.findElement(By.name("weight_gain")).sendKeys("10.0");
 		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		
 		// Verify the new prior pregnancy was saved
-		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
+		WebElement tableElem = wd.findElement(By.id("AddOBViewPreg"));
 		List<WebElement> tableData = tableElem.findElements(By.tagName("tr"));
 		Iterator<WebElement> rowsOnTable = tableData.iterator();
 		WebElement row = rowsOnTable.next();
@@ -68,7 +68,7 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(row.getText().contains("2012"));
 		assertTrue(row.getText().contains("40"));
 		assertTrue(row.getText().contains("20"));
-		assertTrue(row.getText().contains("10"));
+		assertTrue(row.getText().contains("10.0"));
 		assertTrue(row.getText().contains("vaginal delivery"));
 		assertTrue(row.getText().contains("2"));
 		
@@ -87,18 +87,18 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.submit();
 		
 		// Check if the record is successfully added
-		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("New Obstetrics Record successfully added!."));
+		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("New Obstetrics Record successfully added!"));
 		
 		// Go back to the obstetrics records page
-		wd.findElements(By.tagName("a")).get(0).click();
+		wd.findElement(By.id("backtoview")).click();
 		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
 		
-		tableElem = wd.findElements(By.tagName("table")).get(0);
+		tableElem = wd.findElements(By.tagName("table")).get(1);
 		tableElem.findElements(By.id("viewButton")).get(0).click();
 		assertEquals("iTrust - View an Obstetrics Record", wd.getTitle());
 				
 		// Verify the new obstetrics record was saved
-		wd.findElements(By.tagName("table")).get(0);
+		tableElem = wd.findElements(By.tagName("table")).get(0);
 		tableData = tableElem.findElements(By.tagName("tr"));
 		rowsOnTable = tableData.iterator();
 		row = rowsOnTable.next();

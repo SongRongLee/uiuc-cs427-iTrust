@@ -59,7 +59,7 @@
 			loggingAction.logEvent(TransactionType.CREATE_INITIAL_OBSTETRIC_RECORD, loggedInMID.longValue(), pid, newRecord.getEDD());
 			%>
 			<div align=center>
-				<span class="iTrustMessage">New Obstetrics Record successfully added! Click <a href="viewObstetricsRecords.jsp">here</a> to view.</span>
+				<span class="iTrustMessage">New Obstetrics Record successfully added! Click <a href="viewObstetricsRecords.jsp" id="backtoview">here</a> to view.</span>
 				<br />
 			</div>
 			<%
@@ -163,7 +163,7 @@
 		<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Add Pregnancy History">
 	</form>
 	<br />
-	<table class="fTable" align="center">
+	<table class="fTable" align="center" id="AddOBViewPreg">
 	<tr>
 		<th colspan="10">Prior Pregnancies</th>
 	</tr>

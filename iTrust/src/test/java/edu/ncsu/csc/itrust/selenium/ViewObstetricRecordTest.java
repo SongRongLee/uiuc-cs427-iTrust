@@ -91,7 +91,7 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
 		
 		// Get the obstetrics records table
-		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
+		WebElement tableElem = wd.findElements(By.tagName("table")).get(1);
 		List<WebElement> tableData = tableElem.findElements(By.tagName("tr"));
 		Iterator<WebElement> rowsOnTable = tableData.iterator();
 		
@@ -129,11 +129,11 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		
 		// Check the data of the obtetrics record table
 		row = rowsOnTable.next();
-		assertTrue(row.getText().contains("06/17/2019"));
-		assertTrue(row.getText().contains("7"));
+		assertTrue(row.getText().contains("07/08/2019"));
+		assertTrue(row.getText().contains("4"));
 		
 		// Get the prior pregnancies table
-		tableElem = wd.findElements(By.tagName("table")).get(1);
+		tableElem = wd.findElements(By.tagName("table")).get(2);
 		tableData = tableElem.findElements(By.tagName("tr"));
 		rowsOnTable = tableData.iterator();
 				
@@ -145,7 +145,7 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		assertTrue(row.getText().contains("Weeks Pregnant"));
 		assertTrue(row.getText().contains("Hours of Labor"));
 		assertTrue(row.getText().contains("Weight Gain"));
-		assertTrue(row.getText().contains("Delivery type"));
+		assertTrue(row.getText().contains("Delivery Type"));
 		assertTrue(row.getText().contains("Num Children"));
 		
 		// Check for a prior pregnancy record
@@ -177,7 +177,7 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
 		
 		// The page should show error message for not eligible patient
-		assertEquals("The patient is not eligible for obstetric care.", wd.findElement(By.id("ViewObRecordError")).getText());
+		assertTrue(wd.findElement(By.id("ViewObRecordError")).getText().contains("The patient is not eligible for obstetric care."));
 		
 		// Click on "no" button, prompted to search a patient again
 		wd.findElement(By.id("CancelEligible")).click();
@@ -202,14 +202,14 @@ public class ViewObstetricRecordTest extends iTrustSeleniumTest{
 		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
 		
 		// There should be no Obstetrics Record
-		assertEquals("The patient is not eligible for obstetric care.", wd.findElement(By.id("ViewObRecordError")).getText());
+		assertTrue(wd.findElement(By.id("ViewObRecordError")).getText().contains("The patient is not eligible for obstetric care."));
 		
 		// Click on "yes" button, change the patient’s eligibility
 		wd.findElement(By.id("SetEligible")).click();
 		assertEquals("iTrust - View Obstetrics Records", wd.getTitle());
 		
 		// Get the obstetrics Records Table
-		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
+		WebElement tableElem = wd.findElements(By.tagName("table")).get(1);
 		List<WebElement> tableData = tableElem.findElements(By.tagName("tr"));
 		Iterator<WebElement> rowsOnTable = tableData.iterator();
 		
