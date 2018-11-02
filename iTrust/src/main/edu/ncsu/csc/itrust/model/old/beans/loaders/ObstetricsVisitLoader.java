@@ -43,7 +43,7 @@ public class ObstetricsVisitLoader implements BeanLoader<ObstetricsVisitBean> {
 		p.setCreatedDate(rs.getTimestamp("createdDate"));
 		p.setNumWeeks(rs.getString("numWeeks"));
 		p.setWeight(rs.getFloat("weight"));
-		p.setBloodPressure(rs.getFloat("bloodPressure"));
+		p.setBloodPressure(rs.getString("bloodPressure"));
 		p.setFHR(rs.getInt("FHR"));
 		p.setNumChildren(rs.getInt("numChildren"));
 		p.setLLP(rs.getBoolean("LLP"));
@@ -75,10 +75,30 @@ public class ObstetricsVisitLoader implements BeanLoader<ObstetricsVisitBean> {
 		ps.setTimestamp(i++, p.getCreatedDate());
 		ps.setString(i++, p.getNumWeeks());
 		ps.setFloat(i++, p.getWeight());
-		ps.setFloat(i++, p.getBloodPressure());
+		ps.setString(i++, p.getBloodPressure());
 		ps.setInt(i++, p.getFHR());
 		ps.setInt(i++, p.getNumChildren());
-		ps.setBoolean(i++, p.getLLP());;
+		ps.setBoolean(i++, p.getLLP());
+		return ps;
+	}
+	
+	/**
+	 * loadParameters for update
+	 * @throws SQLException
+	 */
+	public PreparedStatement loadParametersUpdate(PreparedStatement ps, ObstetricsVisitBean p) throws SQLException {
+		int i = 1;
+		//ps.setInt(i++, p.getID());
+		ps.setLong(i++, p.getPatientID());
+		ps.setTimestamp(i++, p.getScheduledDate());
+		ps.setTimestamp(i++, p.getCreatedDate());
+		ps.setString(i++, p.getNumWeeks());
+		ps.setFloat(i++, p.getWeight());
+		ps.setString(i++, p.getBloodPressure());
+		ps.setInt(i++, p.getFHR());
+		ps.setInt(i++, p.getNumChildren());
+		ps.setBoolean(i++, p.getLLP());
+		ps.setLong(i++, p.getID());
 		return ps;
 	}
 }

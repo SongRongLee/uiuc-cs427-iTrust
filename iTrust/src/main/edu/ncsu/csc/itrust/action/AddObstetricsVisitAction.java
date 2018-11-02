@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.action;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,16 +12,17 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
+import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
-import edu.ncsu.csc.itrust.model.old.beans.PregnancyBean;
 import edu.ncsu.csc.itrust.model.old.beans.forms.ObstetricsForm;
-import edu.ncsu.csc.itrust.model.old.beans.forms.PregnancyForm;
+import edu.ncsu.csc.itrust.model.old.beans.forms.ObstetricsVisitForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.validate.ObstetricsValidator;
-import edu.ncsu.csc.itrust.model.old.validate.PatientValidator;
+import edu.ncsu.csc.itrust.model.old.validate.ObstetricsVisitValidator;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
 
 
 /**
@@ -29,9 +31,10 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
  * 
  */
 public class AddObstetricsVisitAction extends PatientBaseAction {
-	private ObstetricsValidator validator = new ObstetricsValidator();
+	private ObstetricsVisitValidator validator = new ObstetricsVisitValidator();
 	private PatientDAO patientDAO;
 	private ObstetricsDAO obstetricsDAO;
+	private ObstetricsVisitDAO obstetricsVisitDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
 
@@ -48,6 +51,7 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 		this.patientDAO = factory.getPatientDAO();
 		this.authDAO = factory.getAuthDAO();
 		this.obstetricsDAO = factory.getObstetricsDAO();
+		this.obstetricsVisitDAO = factory.getObstetricsVisitDAO();
 		this.loggedInMID = loggedInMID;
 	}
 	
@@ -62,74 +66,69 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 	}
 	
 	/**
-	 * Update ObstetricsBean object and save its information
+	 * Return a list of obstetrics record that pid represents
 	 * 
-	 * @param newRecord, PatientID, LMP, created_on
+	 * @param pid The id of the patient we are looking for.
+	 * @return a list of ObstetricsBean
 	 * @throws ITrustException
-	 * @throws FormValidationException
 	 */
-	public void addRecord(ObstetricsBean newRecord, String PatientID, String LMP, String created_on) throws ITrustException, FormValidationException {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		ObstetricsForm form = new ObstetricsForm(PatientID, LMP, created_on);
-		validator.validate(form);
-		
-		// set ObstetricsBean manually after validation
-		newRecord.setPatientID(Integer.parseInt(PatientID));
-		try {
-			newRecord.setLMP(sdf.parse(LMP));
-			newRecord.setCreated_on(sdf.parse(created_on));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-	    long diffInMillies = Math.abs(newRecord.getCreated_onAsDate().getTime() - newRecord.getLMPAsDate().getTime());
-	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-		newRecord.setNumber_of_weeks_pregnant((int)diff/7);
-		obstetricsDAO.addRecord(newRecord);
+	public List<ObstetricsBean> getAllObstetrics(long pid) throws ITrustException {
+		return obstetricsDAO.getAllObstetrics(pid);
 	}
 	
 	/**
-	 * Update PregnancyBean object and save its information
+	 * Return true if the patient is an obstetrics patient
 	 * 
-	 * @param newPregnancy, PatientID, YOC, num_weeks_pregnant,
-			 num_hours_labor, weight_gain, delivery_type, num_children, Date_delivery
+	 * @param pid The id of the patient we are checking.
+	 * @return a Boolean
 	 * @throws ITrustException
-	 * @throws FormValidationException
 	 */
-	public void addPregnancy(PregnancyBean newPregnancy, String PatientID, String YOC, String num_weeks_pregnant,
-			String num_hours_labor, String weight_gain, String delivery_type, String num_children, String Date_delivery) throws ITrustException, FormValidationException {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		PregnancyForm form = new PregnancyForm(PatientID, YOC, num_weeks_pregnant, num_hours_labor, weight_gain, 
-				delivery_type, num_children, Date_delivery);
-		validator.validatePregnancy(form);
+	public Boolean isObstericsPatient(long pid) throws ITrustException {
+		List<ObstetricsBean> oblist = getAllObstetrics(pid);
+		if (oblist.size() != 0){
+			
+			/* Get current date */
+			Date now = new Date();
+			
+			long diffInMillies = Math.abs(now.getTime() - oblist.get(0).getLMPAsDate().getTime());
+		    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+			if (((int)diff/7) < 49){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void addVisit(ObstetricsVisitBean newVisit, String patientID, String scheduledDate, String createdDate, String weight, 
+				String bloodPressure, String FHR, String numChildren, String LLP) throws ITrustException, FormValidationException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		ObstetricsVisitForm form = new ObstetricsVisitForm(patientID, scheduledDate, createdDate, weight, 
+				bloodPressure, FHR, numChildren, LLP);
+		validator.validate(form);
 		
-		// set PregnancyBean manually after validation
-		newPregnancy.setPatientID(Integer.parseInt(PatientID));
+		// set ObstetricsVisitBean manually after validation
+		newVisit.setPatientID(Integer.parseInt(patientID));
 		try {
-			newPregnancy.setDate(sdf.parse(Date_delivery));
+			newVisit.setScheduledDate(new Timestamp(sdf.parse(scheduledDate).getTime()));
+			newVisit.setCreatedDate(new Timestamp(sdf.parse(createdDate).getTime()));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		newPregnancy.setNum_weeks_pregnant(Integer.parseInt(num_weeks_pregnant));
-		newPregnancy.setNum_hours_labor(Integer.parseInt(num_hours_labor));
-		newPregnancy.setDelivery_type(delivery_type);
-		newPregnancy.setYOC(Integer.parseInt(YOC));
-		newPregnancy.setWeight_gain(Float.parseFloat(weight_gain));
-		newPregnancy.setNum_children(Integer.parseInt(num_children));
 		
-		obstetricsDAO.addPregnancy(newPregnancy);
-	}
-	
-	
-	/**
-	 * Return an obstetrics record that oid represents
-	 * 
-	 * @param oid The id of the obstetrics record we are looking for.
-	 * @return an ObstetricsBean
-	 * @throws ITrustException
-	 */
-	public ObstetricsBean getObstetricsRecord(long oid) throws ITrustException {
-		return obstetricsDAO.getObstetrics(oid);
+		newVisit.setWeight(Float.parseFloat(weight));
+		newVisit.setBloodPressure(bloodPressure);
+		newVisit.setFHR(Integer.parseInt(FHR));
+		newVisit.setNumChildren(Integer.parseInt(numChildren));
+		newVisit.setLLP(LLP.equals("true"));
+		
+		List<ObstetricsBean> oblist = getAllObstetrics(newVisit.getPatientID());
+		/* Get current date */
+		Date now = new Date();
+		
+		long diffInMillies = Math.abs(now.getTime() - oblist.get(0).getLMPAsDate().getTime());
+	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+	    newVisit.setNumWeeks(Integer.toString((int)diff/7)+"-"+Integer.toString((int)diff%7));
+		obstetricsVisitDAO.addObstetricsVisit(newVisit);
 	}
 }

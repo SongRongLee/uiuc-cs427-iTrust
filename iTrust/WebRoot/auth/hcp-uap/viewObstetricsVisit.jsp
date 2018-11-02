@@ -69,6 +69,8 @@ if (action.isObstericsPatient(pid)){
 		List<ObstetricsVisitBean> visits = action.getAllObstetricsVisits(pid);
 		int index = 0;
 		for (ObstetricsVisitBean obvisit : visits) {
+			loggingAction.logEvent(TransactionType.VIEW_OBSTETRIC_OFFICE_VISIT,
+			loggedInMID.longValue(), pid, Long.toString(obvisit.getID()));
 		%>
 			<tr>
 				<td><%=StringEscapeUtils.escapeHtml("" + (obvisit.getID()))%></td>
@@ -104,7 +106,7 @@ else{
 	%>
 	<br />
 	<div align=center>
-		<span class="iTrustMessage" id="ViewObRecordError">
+		<span class="iTrustMessage" id="ViewObVisitPatientError">
 		The patient is not an obstetrics patient. Please <a href="viewObstetricsVisit.jsp">try again</a>.</span>
 	</div>
 	<br />

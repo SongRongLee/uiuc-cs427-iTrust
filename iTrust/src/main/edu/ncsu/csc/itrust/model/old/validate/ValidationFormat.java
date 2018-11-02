@@ -18,6 +18,7 @@ public enum ValidationFormat {
 	MID("[\\d]{1,10}",							"Between 1 and 10 digits"),
 	NPMID("[0-8][0-9]{0,9}", 					"1-10 digit number not beginning with 9"),
 	DATETIME("[\\d]{4}-[\\d]{2}-[\\d]{2}[\\s]{1}[\\d]{2}:[\\d]{2}:[\\d]{2}.[\\d]{1}", "mm/dd/yyyy"),
+	DATETIMESTAMP("[\\d]{2}/[\\d]{2}/[\\d]{4}[\\s]{1}[\\d]{2}:[\\d]{2}", "MM/dd/yyyy HH:mm"),
 	
 	EMAIL(".+@.+\\..+",
 					"Up to 30 alphanumeric characters and symbols . and _ @"), 
@@ -99,6 +100,7 @@ public enum ValidationFormat {
 	HOURS_LABOR("[\\d]{0,3}.[\\d]{0,2}", "Hours in labor must between 0.0 and 999.99"),
 	FHR("^[0-9]\\d*", "Must be 0 or positive integer."),
 	FHU("^[0-9]*.^[1-9][0-9]*|^[1-9][0-9]*.?[0-9]*$", "Must be a positive double."),
+	CHILD_NUM("[1-5]", "Number of childern must be between 1 and 5"),
 	WEEKS_PREGNANT_OV("^([0-9]|[1-3][0-9]|4[0-2])-[0-6]{1}$", "The patient chosen is not a current obstetrics patient"),
 	MEALTYPE("^(?:Breakfast|Lunch|Snack|Dinner)$", "must be one of {Breakfast, Lunch, Snack, Dinner}"),
 	EXERCISETYPE("^(?:Cardio|Weight Training)$", "must be one of {Cardio, Weight Training}"),

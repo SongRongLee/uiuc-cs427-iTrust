@@ -45,7 +45,7 @@ public class ObstetricsValidator extends BeanValidator<ObstetricsForm> {
 		errorList.addIfNotNull(checkFormat("num_hours_labor", newForm.getNum_hours_labor(), ValidationFormat.HOURS_LABOR, false));
 		errorList.addIfNotNull(checkFormat("YOC", newForm.getYOC(), ValidationFormat.YEAR, false));
 		errorList.addIfNotNull(checkFormat("weight_gain", newForm.getWeight_gain(), ValidationFormat.WEIGHT, false));
-		errorList.addIfNotNull(checkFormat("num_children", newForm.getNum_children(), ValidationFormat.FHR, false));
+		errorList.addIfNotNull(checkFormat("num_children", newForm.getNum_children(), ValidationFormat.CHILD_NUM, false));
 
 		if (errorList.hasErrors())
 			throw new FormValidationException(errorList);

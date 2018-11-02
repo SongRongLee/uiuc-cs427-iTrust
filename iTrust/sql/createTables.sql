@@ -534,7 +534,7 @@ CREATE TABLE obstetricsVisit (
   createdDate datetime NOT NULL,
   numWeeks varchar(5) NOT NULL,
   weight float NOT NULL,
-  bloodPressure float NOT NULL,
+  bloodPressure varchar(8) NOT NULL,
   FHR int(11) NOT NULL,
   numChildren int(11) NOT NULL,
   LLP BOOLEAN NOT NULL,

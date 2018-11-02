@@ -115,9 +115,9 @@ public class ObstetricsVisitDAO {
 	 */
 	public void updateObstetricsVisit(ObstetricsVisitBean newVisit) throws DBException {
 		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = obstetricsVisitLoader.loadParameters(conn.prepareStatement(
-						"INSERT INTO obstetricsVisit (patientID, scheduledDate, createdDate, numWeeks, weight,"
-						+ " bloodPressure, FHR, numChildren, LLP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+				PreparedStatement stmt = obstetricsVisitLoader.loadParametersUpdate(conn.prepareStatement(
+						"UPDATE obstetricsVisit SET patientID=?, scheduledDate=?, createdDate=?, numWeeks=?, weight=?,"
+						+ " bloodPressure=?, FHR=?, numChildren=?, LLP=? WHERE ID=?"),
 						newVisit)) {
 			stmt.executeUpdate();
 		} catch (SQLException e) {

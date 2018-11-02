@@ -21,7 +21,7 @@ public class ObstetricsVisitBean implements Serializable, Comparable<ObstetricsV
 	private Timestamp createdDate;
 	private String numWeeks = "";
 	private float weight = 0;
-	private float bloodPressure = 0;
+	private String bloodPressure = "";
 	private int FHR = 0;
 	private int numChildren = 0;
 	private Boolean LLP = false;
@@ -76,10 +76,10 @@ public class ObstetricsVisitBean implements Serializable, Comparable<ObstetricsV
 		return weight;
 	}
 	
-	public void setBloodPressure(float bloodPressure) {
+	public void setBloodPressure(String bloodPressure) {
 		this.bloodPressure = bloodPressure;
 	}
-	public float getBloodPressure() {
+	public String getBloodPressure() {
 		return bloodPressure;
 	}
 	
