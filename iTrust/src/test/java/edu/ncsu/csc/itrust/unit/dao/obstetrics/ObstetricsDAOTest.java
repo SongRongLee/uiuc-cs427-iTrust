@@ -37,6 +37,10 @@ public class ObstetricsDAOTest extends TestCase {
 		assertEquals(1, obList.size());
 		assertEquals(date, obList.get(0).getCreated_onAsDate());
 		assertEquals(5, obList.get(0).getNumber_of_weeks_pregnant());
+		
+		ObstetricsBean obBean = obstetricsDAO.getObstetrics(obList.get(0).getID());
+		assertEquals(date, obBean.getCreated_onAsDate());
+		assertEquals(5, obBean.getNumber_of_weeks_pregnant());
 	}
 	
 	public void testAddPregnancy() throws Exception {
