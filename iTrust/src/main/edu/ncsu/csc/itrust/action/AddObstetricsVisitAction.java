@@ -120,15 +120,19 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 		newVisit.setBloodPressure(bloodPressure);
 		newVisit.setFHR(Integer.parseInt(FHR));
 		newVisit.setNumChildren(Integer.parseInt(numChildren));
-		newVisit.setLLP(LLP.equals("true"));
+		newVisit.setLLP(LLP != null);
 		
 		List<ObstetricsBean> oblist = getAllObstetrics(newVisit.getPatientID());
-		/* Get current date */
-		Date now = new Date();
 		
-		long diffInMillies = Math.abs(now.getTime() - oblist.get(0).getLMPAsDate().getTime());
-	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-	    newVisit.setNumWeeks(Integer.toString((int)diff/7)+"-"+Integer.toString((int)diff%7));
+		/* Calculate weeks pregnant */		
+		long diffInMillies;
+		try {
+			diffInMillies = Math.abs(sdf.parse(scheduledDate).getTime() - oblist.get(0).getLMPAsDate().getTime());
+			long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		    newVisit.setNumWeeks(Integer.toString((int)diff/7)+"-"+Integer.toString((int)diff%7));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		obstetricsVisitDAO.addObstetricsVisit(newVisit);
 	}
 }
