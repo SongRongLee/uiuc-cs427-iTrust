@@ -68,7 +68,7 @@ public class AddObstetricsAction extends PatientBaseAction {
 	 * @throws ITrustException
 	 * @throws FormValidationException
 	 */
-	public void addRecord(ObstetricsBean newRecord, String PatientID, String LMP, String created_on) throws ITrustException, FormValidationException {
+	public long addRecord(ObstetricsBean newRecord, String PatientID, String LMP, String created_on) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		ObstetricsForm form = new ObstetricsForm(PatientID, LMP, created_on);
 		validator.validate(form);
@@ -85,7 +85,7 @@ public class AddObstetricsAction extends PatientBaseAction {
 	    long diffInMillies = Math.abs(newRecord.getCreated_onAsDate().getTime() - newRecord.getLMPAsDate().getTime());
 	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 		newRecord.setNumber_of_weeks_pregnant((int)diff/7);
-		obstetricsDAO.addRecord(newRecord);
+		return obstetricsDAO.addRecord(newRecord);
 	}
 	
 	/**
@@ -96,7 +96,7 @@ public class AddObstetricsAction extends PatientBaseAction {
 	 * @throws ITrustException
 	 * @throws FormValidationException
 	 */
-	public void addPregnancy(PregnancyBean newPregnancy, String PatientID, String YOC, String num_weeks_pregnant,
+	public long addPregnancy(PregnancyBean newPregnancy, String PatientID, String YOC, String num_weeks_pregnant,
 			String num_hours_labor, String weight_gain, String delivery_type, String num_children, String Date_delivery) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		PregnancyForm form = new PregnancyForm(PatientID, YOC, num_weeks_pregnant, num_hours_labor, weight_gain, 
@@ -118,7 +118,7 @@ public class AddObstetricsAction extends PatientBaseAction {
 		newPregnancy.setWeight_gain(Float.parseFloat(weight_gain));
 		newPregnancy.setNum_children(Integer.parseInt(num_children));
 		
-		obstetricsDAO.addPregnancy(newPregnancy);
+		return obstetricsDAO.addPregnancy(newPregnancy);
 	}
 	
 	
