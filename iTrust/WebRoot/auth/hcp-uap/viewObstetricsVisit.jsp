@@ -86,8 +86,7 @@ if (action.isObstericsPatient(pid)){
 	  			if (specialty != null && specialty.equals("OB/GYN")){
 					%>
 					<td><a id="editButton"
-					href="editObstetricsVisit.jsp?patient=
-					<%=StringEscapeUtils.escapeHtml("" + (index))%>&requestID=<%=StringEscapeUtils.escapeHtml("" + (obvisit.getID()))%>">Edit</a></td>
+					href="editObstetricsVisit.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (obvisit.getID()))%>">Edit</a></td>
 					<%
 				}
 	  			%>

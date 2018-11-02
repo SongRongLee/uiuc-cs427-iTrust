@@ -20,7 +20,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
 
 
 /**
- * View a patient's obstetrics record used by viewObstetricsRecords.jsp
+ * View a patient's obstetrics visit used by viewObstetricsVisit.jsp
  * 
  * 
  */

@@ -47,7 +47,7 @@ public class ObstetricsVisitBean implements Serializable, Comparable<ObstetricsV
 		return (Timestamp)scheduledDate.clone();
 	}
 	public String getScheduledDateString() {
-		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		return f.format(scheduledDate);
 	}
 	
@@ -58,7 +58,7 @@ public class ObstetricsVisitBean implements Serializable, Comparable<ObstetricsV
 		return (Timestamp)createdDate.clone();
 	}
 	public String getCreatedDateString() {
-		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		return f.format(createdDate);
 	}
 	

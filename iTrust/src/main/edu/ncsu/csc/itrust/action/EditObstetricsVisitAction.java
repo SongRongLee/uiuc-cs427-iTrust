@@ -26,11 +26,11 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
 
 
 /**
- * Add a patient's obstetrics visit used by addObstetricsVisit.jsp
+ * Edit a patient's obstetrics visit used by editObstetricsVisit.jsp
  * 
  * 
  */
-public class AddObstetricsVisitAction extends PatientBaseAction {
+public class EditObstetricsVisitAction extends PatientBaseAction {
 	private ObstetricsVisitValidator validator = new ObstetricsVisitValidator();
 	private PatientDAO patientDAO;
 	private ObstetricsDAO obstetricsDAO;
@@ -46,7 +46,7 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 	 * @param pidString The MID of the patient being edited.
 	 * @throws ITrustException
 	 */
-	public AddObstetricsVisitAction(DAOFactory factory, long loggedInMID, String pidString) throws ITrustException {
+	public EditObstetricsVisitAction(DAOFactory factory, long loggedInMID, String pidString) throws ITrustException {
 		super(factory, pidString);
 		this.patientDAO = factory.getPatientDAO();
 		this.authDAO = factory.getAuthDAO();
@@ -63,6 +63,17 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 	 */
 	public PatientBean getPatient() throws DBException {
 		return patientDAO.getPatient(this.getPid());
+	}
+	
+	/**
+	 * Return an obstetrics vsiit that vid represents
+	 * 
+	 * @param vid The id of the obstetrics visit we are looking for.
+	 * @return an ObstetricsVisitBean
+	 * @throws ITrustException
+	 */
+	public ObstetricsVisitBean getObstetricsVisit(long vid) throws ITrustException {
+		return obstetricsVisitDAO.getObstetricsVisit(vid);
 	}
 	
 	/**
@@ -99,23 +110,21 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 		return false;
 	}
 	
-	public void addVisit(ObstetricsVisitBean newVisit, String patientID, String scheduledDate, String createdDate, String weight, 
-				String bloodPressure, String FHR, String numChildren, String LLP) throws ITrustException, FormValidationException {
+	public void editVisit(ObstetricsVisitBean newVisit, String ID, String patientID, String scheduledDate, String createdDate,
+			String weight, String bloodPressure, String FHR, String numChildren, String LLP) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		ObstetricsVisitForm form = new ObstetricsVisitForm(patientID, scheduledDate, createdDate, weight, 
 				bloodPressure, FHR, numChildren, LLP);
 		validator.validate(form);
-		
 		// set ObstetricsVisitBean manually after validation
+		newVisit.setID(Integer.parseInt(ID));
 		newVisit.setPatientID(Integer.parseInt(patientID));
 		try {
 			newVisit.setScheduledDate(new Timestamp(sdf.parse(scheduledDate).getTime()));
 			newVisit.setCreatedDate(new Timestamp(sdf.parse(createdDate).getTime()));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		newVisit.setWeight(Float.parseFloat(weight));
 		newVisit.setBloodPressure(bloodPressure);
 		newVisit.setFHR(Integer.parseInt(FHR));
@@ -133,6 +142,6 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		obstetricsVisitDAO.addObstetricsVisit(newVisit);
+		obstetricsVisitDAO.updateObstetricsVisit(newVisit);
 	}
 }
