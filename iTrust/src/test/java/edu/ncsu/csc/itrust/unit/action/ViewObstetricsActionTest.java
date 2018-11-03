@@ -12,6 +12,7 @@ import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 
@@ -25,6 +26,7 @@ public class ViewObstetricsActionTest {
 	public void setUp() throws Exception {
 		gen.clearAllTables();
 		gen.patient1();
+		gen.uc93();
 		action = new ViewObstetricsAction(factory, 9000000003L, "1");
 	}
 	
@@ -69,6 +71,23 @@ public class ViewObstetricsActionTest {
 			assertTrue(list.size() > 0 );
 		}
 	}
+	
+	@Test
+	public void testUpdateInformation() throws Exception {
+		PatientDAO po = new PatientDAO(factory);
+		PatientBean pb = po.getPatient(1);
+		assertEquals("Random", pb.getFirstName());
+		assertEquals("Person", pb.getLastName());
+		assertEquals("0", pb.getFatherMID());
+		pb.setFatherMID("1");
+		assertEquals("1", pb.getFatherMID());
+		action.updateInformation(pb);
+		PatientBean pb2 = po.getPatient(1);
+		assertEquals("Random", pb2.getFirstName());
+		assertEquals("Person", pb2.getLastName());
+		assertEquals("1", pb2.getFatherMID());
+	}
+	
 	
 	@Test
 	public void testGetObstetricsRecord() {
