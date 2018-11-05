@@ -3,8 +3,11 @@ package edu.ncsu.csc.itrust.unit.bean;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createControl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -14,12 +17,15 @@ import org.junit.Test;
 
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.ObstetricsVisitLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class ObstetricsVisitLoaderTest extends TestCase {
 	private IMocksControl ctrl;
 	private ResultSet rs;
 	private ObstetricsVisitLoader load;
+	private DAOFactory factory;
 
 	@Override
 	@Before
@@ -27,6 +33,7 @@ public class ObstetricsVisitLoaderTest extends TestCase {
 		ctrl = createControl();
 		rs = ctrl.createMock(ResultSet.class);
 		load = new ObstetricsVisitLoader();
+		factory = TestDAOFactory.getTestInstance();
 	}
 
 	@Test
@@ -73,10 +80,66 @@ public class ObstetricsVisitLoaderTest extends TestCase {
 	@Test
 	public void testLoadParameters() {
 		try {
-
-			load.loadParameters(null, null);
-			fail();
+			ObstetricsVisitBean ob = new ObstetricsVisitBean();
+			ob.setPatientID(1);
+			ob.setScheduledDate(new Timestamp(new Date(0).getTime()));
+			ob.setCreatedDate(new Timestamp(new Date(0).getTime()));
+			ob.setNumWeeks("17");
+			ob.setWeight((float)150);
+			ob.setBloodPressure("120/50");
+			ob.setFHR(60);
+			ob.setNumChildren(4);
+			ob.setLLP((Boolean)false);
+			
+			Connection conn = factory.getConnection();
+			
+			PreparedStatement stmt = load.loadParameters(conn.prepareStatement(
+					"INSERT INTO obstetricsVisit (patientID, scheduledDate, createdDate, numWeeks, weight,"
+					+ " bloodPressure, FHR, numChildren, LLP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+					ob);
+			
+			String strSTMT = "INSERT INTO obstetricsVisit (patientID, scheduledDate, createdDate, numWeeks, weight, bloodPressure, FHR, numChildren, LLP) "
+					+ "VALUES (1, '1969-12-31 18:00:00', '1969-12-31 18:00:00', '17', 150.0, '120/50', 60, 4, 0)";
+			
+			boolean contains = (stmt.toString()).contains(strSTMT);
+			
+			assertEquals(true, contains);
+					
 		} catch (Exception e) {
+			System.out.println(e.getLocalizedMessage());
+		}
+	}
+	
+	@Test
+	public void testLoadParametersUpdate() {
+		try {
+			ObstetricsVisitBean ob = new ObstetricsVisitBean();
+			ob.setPatientID(1);
+			ob.setScheduledDate(new Timestamp(new Date(0).getTime()));
+			ob.setCreatedDate(new Timestamp(new Date(0).getTime()));
+			ob.setNumWeeks("17");
+			ob.setWeight((float)150);
+			ob.setBloodPressure("120/50");
+			ob.setFHR(60);
+			ob.setNumChildren(4);
+			ob.setLLP((Boolean)false);
+			
+			Connection conn = factory.getConnection();
+			
+			PreparedStatement stmt = load.loadParametersUpdate(conn.prepareStatement(
+					"UPDATE obstetricsVisit SET patientID=?, scheduledDate=?, createdDate=?, numWeeks=?, weight=?,"
+							+ " bloodPressure=?, FHR=?, numChildren=?, LLP=? WHERE ID=?"),
+					ob);
+			
+			String strSTMT = "UPDATE obstetricsVisit SET patientID=1, scheduledDate='1969-12-31 18:00:00', createdDate='1969-12-31 18:00:00', "
+					+ "numWeeks='17', weight=150.0, bloodPressure='120/50', FHR=60, numChildren=4, LLP=0 WHERE ID=0";
+			
+			boolean contains = (stmt.toString()).contains(strSTMT);
+			
+			assertEquals(true, contains);
+					
+		} catch (Exception e) {
+			System.out.println(e.getLocalizedMessage());
 		}
 	}
 }
