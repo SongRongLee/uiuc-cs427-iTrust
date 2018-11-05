@@ -89,3 +89,4 @@ ALTER TABLE medicalProcedure AUTO_INCREMENT = 0;
 
 DELETE FROM obstetricsrecords;
 DELETE FROM pregnancyrecords;
+DELETE FROM obstetricsvisit;
