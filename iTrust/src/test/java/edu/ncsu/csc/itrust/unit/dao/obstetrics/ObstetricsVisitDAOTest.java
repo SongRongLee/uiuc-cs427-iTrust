@@ -99,7 +99,7 @@ public class ObstetricsVisitDAOTest extends TestCase {
 			
 		List<ObstetricsVisitBean> obList1 = obstetricsDAO.getAllObstetricsVisits(1);
 		assertEquals(1, obList1.size());
-		ObstetricsVisitBean ob2 = obList.get(0);
+		ObstetricsVisitBean ob2 = obList1.get(0);
 		System.out.println(ob2.getID());
 		assertEquals("19", ob2.getNumWeeks());
 		assertEquals("130/70", ob2.getBloodPressure());
