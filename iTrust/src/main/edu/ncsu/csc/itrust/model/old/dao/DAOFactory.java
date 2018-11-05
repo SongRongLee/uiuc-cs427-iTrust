@@ -247,6 +247,10 @@ public class DAOFactory {
 	public ReviewsDAO getReviewsDAO() {
 		return new ReviewsDAO(this);
 	}
+
+	public UltrasoundDAO getUltrasoundDAO() {
+		return new UltrasoundDAO(this);
+	}
 	
 
 }
