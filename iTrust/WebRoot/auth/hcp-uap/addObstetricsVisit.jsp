@@ -7,7 +7,9 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
+<%@page import="edu.ncsu.csc.itrust.action.ViewObstetricsVisitAction"%>
 <%@page import="edu.ncsu.csc.itrust.action.AddObstetricsVisitAction"%>
+<%@page import="edu.ncsu.csc.itrust.action.GetNextVisitAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PatientBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
@@ -72,9 +74,42 @@ if (specialty != null && specialty.equals("OB/GYN")){
 			<%
 			}
 		}
-
+		
+		ViewObstetricsVisitAction viewAction = new ViewObstetricsVisitAction(prodDAO,
+				loggedInMID.longValue(), pidString);
+		List<ObstetricsVisitBean> visits = viewAction.getSortedObstetricsVisits(pid);
+		ObstetricsVisitBean latestVisit = null;
+		GetNextVisitAction nextAction = null;
+		String scheduledDate = null;
+		try{
+			latestVisit = visits.get(0);
+			nextAction = new GetNextVisitAction();
+			scheduledDate = nextAction.GetNextDateString(latestVisit);
+		}catch(Exception e){
+			%>
+				<div align=center>
+					<span class="iTrustError">No Previous Visits, Auto Add Not Available!</span>
+				</div>
+			<%
+		}
 		%>
+		
 		<div align=center>
+		<form action="addObstetricsVisit.jsp" method="post" id="addObVisitForm"><input type="hidden"
+			name="formIsFilled" value="true"> <br />
+			<div style="width: 50%; text-align:center;">Automatically Add New Obstetrics Office Visit</div>
+			<br />
+			<input type="hidden" name="patientID" value = "<%=pid%>">
+			<input type="hidden" name="scheduledDate" value="<%=scheduledDate%>">
+			<input type="hidden" name="weight" value="0">
+			<input type="hidden" name="bloodPressure" value="000/000">
+			<input type="hidden" name="FHR" value="0">
+			<input type="hidden" name="numChildren" value="<%=StringEscapeUtils.escapeHtml("" + (latestVisit.getNumChildren()))%>">
+			<input type="hidden" name="LLP" value="<%=latestVisit.getLLP()%>">
+			<input type="hidden" name="createdDate" value ="<%=dateFormat.format(now)%>">
+			<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Auto Add">
+		</form>
+		
 		<form action="addObstetricsVisit.jsp" method="post" id="addObVisitForm"><input type="hidden"
 			name="formIsFilled" value="true"> <br />
 			<div style="width: 50%; text-align:center;">Please Enter New Obstetrics Office Visit</div>
