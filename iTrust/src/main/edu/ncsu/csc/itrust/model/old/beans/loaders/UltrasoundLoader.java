@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.model.old.beans.loaders;
 
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,13 +38,9 @@ public class UltrasoundLoader implements BeanLoader<UltrasoundBean> {
 		ub.setRecordID(rs.getLong("ID"));
 		ub.setPatientID(rs.getLong("PatientID"));
 		ub.setCreated_on(rs.getDate("created_on"));
-		/* !Image Uploading Still Needs Refinement!
-		 * 
-		 * java.sql.Blob imageBlob = rs.getBlob("Image");
-		 * ub.setImageData(imageBlob.getBytes(1, (int) imageBlob.length()));
-		 * reference - https://stackoverflow.com/questions/2150265/retrieve-an-image-stored-as-blob-on-a-mysql-db
-		*/
-		ub.setImageData(rs.getBytes("Image"));
+		Blob imageBlob = rs.getBlob("Image");
+		ub.setInputStream(imageBlob.getBinaryStream(0, imageBlob.length()));
+		ub.setImageType(rs.getString("ImageType"));
 	}
 	
 	/**
@@ -74,14 +71,9 @@ public class UltrasoundLoader implements BeanLoader<UltrasoundBean> {
 			//TODO
 		}
 		ps.setDate(i++, date);
-		ps.setBytes(i++, ub.getImageData()); //NOT FINAL
-		/*    
-		 *    // obtains the upload file part in this multipart request
-         *    Part filePart = request.getPart("photo");
-         *	  // obtains input stream of the upload file
-         *    inputStream = filePart.getInputStream();
-         *    ps.setBlob(i++, inputStream);
-		 * */
+		ps.setBlob(i++, ub.getInputStream());
+		ps.setString(i++, ub.getImageType());
+
 		return ps;
 	}
 

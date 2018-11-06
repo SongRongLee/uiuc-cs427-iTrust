@@ -20,8 +20,8 @@ public class UltrasoundBean implements Serializable, Comparable<UltrasoundBean> 
 	private long recordID = 0;
 	private long patientID = 0;
 	private Date createdOn;
-	private byte[] imageData;
 	private InputStream inputStream = null;
+	private String imageType = "";
 	private List<FetusBean> fetus;
 	
 	public long getRecordID() {
@@ -48,20 +48,19 @@ public class UltrasoundBean implements Serializable, Comparable<UltrasoundBean> 
 	public void setCreated_on(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-	
-	public byte[] getImageData() {
-		return imageData;
-	}
-	public void setImageData(byte[] imageData) {
-		this.imageData = imageData;
-	}
-	
-	// perhaps needed for image upload
+		
 	public InputStream getInputStream() {
 		return inputStream;
 	}
 	public void setInputStream(InputStream inputStream) {
 		this.inputStream = inputStream;
+	}
+	
+	public String getImageType() {
+		return imageType;
+	}
+	public void setImageType(String imageType) {
+		this.imageType = imageType;
 	}
 	
 	public List<FetusBean> getFetus() {
@@ -70,6 +69,7 @@ public class UltrasoundBean implements Serializable, Comparable<UltrasoundBean> 
 	public void setFetus(List<FetusBean> fetus) {
 		this.fetus = fetus;
 	}
+	
 	@Override
 	public int compareTo(UltrasoundBean ub) {
 		return (int)(ub.recordID - this.recordID);
