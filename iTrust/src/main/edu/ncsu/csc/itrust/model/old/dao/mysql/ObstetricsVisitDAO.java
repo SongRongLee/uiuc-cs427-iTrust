@@ -88,6 +88,29 @@ public class ObstetricsVisitDAO {
 	}
 	
 	/**
+	 * Lists every obstetrics visit record for a certain patient sorted by scheduled date
+	 * 
+	 * @return A java.util.List of ObstetricsVisit Beans representing the records.
+	 * @throws DBException
+	 */
+	public List<ObstetricsVisitBean> getSortedObstetricsVisits(long pid) throws DBException {
+		try (
+				Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM obstetricsVisit WHERE patientID = ? "
+						+ "ORDER BY scheduledDate DESC");
+				) {
+			ps.setLong(1, pid);
+			ResultSet rs = ps.executeQuery();
+			List<ObstetricsVisitBean> obstetricsVisits = obstetricsVisitLoader.loadList(rs);
+			rs.close();
+					
+			return obstetricsVisits;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	/**
 	 * Add a obstetrics visit
 	 * 
 	 * @param newVisit

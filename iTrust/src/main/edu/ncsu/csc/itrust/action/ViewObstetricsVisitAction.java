@@ -70,6 +70,17 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 	}
 	
 	/**
+	 * Return a list of obstetrics visits that pid represents sorted by scheduled dates
+	 * 
+	 * @param pid The id of the patient we are looking for.
+	 * @return a list of ObstetricsVisitBean
+	 * @throws ITrustException
+	 */
+	public List<ObstetricsVisitBean> getSortedObstetricsVisits(long pid) throws ITrustException {
+		return obstetricsVisitDAO.getSortedObstetricsVisits(pid);
+	}
+	
+	/**
 	 * Return an obstetrics vsiit that vid represents
 	 * 
 	 * @param vid The id of the obstetrics visit we are looking for.
