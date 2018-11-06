@@ -540,3 +540,28 @@ CREATE TABLE obstetricsVisit (
   LLP BOOLEAN NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
+
+CREATE TABLE ultrasoundrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  created_on date NOT NULL,
+  Image BLOB NOT NULL,
+  ImageType varchar(15) NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE fetusrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  UltrasoundID int(11) NOT NULL,
+  created_on date NOT NULL,
+  CRL int(11) NOT NULL,
+  BPD int(11) NOT NULL,
+  HC int(11) NOT NULL,
+  FL int(11) NOT NULL,
+  OFD int(11) NOT NULL,
+  AC int(11) NOT NULL,
+  HL int(11) NOT NULL,
+  EFW int(11) NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;

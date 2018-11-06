@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.model.old.dao.mysql;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,16 +63,15 @@ public class UltrasoundDAO {
 			ResultSet rs = ps.executeQuery();
 			UltrasoundBean ultrasound = rs.next() ? ultrasoundLoader.loadSingle(rs) : null;
 			rs.close();
-			long pid = ultrasound.getPatientID();
 			
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM fetusrecords WHERE PatientID = ? ORDER BY created_on DESC");
-			ps1.setLong(1, pid);
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM fetusrecords WHERE UltrasoundID = ? ORDER BY created_on DESC");
+			ps1.setLong(1, uid);
 			ResultSet rs1 = ps1.executeQuery();
 			List<FetusBean> fetus = fetusLoader.loadList(rs1);
 			rs1.close();
 			
 			ultrasound.setFetus(fetus);
-			
+		
 			return ultrasound;
 		} catch (SQLException e) {
 			throw new DBException(e);
@@ -109,6 +109,58 @@ public class UltrasoundDAO {
 			throw new DBException(e);
 		}
 	}
+	
+	/**
+	 * Returns the ImageData
+	 * 
+	 * @param uid
+	 * @return ImageData
+	 * @throws DBException
+	 */
+	public InputStream getImageData(long uid) throws DBException {
+		try (
+				Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM ultrasoundrecords WHERE ID = ?");
+				) {
+
+			ps.setLong(1, uid);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			InputStream sImage;
+			sImage = rs.getBinaryStream("Image");
+			rs.close();
+			return sImage;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	/**
+	 * Returns the ImageType
+	 * 
+	 * @param uid
+	 * @return Type of Image
+	 * @throws DBException
+	 */
+	public String getImageType(long uid) throws DBException {
+		try (
+				Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM ultrasoundrecords WHERE ID = ?");
+				) {
+
+			ps.setLong(1, uid);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			String imageType;
+			imageType = rs.getString("ImageType");
+			rs.close();
+			return imageType;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	
 	/**
 	 * Lists every fetus record for a certain patient
 	 * 
@@ -141,8 +193,8 @@ public class UltrasoundDAO {
 	public long addRecord(UltrasoundBean newRecord) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = ultrasoundLoader.loadParameters(conn.prepareStatement(
-						"INSERT INTO ultrasoundrecords (PatientID, created_on, Image)"
-								+ "VALUES (?, ?, ?)"),
+						"INSERT INTO ultrasoundrecords (PatientID, created_on, Image, ImageType)"
+								+ "VALUES (?, ?, ?, ?)"),
 						newRecord)) {
 			stmt.executeUpdate();
 			return DBUtil.getLastInsert(conn);

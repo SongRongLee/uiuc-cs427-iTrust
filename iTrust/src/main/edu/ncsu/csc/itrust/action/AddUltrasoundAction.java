@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.action;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,16 +14,13 @@ import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.UltrasoundBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.FetusBean;
-import edu.ncsu.csc.itrust.model.old.beans.forms.ObstetricsForm;
 import edu.ncsu.csc.itrust.model.old.beans.forms.UltrasoundForm;
 import edu.ncsu.csc.itrust.model.old.beans.forms.FetusForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
-import edu.ncsu.csc.itrust.model.old.validate.ObstetricsValidator;
 import edu.ncsu.csc.itrust.model.old.validate.FetusValidator;
 import edu.ncsu.csc.itrust.model.old.validate.UltrasoundValidator;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.UltrasoundDAO;
 
 /**
@@ -71,14 +69,17 @@ public class AddUltrasoundAction extends PatientBaseAction {
 	 * @throws ITrustException
 	 * @throws FormValidationException
 	 */
-	public long addRecord(UltrasoundBean newRecord, String PatientID, String created_on, String image) throws ITrustException, FormValidationException {
+	public long addRecord(UltrasoundBean newRecord, String PatientID, InputStream image, String imageType, String created_on) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		UltrasoundForm form = new UltrasoundForm(PatientID, created_on, image);
+		UltrasoundForm form = new UltrasoundForm(PatientID, created_on);
 		// yet to validate image: jpg png
+		// thinking it should be done in .jsp
 		uValidator.validate(form);
 		
 		// set UltrasoundBean manually after validation
-		newRecord.setPatientID(Integer.parseInt(PatientID));
+		newRecord.setPatientID(Long.parseLong(PatientID));
+		newRecord.setInputStream(image);
+		newRecord.setImageType(imageType);
 		try {
 			newRecord.setCreated_on(sdf.parse(created_on));
 		} catch (ParseException e) {
