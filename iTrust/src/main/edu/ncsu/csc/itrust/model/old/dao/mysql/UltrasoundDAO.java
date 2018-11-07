@@ -213,7 +213,7 @@ public class UltrasoundDAO {
 	public long addFetus(FetusBean newFetus) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = fetusLoader.loadParameters(conn.prepareStatement(
-						"INSERT INTO pregnancyrecords (PatientID, UltrasoundID, created_on, CRL, BPD, HC, FL, OFD, AC, HL, EFW)"
+						"INSERT INTO fetusrecords (PatientID, UltrasoundID, created_on, CRL, BPD, HC, FL, OFD, AC, HL, EFW)"
 								+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
 						newFetus)) {
 			stmt.executeUpdate();

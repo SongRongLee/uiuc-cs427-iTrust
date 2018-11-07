@@ -39,7 +39,7 @@ public class UltrasoundLoader implements BeanLoader<UltrasoundBean> {
 		ub.setPatientID(rs.getLong("PatientID"));
 		ub.setCreated_on(rs.getDate("created_on"));
 		Blob imageBlob = rs.getBlob("Image");
-		ub.setInputStream(imageBlob.getBinaryStream(0, imageBlob.length()));
+		ub.setInputStream(imageBlob.getBinaryStream(1, imageBlob.length()));
 		ub.setImageType(rs.getString("ImageType"));
 	}
 	

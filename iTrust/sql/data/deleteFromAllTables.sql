@@ -91,3 +91,6 @@ DELETE FROM obstetricsrecords;
 DELETE FROM pregnancyrecords;
 DELETE FROM obstetricsvisit;
 ALTER TABLE obstetricsvisit AUTO_INCREMENT = 0;
+
+DELETE FROM ultrasoundrecords;
+DELETE FROM fetusrecords;
