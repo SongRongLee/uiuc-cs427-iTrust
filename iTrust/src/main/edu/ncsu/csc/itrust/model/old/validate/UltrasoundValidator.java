@@ -22,7 +22,7 @@ public class UltrasoundValidator extends BeanValidator<UltrasoundForm> {
 		
 		errorList.addIfNotNull(checkFormat("PatientID", newForm.getPatientID(), ValidationFormat.MID, false));
 		errorList.addIfNotNull(checkFormat("created_on", newForm.getCreated_on(), ValidationFormat.DATETIMESTAMP, false));
-		// Image is yet to validate
+		errorList.addIfNotNull(checkFormat("ImageType", newForm.getImageType(), ValidationFormat.IMAGETYPE, false));
 		
 		
 		if (errorList.hasErrors())

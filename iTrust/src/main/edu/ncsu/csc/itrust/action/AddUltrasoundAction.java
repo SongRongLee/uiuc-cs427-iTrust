@@ -71,9 +71,7 @@ public class AddUltrasoundAction extends PatientBaseAction {
 	 */
 	public long addRecord(UltrasoundBean newRecord, String PatientID, InputStream image, String imageType, String created_on) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		UltrasoundForm form = new UltrasoundForm(PatientID, created_on);
-		// yet to validate image: jpg png
-		// thinking it should be done in .jsp
+		UltrasoundForm form = new UltrasoundForm(PatientID, created_on, imageType);
 		uValidator.validate(form);
 		
 		// set UltrasoundBean manually after validation
