@@ -85,6 +85,23 @@ if (specialty != null && specialty.equals("OB/GYN")){
 			latestVisit = visits.get(0);
 			nextAction = new GetNextVisitAction();
 			scheduledDate = nextAction.GetNextDateString(latestVisit);
+			%>	<div align="center">
+				<form action="addObstetricsVisit.jsp" method="post" id="addObVisitForm"><input type="hidden"
+					name="formIsFilled" value="true"> <br />
+					<div style="width: 50%; text-align:center;">Automatically Add New Obstetrics Office Visit</div>
+					<br />
+					<input type="hidden" name="patientID" value = "<%=pid%>">
+					<input type="hidden" name="scheduledDate" value="<%=scheduledDate%>">
+					<input type="hidden" name="weight" value="0">
+					<input type="hidden" name="bloodPressure" value="000/000">
+					<input type="hidden" name="FHR" value="0">
+					<input type="hidden" name="numChildren" value="<%=StringEscapeUtils.escapeHtml("" + (latestVisit.getNumChildren()))%>">
+					<input type="hidden" name="LLP" value="<%=latestVisit.getLLP()%>">
+					<input type="hidden" name="createdDate" value ="<%=dateFormat.format(now)%>">
+					<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Auto Add">
+				</form>
+				</div>
+			<%
 		}catch(Exception e){
 			%>
 				<div align=center>
@@ -95,20 +112,6 @@ if (specialty != null && specialty.equals("OB/GYN")){
 		%>
 		
 		<div align=center>
-		<form action="addObstetricsVisit.jsp" method="post" id="addObVisitForm"><input type="hidden"
-			name="formIsFilled" value="true"> <br />
-			<div style="width: 50%; text-align:center;">Automatically Add New Obstetrics Office Visit</div>
-			<br />
-			<input type="hidden" name="patientID" value = "<%=pid%>">
-			<input type="hidden" name="scheduledDate" value="<%=scheduledDate%>">
-			<input type="hidden" name="weight" value="0">
-			<input type="hidden" name="bloodPressure" value="000/000">
-			<input type="hidden" name="FHR" value="0">
-			<input type="hidden" name="numChildren" value="<%=StringEscapeUtils.escapeHtml("" + (latestVisit.getNumChildren()))%>">
-			<input type="hidden" name="LLP" value="<%=latestVisit.getLLP()%>">
-			<input type="hidden" name="createdDate" value ="<%=dateFormat.format(now)%>">
-			<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Auto Add">
-		</form>
 		
 		<form action="addObstetricsVisit.jsp" method="post" id="addObVisitForm"><input type="hidden"
 			name="formIsFilled" value="true"> <br />
