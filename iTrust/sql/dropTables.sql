@@ -53,3 +53,6 @@ DROP TABLE IF EXISTS WardRooms;
 DROP TABLE IF EXISTS Wards;
 DROP TABLE IF EXISTS obstetricsrecords;
 DROP TABLE IF EXISTS pregnancyrecords;
+DROP TABLE IF EXISTS obstetricsVisit;
+DROP TABLE IF EXISTS fetusrecords;
+DROP TABLE IF EXISTS ultrasoundrecords;

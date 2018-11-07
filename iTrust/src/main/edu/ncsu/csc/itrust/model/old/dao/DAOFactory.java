@@ -173,6 +173,14 @@ public class DAOFactory {
 
 	/**
 	 * 
+	 * @return this DAOFactory's ObstetricsDAO
+	 */
+	public ObstetricsVisitDAO getObstetricsVisitDAO() {
+		return new ObstetricsVisitDAO(this);
+	}
+
+	/**
+	 * 
 	 * @return this DAOFactory's PersonnelDAO
 	 */
 	public PersonnelDAO getPersonnelDAO() {
@@ -238,6 +246,10 @@ public class DAOFactory {
 	 */
 	public ReviewsDAO getReviewsDAO() {
 		return new ReviewsDAO(this);
+	}
+
+	public UltrasoundDAO getUltrasoundDAO() {
+		return new UltrasoundDAO(this);
 	}
 	
 
