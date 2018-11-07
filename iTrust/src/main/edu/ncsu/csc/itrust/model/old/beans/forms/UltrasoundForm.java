@@ -4,10 +4,12 @@ public class UltrasoundForm{
 	
 	private String patientID = "";
 	private String created_on = "";
+	private String imageType = "";
 	
-	public UltrasoundForm(String patientID, String created_on){
+	public UltrasoundForm(String patientID, String created_on, String imageType){
 		this.patientID = patientID;
 		this.created_on = created_on;
+		this.imageType = imageType;
 	};
 	
 	public String getPatientID(){
@@ -22,6 +24,13 @@ public class UltrasoundForm{
 	}
 	public void setCreated_on(String created_on){
 		this.created_on = created_on;
+	}
+	
+	public String getImageType(){
+		return imageType;
+	}
+	public void setImageType(String imageType){
+		this.imageType = imageType;
 	}
 	
 }
