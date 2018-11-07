@@ -44,9 +44,9 @@ public class FetusLoader implements BeanLoader<FetusBean> {
 		fb.setHC(rs.getFloat("HC"));
 		fb.setFL(rs.getFloat("FL"));
 		fb.setOFD(rs.getFloat("OFD"));
-		fb.setOFD(rs.getFloat("AC"));
-		fb.setOFD(rs.getFloat("HL"));
-		fb.setOFD(rs.getFloat("EFW"));
+		fb.setAC(rs.getFloat("AC"));
+		fb.setHL(rs.getFloat("HL"));
+		fb.setEFW(rs.getFloat("EFW"));
 	}
 	
 	/**
