@@ -27,11 +27,12 @@ public class UltrasoundValidatorTest extends TestCase {
 	}
 		
 	public void testSubmitUltrasound() throws Exception {
-		UltrasoundForm u = new UltrasoundForm("","");
+		UltrasoundForm u = new UltrasoundForm("","","");
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
 		u.setPatientID("1");
 		u.setCreated_on(dateFormat.format(new Date()));
+		u.setImageType("image/png");
 		Exception ex = null;
 		try {
             validator.validate(u);
@@ -42,7 +43,7 @@ public class UltrasoundValidatorTest extends TestCase {
 	}
 	
 	public void testSubmitUltrasoundAllErrors() throws Exception {
-		UltrasoundForm u = new UltrasoundForm("someinvalid","notdate");
+		UltrasoundForm u = new UltrasoundForm("someinvalid","notdate","image/png");
 		Exception ex = null;
 		try {
             validator.validate(u);
