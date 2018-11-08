@@ -55,8 +55,26 @@ if (specialty != null && specialty.equals("OB/GYN")){
 		<%
 		boolean formIsFilled = request.getParameter("formIsFilled") != null
 		&& request.getParameter("formIsFilled").equals("true");
-
-		if (formIsFilled) {
+		boolean autoAdd = request.getParameter("autoAdd") != null 
+				&& request.getParameter("autoAdd").equals("true");
+		if (formIsFilled && autoAdd){
+			/* Create new ObstetricsVisitBean automatically*/
+			ObstetricsVisitBean newVisit = new ObstetricsVisitBean();
+			try{
+				action.addVisit(newVisit, request.getParameter("patientID"), request.getParameter("scheduledDate"), request.getParameter("createdDate"), 
+						request.getParameter("weight"), request.getParameter("bloodPressure"), request.getParameter("FHR"), 
+								request.getParameter("numChildren"), request.getParameter("LLP"));
+				loggingAction.logEvent(TransactionType.SCHEDULE_NEXT_OFFICE_VISIT, loggedInMID.longValue(), pid, Long.toString(newVisit.getID()));
+				response.sendRedirect("viewObstetricsVisit.jsp");
+			} catch(FormValidationException e){
+			%>
+				<div align=center>
+					<span class="iTrustError"><%=StringEscapeUtils.escapeHtml(e.getMessage()) %></span>
+				</div>
+			<%
+			}	
+		}
+		else if (formIsFilled) {
 			
 			/* Create new ObstetricsVisitBean manually */
 			ObstetricsVisitBean newVisit = new ObstetricsVisitBean();
@@ -90,6 +108,7 @@ if (specialty != null && specialty.equals("OB/GYN")){
 					name="formIsFilled" value="true"> <br />
 					<div style="width: 50%; text-align:center;">Automatically Add New Obstetrics Office Visit</div>
 					<br />
+					<input type="hidden" name="autoAdd" value="true">
 					<input type="hidden" name="patientID" value = "<%=pid%>">
 					<input type="hidden" name="scheduledDate" value="<%=scheduledDate%>">
 					<input type="hidden" name="weight" value="0">

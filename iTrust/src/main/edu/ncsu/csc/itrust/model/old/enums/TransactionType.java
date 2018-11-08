@@ -510,6 +510,8 @@ public enum TransactionType {
 	VIEW_OBSTETRIC_OFFICE_VISIT(9401, "View Obstetric Office Visit", "View Obstetric Office Visit", true),
 	/**EDIT_OBSTETRIC_OFFICE_VISIT**/
 	EDIT_OBSTETRIC_OFFICE_VISIT(9402, "Edit Obstetric Office Visit", "Edit Obstetric Office Visit", true),
+	/**SCHEDULE_NEXT_OFFICE_VISIT**/
+	SCHEDULE_NEXT_OFFICE_VISIT(9404, "Schedule Next Office Visit", "Schedule Next Office Visit", true),
 	;
 	/**
 	 * This string is used in the SQL statement associated with pulling events for
