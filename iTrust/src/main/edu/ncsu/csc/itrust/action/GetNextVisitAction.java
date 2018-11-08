@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TimeZone;
 
 import com.google.gson.*;
 
@@ -228,6 +229,13 @@ public class GetNextVisitAction {
 		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(d);
 	}
 	
+	public String TimestampToGooCal(Timestamp ts){
+		Date d = new Date(ts.getTime());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+		return sdf.format(d);
+	}
+	
 	public Timestamp RFC3399ToTimestamp(String rts){
 		Timestamp ts = null;
 		try{
@@ -275,6 +283,25 @@ public class GetNextVisitAction {
 		}
 		
 		return listSchedule;
+	}
+	
+	public String getGoogleCalendarLink(Timestamp scheduledDate){
+		String link = "https://calendar.google.com/calendar/r/eventedit?";
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(scheduledDate.getTime());
+		cal.add(Calendar.MINUTE, 30);
+		Timestamp endTime = new Timestamp(cal.getTime().getTime());
+		
+		String startTimeString = TimestampToGooCal(scheduledDate);
+		String endTimeString = TimestampToGooCal(endTime);
+		
+		link = link + "&" +
+				"dates=" + startTimeString + "%2F" + endTimeString + "&" +
+				"text=" + "iTrust Office Visit&" +
+				"location=" + "iTrust Hospital&" +
+				"detail=" + "iTrust Office Visit";
+		
+		return link;
 	}
 	
 }

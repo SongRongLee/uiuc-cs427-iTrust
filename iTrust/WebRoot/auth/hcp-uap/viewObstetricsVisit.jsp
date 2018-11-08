@@ -3,6 +3,7 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@page import="edu.ncsu.csc.itrust.action.GetNextVisitAction"%>
 <%@page import="edu.ncsu.csc.itrust.action.ViewObstetricsVisitAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.ReportRequestBean"%>
 <%@page import="edu.ncsu.csc.itrust.action.ViewMyReportRequestsAction"%>
@@ -45,7 +46,7 @@ if (action.isObstericsPatient(pid)){
 	<br /><br />
 	<table class="fTable" align="center" id="OBlist">
 		<tr>
-			<th colspan="10">Obstetrics Office Visits</th>
+			<th colspan="11">Obstetrics Office Visits</th>
 		</tr>
 		<tr class="subHeader">
 	    		<td>ID</td>
@@ -61,12 +62,14 @@ if (action.isObstericsPatient(pid)){
 	  			if (specialty != null && specialty.equals("OB/GYN")){
 					%>
 					<td>Action</td>
+					<td>Google Calendar</td>
 					<%
 				}
 	  			%>
 		</tr>
 		<% 
 		List<ObstetricsVisitBean> visits = action.getAllObstetricsVisits(pid);
+		GetNextVisitAction nvAction = new GetNextVisitAction();
 		int index = 0;
 		for (ObstetricsVisitBean obvisit : visits) {
 			loggingAction.logEvent(TransactionType.VIEW_OBSTETRIC_OFFICE_VISIT,
@@ -87,6 +90,9 @@ if (action.isObstericsPatient(pid)){
 					%>
 					<td><a id="editButton"
 					href="editObstetricsVisit.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (obvisit.getID()))%>">Edit</a></td>
+					<td>
+						<a id="editButton" href="<%=nvAction.getGoogleCalendarLink(obvisit.getScheduledDate())%>">Add</a>
+					</td>
 					<%
 				}
 	  			%>
