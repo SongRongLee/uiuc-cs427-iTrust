@@ -43,7 +43,17 @@ String specialty = personnel.getSpecialty();
 /* Check if the patient is current obstetrics */
 if (action.isObstericsPatient(pid)){
 	%>
-	<br /><br />
+	<br />
+	<%
+	if (action.needRHShot(pid)){
+		%>
+		<div align=center>
+			<span class="iTrustError">Notice : The patient should be given an RH immune globulin shot if they have not already.</span>
+		</div>
+		<%
+	}
+	%>
+	<br />
 	<table class="fTable" align="center" id="OBlist">
 		<tr>
 			<th colspan="11">Obstetrics Office Visits</th>
