@@ -17,6 +17,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
+import edu.ncsu.csc.itrust.model.old.enums.BloodType;
 
 
 /**
@@ -124,4 +125,28 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 		}
 		return false;
 	}
+	
+	/**
+	 * Return true if the patient meets the condition for RH shot
+	 * 
+	 * @param pid - the id of the patient we are checking.
+	 * @return a Boolean
+	 * @throws ITrustException
+	 */
+	public Boolean needRHShot(long pid) throws ITrustException {
+		PatientBean pb = patientDAO.getPatient(pid);
+		String bloodType = pb.getBloodType().getName();
+		
+		ObstetricsVisitBean currentOVB = obstetricsVisitDAO.getSortedObstetricsVisits(pid).get(0);
+		
+		// checking of RH shot history needs to wait for UC96 [S4]
+		// as of now (UC94), assume patient never receives one
+		// will come back after UC 96
+		if (bloodType.charAt(bloodType.length()-1) == '-' && Integer.parseInt(currentOVB.getNumWeeks()) > 28)
+			return true;
+		
+		return false;
+	}
+	
+	
 }
