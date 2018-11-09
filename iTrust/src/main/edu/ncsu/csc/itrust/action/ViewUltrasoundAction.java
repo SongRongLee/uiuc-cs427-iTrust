@@ -1,15 +1,20 @@
 package edu.ncsu.csc.itrust.action;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.UltrasoundBean;
+import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.UltrasoundDAO;
 
 
@@ -20,6 +25,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.UltrasoundDAO;
  */
 public class ViewUltrasoundAction extends PatientBaseAction {
 	private PatientDAO patientDAO;
+	private ObstetricsDAO obstetricsDAO;
 	private UltrasoundDAO ultrasoundDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
@@ -36,6 +42,7 @@ public class ViewUltrasoundAction extends PatientBaseAction {
 		super(factory, pidString);
 		this.patientDAO = factory.getPatientDAO();
 		factory.getAuthDAO();
+		this.obstetricsDAO = factory.getObstetricsDAO();
 		this.ultrasoundDAO = factory.getUltrasoundDAO();
 		this.loggedInMID = loggedInMID;
 	}
@@ -83,5 +90,39 @@ public class ViewUltrasoundAction extends PatientBaseAction {
 	 */
 	public UltrasoundBean getUltrasoundRecord(long uid) throws ITrustException {
 		return ultrasoundDAO.getUltrasound(uid);
+	}
+	
+	/**
+	 * Return a list of obstetrics record that pid represents
+	 * 
+	 * @param pid The id of the patient we are looking for.
+	 * @return a list of ObstetricsBean
+	 * @throws ITrustException
+	 */
+	public List<ObstetricsBean> getAllObstetrics(long pid) throws ITrustException {
+		return obstetricsDAO.getAllObstetrics(pid);
+	}
+	
+	/**
+	 * Return true if the patient is an obstetrics patient
+	 * 
+	 * @param pid The id of the patient we are checking.
+	 * @return a Boolean
+	 * @throws ITrustException
+	 */
+	public Boolean isObstericsPatient(long pid) throws ITrustException {
+		List<ObstetricsBean> oblist = getAllObstetrics(pid);
+		if (oblist.size() != 0){
+			
+			/* Get current date */
+			Date now = new Date();
+			
+			long diffInMillies = Math.abs(now.getTime() - oblist.get(0).getLMPAsDate().getTime());
+		    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+			if (((int)diff/7) < 49){
+				return true;
+			}
+		}
+		return false;
 	}
 }
