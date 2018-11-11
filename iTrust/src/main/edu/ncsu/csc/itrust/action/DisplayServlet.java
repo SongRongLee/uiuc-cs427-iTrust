@@ -67,6 +67,7 @@ public class DisplayServlet extends HttpServlet {
         	byte[] byteArray = new byte[1048576];
         	int size = 0;
         	response.reset();
+        	//System.out.printf(imageType);
         	response.setContentType(imageType);
         	while ((size = sImage.read(byteArray)) != -1 ) {
                 response.getOutputStream().

@@ -69,7 +69,7 @@
 	</tr>
 	--%>
 </table><br><br>
-<img src="displayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" height="150px" width="150px" alt="Oops... Where is the image?">	
+<img src="DisplayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" height="150px" width="150px" alt="Oops... Where is the image?">	
 <br>	
 <table class="fTable" align="center" id="ViewPreg">
 	<tr>
