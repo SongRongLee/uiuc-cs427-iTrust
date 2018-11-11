@@ -24,6 +24,7 @@ public class ChildbirthVisitBean implements Serializable, Comparable<ChildbirthV
 	private String drugs;
 	private Date scheduledDate;
 	private boolean preScheduled;
+	private List<DeliveryRecordBean> deliveryRecords;
 	
 	public long getVisitID() {
 		return visitID;
@@ -60,6 +61,12 @@ public class ChildbirthVisitBean implements Serializable, Comparable<ChildbirthV
 	}
 	public void setPreScheduled(boolean preScheduled) {
 		this.preScheduled = preScheduled;
+	}
+	public List<DeliveryRecordBean> getDeliveryRecord() {
+		return deliveryRecords;
+	}
+	public void setDeliveryRecord(List<DeliveryRecordBean> deliveryRecords) {
+		this.deliveryRecords = deliveryRecords;
 	}
 	@Override
 	public int compareTo(ChildbirthVisitBean o) {

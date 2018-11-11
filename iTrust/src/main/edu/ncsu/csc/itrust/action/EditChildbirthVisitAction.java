@@ -12,22 +12,26 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
+import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.forms.ChildbirthVisitForm;
+import edu.ncsu.csc.itrust.model.old.beans.forms.DeliveryRecordForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.validate.ChildbirthVisitValidator;
+import edu.ncsu.csc.itrust.model.old.validate.DeliveryRecordValidator;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ChildbirthVisitDAO;
 
 
 /**
- * Edit a patient's childbirth visit used by editObstetricsVisit.jsp
+ * Edit a patient's childbirth visit used by editChildbirthVisit.jsp
  * 
  * 
  */
 public class EditChildbirthVisitAction extends PatientBaseAction {
-	private ChildbirthVisitValidator validator = new ChildbirthVisitValidator();
+	private ChildbirthVisitValidator cValidator = new ChildbirthVisitValidator();
+	private DeliveryRecordValidator dValidator = new DeliveryRecordValidator();
 	private ChildbirthVisitDAO cbDAO;
 	private PatientDAO patientDAO;
 	private AuthDAO authDAO;
@@ -63,7 +67,7 @@ public class EditChildbirthVisitAction extends PatientBaseAction {
 			String drugs, String scheduledDate, String preScheduled) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		ChildbirthVisitForm form = new ChildbirthVisitForm(patientID, preferredChildbirthMethod, drugs, scheduledDate, preScheduled);
-		validator.validate(form);
+		cValidator.validate(form);
 		// set ObstetricsVisitBean manually after validation
 		newVisit.setVisitID(Integer.parseInt(visitID));
 		newVisit.setPatientID(Integer.parseInt(patientID));
@@ -77,5 +81,23 @@ public class EditChildbirthVisitAction extends PatientBaseAction {
 		newVisit.setPreScheduled(Boolean.parseBoolean(preScheduled));
 		
 		cbDAO.updateChildbirthVisit(newVisit);
+	}
+	
+	public void editDeliveryRecord(DeliveryRecordBean newRecord, String deliveryRecordID, String patientID, String childbirthVisitID, String deliveryDateTime, String deliveryMethod) throws ITrustException, FormValidationException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		DeliveryRecordForm form = new DeliveryRecordForm(patientID, childbirthVisitID, deliveryDateTime, deliveryMethod);
+		dValidator.validate(form);
+		// set DeliveryRecordBean manually after validation
+		newRecord.setID(Integer.parseInt(deliveryRecordID));
+		newRecord.setPatientID(Integer.parseInt(patientID));
+		newRecord.setChildbirthVisitID(Integer.parseInt(childbirthVisitID));
+		try {
+			newRecord.setDeliveryDateTime(sdf.parse(deliveryDateTime));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		newRecord.setDeliveryMethod(deliveryMethod);
+		
+		cbDAO.updateDeliveryRecord(newRecord);
 	}
 }

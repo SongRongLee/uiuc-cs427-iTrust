@@ -12,13 +12,18 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
+import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
+import edu.ncsu.csc.itrust.model.old.beans.FetusBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.forms.ChildbirthVisitForm;
+import edu.ncsu.csc.itrust.model.old.beans.forms.DeliveryRecordForm;
+import edu.ncsu.csc.itrust.model.old.beans.forms.FetusForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ChildbirthVisitDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.validate.ChildbirthVisitValidator;
+import edu.ncsu.csc.itrust.model.old.validate.DeliveryRecordValidator;
 
 
 /**
@@ -28,6 +33,7 @@ import edu.ncsu.csc.itrust.model.old.validate.ChildbirthVisitValidator;
  */
 public class AddChildbirthVisitAction extends PatientBaseAction {
 	private ChildbirthVisitValidator validator = new ChildbirthVisitValidator();
+	private DeliveryRecordValidator dValidator = new DeliveryRecordValidator();
 	private PatientDAO patientDAO;
 	private ChildbirthVisitDAO childbirthDAO;
 	private AuthDAO authDAO;
@@ -81,5 +87,31 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 		newVisit.setPreScheduled(Boolean.parseBoolean(preScheduled));
 		
 		childbirthDAO.addChildbirthVisit(newVisit);
+	}
+	
+	/**
+	 * Update DeliveryRecordBean object and save its information
+	 * 
+	 * @param newRecord, patientID, ultrasoundID, created_on, CRL, BPD, HC, FL, OFD, AC, HL, EFW
+	 * @throws ITrustException
+	 * @throws FormValidationException
+	 */
+	public long addDelivery(DeliveryRecordBean newRecord, String patientID, String childbirthVisitID, String deliveryDateTime, String deliveryMethod) throws ITrustException, FormValidationException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		DeliveryRecordForm form = new DeliveryRecordForm(patientID, childbirthVisitID, deliveryDateTime, deliveryMethod);
+		dValidator.validate(form);
+		
+		// set FetusBean manually after validation
+		newRecord.setPatientID(Long.parseLong(patientID));
+		newRecord.setChildbirthVisitID(Long.parseLong(childbirthVisitID));
+		try {
+			newRecord.setDeliveryDateTime(sdf.parse(deliveryDateTime));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		newRecord.setDeliveryMethod(deliveryMethod);
+				
+		return childbirthDAO.addDeliveryRecord(newRecord);
 	}
 }

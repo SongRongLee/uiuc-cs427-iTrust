@@ -9,7 +9,10 @@ import java.util.List;
 import edu.ncsu.csc.itrust.DBUtil;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
+import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
+import edu.ncsu.csc.itrust.model.old.beans.FetusBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.ChildbirthVisitLoader;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.DeliveryRecordLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
 /**
@@ -27,7 +30,8 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
  */
 public class ChildbirthVisitDAO {
 	private DAOFactory factory;
-	private ChildbirthVisitLoader loader;
+	private ChildbirthVisitLoader childbirthVisitLoader;
+	private DeliveryRecordLoader deliveryRecordLoader;
 
 	/**
 	 * The typical constructor.
@@ -38,11 +42,12 @@ public class ChildbirthVisitDAO {
 	 */
 	public ChildbirthVisitDAO(DAOFactory factory) {
 		this.factory = factory;
-		this.loader = new ChildbirthVisitLoader();
+		this.childbirthVisitLoader = new ChildbirthVisitLoader();
+		this.deliveryRecordLoader = new DeliveryRecordLoader();
 	}
 
 	/**
-	 * Returns the childbirth visit information for a given ID
+	 * Returns the childbirth visit and the delivery record information for a given ID
 	 * 
 	 * @param vid
 	 *            The childbirth visit ID of the childbirth visit record to retrieve.
@@ -55,8 +60,16 @@ public class ChildbirthVisitDAO {
 				) {
 			ps.setLong(1, vid);
 			ResultSet rs = ps.executeQuery();
-			ChildbirthVisitBean cbVisit = rs.next() ? loader.loadSingle(rs) : null;
+			ChildbirthVisitBean cbVisit = rs.next() ? childbirthVisitLoader.loadSingle(rs) : null;
 			rs.close();
+			
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE ChildbirthVisitID = ? ORDER BY created_on DESC");
+			ps1.setLong(1, vid);
+			ResultSet rs1 = ps1.executeQuery();
+			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs1);
+			rs1.close();
+			
+			cbVisit.setDeliveryRecord(deliveryRecords);
 			
 			return cbVisit;
 		} catch (SQLException e) {
@@ -78,10 +91,41 @@ public class ChildbirthVisitDAO {
 				) {
 			ps.setLong(1, pid);
 			ResultSet rs = ps.executeQuery();
-			List<ChildbirthVisitBean> cbVisits = loader.loadList(rs);
+			List<ChildbirthVisitBean> cbVisits = childbirthVisitLoader.loadList(rs);
 			rs.close();
+			
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY created_on DESC");
+			ps1.setLong(1, pid);
+			ResultSet rs1 = ps1.executeQuery();
+			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs1);
+			rs1.close();
+			for (int i = 0; i < cbVisits.size(); i++) {
+				cbVisits.get(i).setDeliveryRecord(deliveryRecords);
+			}
 					
 			return cbVisits;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	/**
+	 * Lists every delivery record for a certain patient
+	 * 
+	 * @return A java.util.List of FetusBean representing the records.
+	 * @throws DBException
+	 */
+	public List<DeliveryRecordBean> getAllDeliveryRecord(long pid) throws DBException {
+		try (
+				Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY created_on DESC");
+				) {
+			ps.setLong(1, pid);
+			ResultSet rs = ps.executeQuery();
+			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs);
+			rs.close();
+			
+			return deliveryRecords;
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
@@ -96,11 +140,30 @@ public class ChildbirthVisitDAO {
 	 */
 	public void addChildbirthVisit(ChildbirthVisitBean newVisit) throws DBException {
 		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = loader.loadParameters(conn.prepareStatement(
+				PreparedStatement stmt = childbirthVisitLoader.loadParameters(conn.prepareStatement(
 						"INSERT INTO childbirthvisit (PatientID, PreferredChildbirthMethod, Drugs, "
 						+ "ScheduledDate, PreScheduled) VALUES (?, ?, ?, ?, ?)"),
 						newVisit)) {
 			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	/**
+	 * Add a delivery record
+	 * 
+	 * @param newRecord
+	 *            The fetus bean representing the new information
+	 * @throws DBException
+	 */
+	public long addDeliveryRecord(DeliveryRecordBean newDeliveryRecord) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = deliveryRecordLoader.loadParameters(conn.prepareStatement(
+						"INSERT INTO deliveryrecords (PatientID, ChildbirthVisitID, DeliveryDateTime, DeliveryMethod)"
+								+ " VALUES (?, ?, ?, ?)"), newDeliveryRecord)) {
+			stmt.executeUpdate();
+			return DBUtil.getLastInsert(conn);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
@@ -115,7 +178,7 @@ public class ChildbirthVisitDAO {
 	 */
 	public void updateChildbirthVisit(ChildbirthVisitBean newVisit) throws DBException {
 		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = loader.loadParametersUpdate(conn.prepareStatement(
+				PreparedStatement stmt = childbirthVisitLoader.loadParametersUpdate(conn.prepareStatement(
 						"UPDATE childbirthvisit SET PatientID=?, PreferredChildbirthMethod=?,"
 						+ "Drugs=?, ScheduledDate=?, PreScheduled=? WHERE ID=?"),
 						newVisit)) {
@@ -125,5 +188,22 @@ public class ChildbirthVisitDAO {
 		}
 	}
 	
-
+	/**
+	 * update a delivery record
+	 * 
+	 * @param newRecord
+	 *            The DeliveryRecord bean representing the new information
+	 * @throws DBException
+	 */
+	public void updateDeliveryRecord(DeliveryRecordBean DeliveryRecord) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = deliveryRecordLoader.loadParametersUpdate(conn.prepareStatement(
+						"UPDATE deliveryrecords SET PatientID=?, ChildbirthVisitID=?,"
+						+ "DeliveryDateTime=?, DeliveryMethod=? WHERE ID=?"),
+						DeliveryRecord)) {
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
 }
