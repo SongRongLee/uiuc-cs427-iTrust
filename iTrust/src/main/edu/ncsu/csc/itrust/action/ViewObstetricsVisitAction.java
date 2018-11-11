@@ -141,7 +141,7 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 		int numWeeks = 0;
 
 		if(OVBs != null && OVBs.size() > 0) {
-			numWeeks = Integer.parseInt(OVBs.get(0).getNumWeeks());
+			numWeeks = Integer.parseInt(OVBs.get(0).getNumWeeks().split("-")[0]);
 		}
 		
 		// checking of RH shot history needs to wait for UC96 [S4]
