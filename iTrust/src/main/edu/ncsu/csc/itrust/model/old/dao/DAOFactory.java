@@ -252,5 +252,9 @@ public class DAOFactory {
 		return new UltrasoundDAO(this);
 	}
 	
+	public ChildbirthVisitDAO getChildbirthVisitDAO() {
+		return new ChildbirthVisitDAO(this);
+	}
+	
 
 }

@@ -369,15 +369,12 @@
 	
 	<servlet>
 		<display-name>DisplayServlet</display-name>
-    	<servlet-name>DisplayServlet</servlet-name>
-    	<servlet-class>edu.ncsu.csc.itrust.action.DisplayServlet</servlet-class>
-    	<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DisplayServlet</servlet-name>
-		<url-pattern>/auth/hcp-uap/DisplayServlet</url-pattern>
-	</servlet-mapping>	
-	
-
+     	<servlet-name>DisplayServlet</servlet-name>
+     	<servlet-class>edu.ncsu.csc.itrust.action.DisplayServlet</servlet-class>
+     	<load-on-startup>1</load-on-startup>
+ 	</servlet>
+ 	<servlet-mapping>
+ 		<servlet-name>DisplayServlet</servlet-name>
+ 		<url-pattern>/auth/hcp-uap/DisplayServlet</url-pattern>
+ 	</servlet-mapping>	
 </web-app>
-

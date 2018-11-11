@@ -565,3 +565,22 @@ CREATE TABLE fetusrecords (
   EFW float NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
+
+CREATE TABLE childbirthvisit (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  PreferredChildbirthMethod VARCHAR(50) NOT NULL,
+  Drugs VARCHAR(1000) NOT NULL,
+  ScheduledDate date NOT NULL,
+  PreScheduled BOOLEAN NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE deliveryrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  ChildbirthVisitID int(11) NOT NULL,
+  DeliveryDateTime date NOT NULL,
+  DeliveryMethod VARCHAR(50) NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;

@@ -115,8 +115,14 @@ public enum ValidationFormat {
 	LDL_OV("^(?:[1-5]?[0-9]{1,2}|600)$", "integer between 0 and 600"),
 	HSS_OV("^[1-3]$","1, 2, or 3, representing household smoking status"),
 	PSS_OV("^[1-59]$","1-5 or 9, representing patient smoking status"),
-	IMAGETYPE("^(?:image/png|image/jpeg|application/pdf)$", "must be one of {image/png, image/jpeg, application/pdf}")
-	
+	IMAGETYPE("^(?:image/png|image/jpeg|application/pdf)$", "must be one of {image/png, image/jpeg, application/pdf}"),
+	PREFERREDCHILDBIRTHMETHOD("^(?:vaginal delivery|vaginal delivery|vacuum assist|"
+			+ "vaginal delivery forceps assist|caesarean section|miscarriage)$",
+			"must be one of vaginal delivery, vaginal delivery vacuum assist, "
+			+ "vaginal delivery forceps assist, caesarean section, miscarriage"),
+	BOOLEAN("^(?:TRUE|FALSE|true|false)", "must be some form of TRUE or FALSE"),
+	DRUGS("^(((\\w, \\w) (,(\\w, \\w) )*)|^$)", 
+			"must be a comma delimited list of non-empty 2 string tuples or the empty string")
 	;
 
 	private Pattern regex;

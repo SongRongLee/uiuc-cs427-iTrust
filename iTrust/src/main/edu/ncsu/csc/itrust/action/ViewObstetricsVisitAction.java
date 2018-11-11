@@ -139,7 +139,8 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 		
 		List<ObstetricsVisitBean> OVBs = obstetricsVisitDAO.getSortedObstetricsVisits(pid);
 		int numWeeks = 0;
-		if (OVBs != null && OVBs.size() > 0) {
+
+		if(OVBs != null && OVBs.size() > 0) {
 			numWeeks = Integer.parseInt(OVBs.get(0).getNumWeeks());
 		}
 		
