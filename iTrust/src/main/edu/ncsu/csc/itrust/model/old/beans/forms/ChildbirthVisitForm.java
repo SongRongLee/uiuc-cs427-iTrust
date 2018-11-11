@@ -9,6 +9,14 @@ public class ChildbirthVisitForm{
 	private String scheduledDate = "";
 	private String preScheduled = "";
 	
+	public ChildbirthVisitForm(String pID, String pCM, String drugs, String scheduledDate, String pS){
+		this.patientID = pID;
+		this.preferredChildbirthMethod = pCM;
+		this.drugs = drugs;
+		this.scheduledDate = scheduledDate;
+		this.preScheduled = pS;
+	}
+	
 	public String getVisitID() {
 		return visitID;
 	}
