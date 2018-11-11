@@ -93,4 +93,9 @@ DELETE FROM obstetricsvisit;
 ALTER TABLE obstetricsvisit AUTO_INCREMENT = 0;
 
 DELETE FROM ultrasoundrecords;
+ALTER TABLE ultrasoundrecords AUTO_INCREMENT = 0;
 DELETE FROM fetusrecords;
+ALTER TABLE fetusrecords AUTO_INCREMENT = 0;
+
+DELETE FROM childbirthvisit;
+ALTER TABLE childbirthvisit AUTO_INCREMENT = 0;

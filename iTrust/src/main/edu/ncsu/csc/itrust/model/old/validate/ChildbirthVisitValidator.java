@@ -23,7 +23,6 @@ public class ChildbirthVisitValidator extends BeanValidator<ChildbirthVisitForm>
 	public void validate(ChildbirthVisitForm newForm) throws FormValidationException{
 		ErrorList errorList = new ErrorList();
 		
-		errorList.addIfNotNull(checkFormat("visitID", newForm.getVisitID(), ValidationFormat.MID, false));
 		errorList.addIfNotNull(checkFormat("patientID", newForm.getPatientID(), ValidationFormat.MID, false));
 		errorList.addIfNotNull(checkFormat("preferredChildbirthMethod", newForm.getPreferredChildbirthMethod(), ValidationFormat.PREFERREDCHILDBIRTHMETHOD, false));
 		errorList.addIfNotNull(checkFormat("drugs", newForm.getDrugs(), ValidationFormat.DRUGS, false));

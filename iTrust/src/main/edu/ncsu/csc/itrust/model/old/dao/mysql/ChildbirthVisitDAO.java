@@ -63,7 +63,7 @@ public class ChildbirthVisitDAO {
 			ChildbirthVisitBean cbVisit = rs.next() ? childbirthVisitLoader.loadSingle(rs) : null;
 			rs.close();
 			
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE ChildbirthVisitID = ? ORDER BY created_on DESC");
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE ChildbirthVisitID = ? ORDER BY DeliveryDateTime DESC");
 			ps1.setLong(1, vid);
 			ResultSet rs1 = ps1.executeQuery();
 			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs1);
@@ -93,8 +93,7 @@ public class ChildbirthVisitDAO {
 			ResultSet rs = ps.executeQuery();
 			List<ChildbirthVisitBean> cbVisits = childbirthVisitLoader.loadList(rs);
 			rs.close();
-			
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY created_on DESC");
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY DeliveryDateTime DESC");
 			ps1.setLong(1, pid);
 			ResultSet rs1 = ps1.executeQuery();
 			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs1);
