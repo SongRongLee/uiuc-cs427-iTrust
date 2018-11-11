@@ -9,10 +9,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.ncsu.csc.itrust.action.AddObstetricsAction;
 import edu.ncsu.csc.itrust.action.AddUltrasoundAction;
 import edu.ncsu.csc.itrust.action.ViewUltrasoundAction;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.UltrasoundBean;
+import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
@@ -24,6 +26,7 @@ public class ViewUltrasoundActionTest {
 	private TestDataGenerator gen = new TestDataGenerator();
 	private ViewUltrasoundAction action;
 	private AddUltrasoundAction addAction;
+	private AddObstetricsAction addObAction;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -31,6 +34,7 @@ public class ViewUltrasoundActionTest {
 		gen.uc94();
 		action = new ViewUltrasoundAction(factory, 9000000003L, "1");
 		addAction = new AddUltrasoundAction(factory, 9000000003L, "1");
+		addObAction = new AddObstetricsAction(factory, 9000000003L, "1");
 	}
 	
 	@Test
@@ -98,6 +102,19 @@ public class ViewUltrasoundActionTest {
 		try {
 			long newOID = addAction.addRecord(o, "1", iS, "image/png", "10/20/2018 06:20");
 			assertEquals(action.getUltrasoundRecord(newOID).getRecordID(), newOID);
+		} catch (Exception e) {
+			fail();
+		}
+	}
+	
+	//Find patient that is obstetrics to improve code coverage
+	@Test
+	public void testIsObstetricsPatient(){
+		try{
+			ObstetricsBean o = new ObstetricsBean();
+			addObAction.addRecord(o, "1", "09/06/2018", "10/20/2018");
+			Boolean result = action.isObstericsPatient(1L);
+			assertEquals(true, result);
 		} catch (Exception e) {
 			fail();
 		}

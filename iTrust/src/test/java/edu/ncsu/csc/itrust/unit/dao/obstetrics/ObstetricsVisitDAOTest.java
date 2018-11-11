@@ -75,7 +75,7 @@ public class ObstetricsVisitDAOTest extends TestCase {
 		
 		obstetricsDAO.addObstetricsVisit(ob);
 		
-		List<ObstetricsVisitBean> obList = obstetricsDAO.getAllObstetricsVisits(1);
+		List<ObstetricsVisitBean> obList = obstetricsDAO.getSortedObstetricsVisits(1);
 		assertEquals(1, obList.size());
 		
 		ObstetricsVisitBean ob1 = new ObstetricsVisitBean();
