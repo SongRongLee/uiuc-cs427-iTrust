@@ -48,29 +48,32 @@
 	UltrasoundBean record = action.getUltrasoundRecord(uid);
 	
 %>
-<br /><br />
-<table class="fTable" align="center">
+<br />
+<table cellspacing=0 align=center cellpadding=0>
 	<tr>
-		<th colspan="10">Ultrasound Record</th>
-	</tr>
-	<tr class="subHeader">
-    	<td>ID</td>
-   		<td>Patient ID</td>
-  		<td>Record Created On</td>
+    	<td valign=top>
+    		<table class="fTable" align="center">
+				<tr>
+					<th colspan="10">Ultrasound Record</th>
+				</tr>
+				<tr class="subHeader">
+    				<td>ID</td>
+   					<td>Patient ID</td>
+  					<td>Record Created On</td>
+  				</tr>
+  				<tr>
+					<td><%=StringEscapeUtils.escapeHtml("" + (record.getRecordID()))%></td>
+					<td><%=StringEscapeUtils.escapeHtml("" + (pid))%></td>
+					<td><%=StringEscapeUtils.escapeHtml("" + (record.getCreated_on()))%></td>
+				</tr>
+			</table>
+    	</td>
+   		<td width="15px">&nbsp;</td>
+		<td valign=top>
+			<img src="DisplayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" height="150px" width="150px" alt="Oops... Where is the image?">
+  		</td>
   	</tr>
-  	<tr>
-		<td><%=StringEscapeUtils.escapeHtml("" + (record.getRecordID()))%></td>
-		<td><%=StringEscapeUtils.escapeHtml("" + (pid))%></td>
-		<td><%=StringEscapeUtils.escapeHtml("" + (record.getCreated_on()))%></td>
-	</tr>
-	<%-- 
-	<tr>
-		<img src="displayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" height="150px" width="150px" alt="ProfilePic">	
-	</tr>
-	--%>
-</table><br><br>
-<img src="DisplayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" height="150px" width="150px" alt="Oops... Where is the image?">	
-<br>	
+<br>
 <table class="fTable" align="center" id="ViewPreg">
 	<tr>
 		<th colspan="10">Fetus Information</th>
@@ -103,7 +106,7 @@
 	<%
 	}
 	%>
-		<div align=center>
+		<div align=center><br><br>
 			<a id="addButton"
 				href="addFetusInformation.jsp?patient=<%=StringEscapeUtils.escapeHtml("" + (1))%>&requestID=<%=StringEscapeUtils.escapeHtml("" + (record.getRecordID()))%>">Add Fetus Information</a></td>
 		</div>
