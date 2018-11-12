@@ -137,16 +137,20 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 		PatientBean pb = patientDAO.getPatient(pid);
 		String bloodType = pb.getBloodType().getName();
 		
-		ObstetricsVisitBean currentOVB = obstetricsVisitDAO.getSortedObstetricsVisits(pid).get(0);
+		List<ObstetricsVisitBean> OVBs = obstetricsVisitDAO.getSortedObstetricsVisits(pid);
+		int numWeeks = 0;
+
+		if(OVBs != null && OVBs.size() > 0) {
+			numWeeks = Integer.parseInt(OVBs.get(0).getNumWeeks().split("-")[0]);
+		}
 		
 		// checking of RH shot history needs to wait for UC96 [S4]
 		// as of now (UC94), assume patient never receives one
 		// will come back after UC 96
-		if (bloodType.charAt(bloodType.length()-1) == '-' && Integer.parseInt(currentOVB.getNumWeeks()) > 28)
+		if (bloodType.charAt(bloodType.length()-1) == '-' && numWeeks > 28)
 			return true;
 		
 		return false;
 	}
-	
 	
 }

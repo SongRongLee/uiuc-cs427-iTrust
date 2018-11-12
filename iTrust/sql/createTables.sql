@@ -545,7 +545,7 @@ CREATE TABLE ultrasoundrecords (
   ID int(11) NOT NULL AUTO_INCREMENT,
   PatientID int(11) NOT NULL,
   created_on date NOT NULL,
-  Image BLOB NOT NULL,
+  Image LONGBLOB,
   ImageType varchar(15) NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
@@ -555,13 +555,32 @@ CREATE TABLE fetusrecords (
   PatientID int(11) NOT NULL,
   UltrasoundID int(11) NOT NULL,
   created_on date NOT NULL,
-  CRL int(11) NOT NULL,
-  BPD int(11) NOT NULL,
-  HC int(11) NOT NULL,
-  FL int(11) NOT NULL,
-  OFD int(11) NOT NULL,
-  AC int(11) NOT NULL,
-  HL int(11) NOT NULL,
-  EFW int(11) NOT NULL,
+  CRL float NOT NULL,
+  BPD float NOT NULL,
+  HC float NOT NULL,
+  FL float NOT NULL,
+  OFD float NOT NULL,
+  AC float NOT NULL,
+  HL float NOT NULL,
+  EFW float NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE childbirthvisit (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  PreferredChildbirthMethod VARCHAR(50) NOT NULL,
+  Drugs VARCHAR(1000) NOT NULL,
+  ScheduledDate date NOT NULL,
+  PreScheduled BOOLEAN NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE deliveryrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  ChildbirthVisitID int(11) NOT NULL,
+  DeliveryDateTime date NOT NULL,
+  DeliveryMethod VARCHAR(50) NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
