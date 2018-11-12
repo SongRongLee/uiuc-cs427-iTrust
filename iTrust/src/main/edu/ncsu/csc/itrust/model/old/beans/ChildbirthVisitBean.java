@@ -53,6 +53,10 @@ public class ChildbirthVisitBean implements Serializable, Comparable<ChildbirthV
 	public Date getScheduledDate() {
 		return scheduledDate;
 	}
+	public String getScheduledDateString() {
+		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yyyy");
+		return f.format(scheduledDate);
+	}
 	public void setScheduledDate(Date scheduledDate) {
 		this.scheduledDate = scheduledDate;
 	}
