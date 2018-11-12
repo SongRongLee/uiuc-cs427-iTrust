@@ -19,6 +19,7 @@ import edu.ncsu.csc.itrust.action.EditChildbirthVisitAction;
 import edu.ncsu.csc.itrust.action.ViewObstetricsAction;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
+import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.PregnancyBean;
@@ -93,7 +94,23 @@ public class EditChildbirthVisitActionTest extends TestCase {
 	}
 	
 	public void testEditDeliveryRecord() throws Exception {
-		// Hi George!
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+		ChildbirthVisitDAO childbirthDAO = factory.getChildbirthVisitDAO();
+		DeliveryRecordBean drb = new DeliveryRecordBean();
+		drb.setPatientID(1);	
+		drb.setChildbirthVisitID(1);
+		drb.setDeliveryMethod("caesarean section");
+		drb.setDeliveryDateTime(new Timestamp(System.currentTimeMillis()));
+		
+		long newID = childbirthDAO.addDeliveryRecord(drb);
+		
+		action.editDeliveryRecord(drb, Long.toString(newID), "1", "1", 
+				sdf.format(new Timestamp(System.currentTimeMillis())), "vaginal delivery");
+		// self added getDeliveryRecord() in ChildbirthDAO
+		DeliveryRecordBean drb2 = childbirthDAO.getDeliveryRecord(newID);
+		assertEquals(drb2.getID(), newID);
+		assertEquals(drb2.getDeliveryMethod(), "vaginal delivery");
+		
 	}
 
 }

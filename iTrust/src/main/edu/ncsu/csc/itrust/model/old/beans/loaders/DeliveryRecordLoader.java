@@ -83,7 +83,6 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 	 */
 	public PreparedStatement loadParametersUpdate(PreparedStatement ps, DeliveryRecordBean d) throws SQLException {
 		int i = 1;
-		ps.setLong(i++, d.getID());
 		ps.setLong(i++, d.getPatientID());
 		ps.setLong(i++, d.getChildbirthVisitID());
 		Date date = null;
@@ -94,6 +93,7 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		}
 		ps.setDate(i++, date);
 		ps.setString(i++, d.getDeliveryMethod());
+		ps.setLong(i++, d.getID());
 		return ps;
 	}
 }
