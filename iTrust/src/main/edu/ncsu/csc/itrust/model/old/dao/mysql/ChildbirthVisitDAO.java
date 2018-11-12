@@ -137,13 +137,14 @@ public class ChildbirthVisitDAO {
 	 *            The ChildbirthVisit bean representing the new information
 	 * @throws DBException
 	 */
-	public void addChildbirthVisit(ChildbirthVisitBean newVisit) throws DBException {
+	public long addChildbirthVisit(ChildbirthVisitBean newVisit) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = childbirthVisitLoader.loadParameters(conn.prepareStatement(
 						"INSERT INTO childbirthvisit (PatientID, PreferredChildbirthMethod, Drugs, "
 						+ "ScheduledDate, PreScheduled) VALUES (?, ?, ?, ?, ?)"),
 						newVisit)) {
 			stmt.executeUpdate();
+			return DBUtil.getLastInsert(conn);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}

@@ -65,7 +65,7 @@ public class EditChildbirthVisitAction extends PatientBaseAction {
 	
 	public void editVisit(ChildbirthVisitBean newVisit, String visitID, String patientID, String preferredChildbirthMethod,
 			String drugs, String scheduledDate, String preScheduled) throws ITrustException, FormValidationException {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		ChildbirthVisitForm form = new ChildbirthVisitForm(patientID, preferredChildbirthMethod, drugs, scheduledDate, preScheduled);
 		cValidator.validate(form);
 		// set ObstetricsVisitBean manually after validation

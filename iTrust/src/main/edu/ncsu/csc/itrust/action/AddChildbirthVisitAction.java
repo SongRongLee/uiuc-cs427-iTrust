@@ -65,10 +65,21 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 		return patientDAO.getPatient(this.getPid());
 	}
 	
+	/**
+	 * Return a childbirth visit that vid represents
+	 * 
+	 * @param vid The id of the childbirth visit we are looking for.
+	 * @return a ChildbirthVisitBean
+	 * @throws ITrustException
+	 */
+	public ChildbirthVisitBean getChildbirthVisit(long vid) throws ITrustException {
+		return childbirthDAO.getChildbirthVisit(vid);
+	}
 	
-	public void addVisit(ChildbirthVisitBean newVisit, String patientID, String preferredChildbirthMethod,
+	
+	public long addVisit(ChildbirthVisitBean newVisit, String patientID, String preferredChildbirthMethod,
 			String drugs, String scheduledDate, String preScheduled) throws ITrustException, FormValidationException {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		ChildbirthVisitForm form = new ChildbirthVisitForm(patientID, preferredChildbirthMethod, drugs, scheduledDate,
 				preScheduled);
 		validator.validate(form);
@@ -86,7 +97,7 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 		newVisit.setDrugs(drugs);
 		newVisit.setPreScheduled(Boolean.parseBoolean(preScheduled));
 		
-		childbirthDAO.addChildbirthVisit(newVisit);
+		return childbirthDAO.addChildbirthVisit(newVisit);
 	}
 	
 	/**

@@ -881,6 +881,10 @@ public class TestDataGenerator {
 	public void uc94() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/uc94.sql");
 	}
+	
+	public void uc96() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc96.sql");
+	}
 
 	public void standardData() throws FileNotFoundException, IOException, SQLException {
 	
