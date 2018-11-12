@@ -27,7 +27,7 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
-public class GenNextVisitActionTest extends TestCase {
+public class GetNextVisitActionTest extends TestCase {
 	
 	private GetNextVisitAction action;
 	
@@ -84,6 +84,22 @@ public class GenNextVisitActionTest extends TestCase {
 			
 			List<Timestamp> l = action.getSchedule(tMin, tMax);
 			assertEquals(0, l.size());
+		} catch (Exception e){
+			fail();
+		}
+	}
+	
+	@Test
+	public void testGetGoogleCalendarLink() {
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			Date date = dateFormat.parse("23/09/2007");
+			long time = date.getTime();
+			Timestamp tMin = new Timestamp(time);
+			
+			String link = action.getGoogleCalendarLink(tMin);
+			assertEquals("https://calendar.google.com/calendar/r/eventedit?&dates=20070923T050000Z%2F20070923T053000Z"
+					+ "&text=iTrust Office Visit&location=iTrust Hospital&detail=iTrust Office Visit", link);
 		} catch (Exception e){
 			fail();
 		}

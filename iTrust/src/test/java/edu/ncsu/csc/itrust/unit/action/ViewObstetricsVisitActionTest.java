@@ -97,6 +97,21 @@ public class ViewObstetricsVisitActionTest {
 	}
 	
 	@Test
+	public void testGetSortedObstetricsVisits() {
+		List<ObstetricsVisitBean> list = null;
+		try {
+			list = action.getSortedObstetricsVisits(1L);
+		} catch (ITrustException e) {
+			fail();
+		}
+		if (list == null) {
+			fail();
+		} else {
+			assertTrue(list.size() > 0 );
+		}
+	}
+	
+	@Test
 	public void testGetObstetricsVisit() {
 		ObstetricsVisitBean bean1 = null;
 		try {
@@ -135,5 +150,13 @@ public class ViewObstetricsVisitActionTest {
 		assertEquals(true, result1);
 	}
 	
-	
+	@Test
+	public void testNeedRHShot(){
+		try{
+			Boolean result = action.needRHShot(1L);
+			assertEquals(false, result);
+		} catch (ITrustException e) {
+			fail();
+		}
+	}
 }
