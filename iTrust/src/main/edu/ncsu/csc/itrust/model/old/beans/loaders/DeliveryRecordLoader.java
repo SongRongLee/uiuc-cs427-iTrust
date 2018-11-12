@@ -19,7 +19,7 @@ import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
  * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
  */
 public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
-	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 
 	/**
 	 * loadList
@@ -66,13 +66,13 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		//ps.setInt(i++, d.getID());
 		ps.setLong(i++, d.getPatientID());
 		ps.setLong(i++, d.getChildbirthVisitID());
-		Date date = null;
+		Timestamp date = null;
 		try {
-			date = new java.sql.Date(DATE_FORMAT.parse(d.getDeliveryDateTimeString()).getTime());
+			date = new java.sql.Timestamp(DATE_FORMAT.parse(d.getDeliveryDateTimeString()).getTime());
 		} catch (ParseException e) {
 			//TODO
 		}
-		ps.setDate(i++, date);
+		ps.setTimestamp(i++, date);
 		ps.setString(i++, d.getDeliveryMethod());
 		return ps;
 	}
@@ -85,13 +85,13 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		int i = 1;
 		ps.setLong(i++, d.getPatientID());
 		ps.setLong(i++, d.getChildbirthVisitID());
-		Date date = null;
+		Timestamp date = null;
 		try {
-			date = new java.sql.Date(DATE_FORMAT.parse(d.getDeliveryDateTimeString()).getTime());
+			date = new java.sql.Timestamp(DATE_FORMAT.parse(d.getDeliveryDateTimeString()).getTime());
 		} catch (ParseException e) {
 			//TODO
 		}
-		ps.setDate(i++, date);
+		ps.setTimestamp(i++, date);
 		ps.setString(i++, d.getDeliveryMethod());
 		ps.setLong(i++, d.getID());
 		return ps;

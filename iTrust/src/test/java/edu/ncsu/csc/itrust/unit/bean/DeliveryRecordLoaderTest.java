@@ -81,11 +81,9 @@ public class DeliveryRecordLoaderTest extends TestCase {
 					"INSERT INTO deliveryrecords (PatientID, ChildbirthVisitID, DeliveryDateTime, DeliveryMethod)"
 							+ " VALUES (?, ?, ?, ?)"),
 					drb);
-			
-			// when DeliveryDateTime is set to '1969-12-31 18:00' it does not pass
-			// drb.getDeliveryDateTime() == '1969-12-31 18:00'
+
 			String strSTMT = "INSERT INTO deliveryrecords (PatientID, ChildbirthVisitID, DeliveryDateTime, "
-					+ "DeliveryMethod) VALUES (1, 17, '1969-12-31', 'caesarean section')";
+					+ "DeliveryMethod) VALUES (1, 17, '1969-12-31 18:00:00', 'caesarean section')";
 			boolean contains = (stmt.toString()).contains(strSTMT);
 			
 			assertEquals(true, contains);
@@ -112,10 +110,8 @@ public class DeliveryRecordLoaderTest extends TestCase {
 							+ "DeliveryDateTime=?, DeliveryMethod=? WHERE ID=?"),
 					drb);
 			
-			// neither when DeliveryDateTime is set to '1969-12-31 18:00.0' it does not pass
-			// new Timestamp(new Date(0).getTime()) == '1969-12-31 18:00.0'
 			String strSTMT = "UPDATE deliveryrecords SET PatientID=1, ChildbirthVisitID=17,"
-					+ "DeliveryDateTime='1969-12-31', DeliveryMethod='caesarean section' WHERE ID=1";
+					+ "DeliveryDateTime='1969-12-31 18:00:00', DeliveryMethod='caesarean section' WHERE ID=1";
 			boolean contains = (stmt.toString()).contains(strSTMT);
 			
 			assertEquals(true, contains);
