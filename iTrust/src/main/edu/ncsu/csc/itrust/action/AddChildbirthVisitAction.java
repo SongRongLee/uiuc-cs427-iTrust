@@ -126,4 +126,15 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 				
 		return childbirthDAO.addDeliveryRecord(newRecord);
 	}
+	
+	/**
+	 * Return a childbirth visit that vid represents
+	 * 
+	 * @param vid The id of the childbirth visit we are looking for.
+	 * @return a ChildbirthVisitBean
+	 * @throws ITrustException
+	 */
+	public DeliveryRecordBean getDeliveryRecord(long vid) throws ITrustException {
+		return childbirthDAO.getDeliveryRecord(vid);
+	}
 }
