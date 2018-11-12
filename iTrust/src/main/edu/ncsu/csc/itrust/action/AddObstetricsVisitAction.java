@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.action;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,14 +12,19 @@ import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.forms.ObstetricsForm;
 import edu.ncsu.csc.itrust.model.old.beans.forms.ObstetricsVisitForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.old.validate.ApptBeanValidator;
 import edu.ncsu.csc.itrust.model.old.validate.ObstetricsValidator;
 import edu.ncsu.csc.itrust.model.old.validate.ObstetricsVisitValidator;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
@@ -32,8 +38,10 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
  */
 public class AddObstetricsVisitAction extends PatientBaseAction {
 	private ObstetricsVisitValidator validator = new ObstetricsVisitValidator();
+	private ApptBeanValidator appValidator = new ApptBeanValidator();
 	private PatientDAO patientDAO;
 	private ObstetricsDAO obstetricsDAO;
+	private ApptDAO apptDAO;
 	private ObstetricsVisitDAO obstetricsVisitDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
@@ -52,6 +60,7 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 		this.authDAO = factory.getAuthDAO();
 		this.obstetricsDAO = factory.getObstetricsDAO();
 		this.obstetricsVisitDAO = factory.getObstetricsVisitDAO();
+		this.apptDAO = factory.getApptDAO();
 		this.loggedInMID = loggedInMID;
 	}
 	
@@ -112,7 +121,6 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 			newVisit.setScheduledDate(new Timestamp(sdf.parse(scheduledDate).getTime()));
 			newVisit.setCreatedDate(new Timestamp(sdf.parse(createdDate).getTime()));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -134,5 +142,27 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 			e.printStackTrace();
 		}
 		obstetricsVisitDAO.addObstetricsVisit(newVisit);
+		
+		// add an appointment
+		
+		ApptBean appt = new ApptBean();
+		try {
+			appt.setDate(new Timestamp(sdf.parse(scheduledDate).getTime()));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		appt.setHcp(loggedInMID);
+		appt.setPatient(Long.parseLong(patientID));
+		appt.setApptType("General Checkup");
+		appt.setComment("Auto Generated Schedule.");
+		appValidator.validate(appt);
+		try {
+			apptDAO.scheduleAppt(appt);
+			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_ADD, loggedInMID, appt.getPatient(), "");
+			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, appt.getPatient(), "");
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		} 
 	}
 }

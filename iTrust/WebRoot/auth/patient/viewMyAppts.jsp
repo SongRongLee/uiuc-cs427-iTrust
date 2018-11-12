@@ -7,6 +7,7 @@
 <%@page import="java.sql.Timestamp"%>
 <%@page import="edu.ncsu.csc.itrust.action.EditApptTypeAction"%>
 <%@page import="edu.ncsu.csc.itrust.action.ViewMyApptsAction"%>
+<%@page import="edu.ncsu.csc.itrust.action.GetNextVisitAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.ApptBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.dao.mysql.ApptTypeDAO"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.dao.DAOFactory"%>
@@ -37,13 +38,14 @@ pageTitle = "iTrust - View My Messages";
 			<th>Appointment Type</th>
 			<th>Appointment Date/Time</th>
 			<th>Duration</th>
-			<th></th>
+			<th>Comments</th>
+			<th>Google Calendar</th>
 		</tr>
 <%		 
 		
 
 		List<ApptBean>conflicts = action.getAllConflicts(loggedInMID.longValue());
-
+		GetNextVisitAction nvAction = new GetNextVisitAction();
 		int index = 0;
 		for(ApptBean a : appts) { 
 			String comment = "";
@@ -67,6 +69,7 @@ pageTitle = "iTrust - View My Messages";
 				<td><%= StringEscapeUtils.escapeHtml("" + ( format.format(d) )) %></td>
  				<td><%= StringEscapeUtils.escapeHtml("" + ( apptTypeDAO.getApptType(a.getApptType()).getDuration()+" minutes" )) %></td>
 				<td><%= comment %></td>
+				<td><a href="<%=nvAction.getGoogleCalendarLink(a.getDate())%>">Add to Calendar</a></td>
 			</tr>
 	<%		index ++; %>
 	<%	} %>
