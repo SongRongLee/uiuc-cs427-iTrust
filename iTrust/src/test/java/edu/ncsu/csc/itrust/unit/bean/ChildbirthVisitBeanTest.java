@@ -46,9 +46,10 @@ public class ChildbirthVisitBeanTest extends TestCase {
 		assertEquals(preferredChildbirthMethod, cbvb.getPreferredChildbirthMethod());
 		assertEquals(drugs, cbvb.getDrugs());
 		
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		assertEquals(dateFormat.format(scheduledDate), dateFormat.format(cbvb.getScheduledDate()));
-
+		assertEquals(dateFormat.format(scheduledDate), cbvb.getScheduledDateString());
+		
 		assertEquals(preScheduled, cbvb.isPreScheduled());
 		assertEquals(deliveryRecords, cbvb.getDeliveryRecord());
 

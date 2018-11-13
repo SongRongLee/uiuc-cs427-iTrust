@@ -580,7 +580,7 @@ CREATE TABLE deliveryrecords (
   ID int(11) NOT NULL AUTO_INCREMENT,
   PatientID int(11) NOT NULL,
   ChildbirthVisitID int(11) NOT NULL,
-  DeliveryDateTime date NOT NULL,
+  DeliveryDateTime timestamp NOT NULL,
   DeliveryMethod VARCHAR(50) NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
