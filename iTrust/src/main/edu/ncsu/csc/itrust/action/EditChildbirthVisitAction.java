@@ -84,16 +84,36 @@ public class EditChildbirthVisitAction extends PatientBaseAction {
 		cbDAO.updateChildbirthVisit(newVisit);
 	}
 	
-	public void editDeliveryRecord(DeliveryRecordBean newRecord, String deliveryRecordID, String patientID, String childbirthVisitID, String deliveryDateTime, String deliveryMethod) throws ITrustException, FormValidationException {
+	public void editDeliveryRecord(DeliveryRecordBean newRecord, String deliveryRecordID, String patientID, String childbirthVisitID, String childID, String gender, String deliveryDateTime, String deliveryMethod, String childFirstName, String childLastName) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-		DeliveryRecordForm form = new DeliveryRecordForm(patientID, childbirthVisitID, deliveryDateTime, deliveryMethod);
+		DeliveryRecordForm form = new DeliveryRecordForm(patientID, childbirthVisitID, deliveryDateTime, deliveryMethod, childFirstName, childLastName);
 		dValidator.validate(form);
+		
+		// Update baby's patient information
+		PatientBean p = new PatientBean();
+		p.setMID(Integer.parseInt(childID));
+		p.setFirstName(childFirstName);
+		p.setLastName(childLastName);
+		p.setGenderStr(gender);
+		patientDAO.editPatient(p, loggedInMID);
+		
 		// set DeliveryRecordBean manually after validation
 		newRecord.setID(Integer.parseInt(deliveryRecordID));
 		newRecord.setPatientID(Integer.parseInt(patientID));
 		newRecord.setChildbirthVisitID(Integer.parseInt(childbirthVisitID));
+		newRecord.setChildID(Integer.parseInt(childID));
 		try {
-			newRecord.setDeliveryDateTime(sdf.parse(deliveryDateTime));
+			Date deliveryDate = sdf.parse(deliveryDateTime);
+			newRecord.setDeliveryDateTime(deliveryDate);
+			
+			long diffInMillies = Math.abs(getChildbirthVisit(Long.parseLong(childbirthVisitID)).getScheduledDate().getTime() - deliveryDate.getTime());
+		    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+			if (diff > 0){
+				newRecord.setIsEstimated(true);
+			}
+			else{
+				newRecord.setIsEstimated(false);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

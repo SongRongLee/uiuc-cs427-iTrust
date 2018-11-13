@@ -7,22 +7,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import edu.ncsu.csc.itrust.RandomPassword;
 import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
-import edu.ncsu.csc.itrust.model.old.beans.FetusBean;
-import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.forms.ChildbirthVisitForm;
 import edu.ncsu.csc.itrust.model.old.beans.forms.DeliveryRecordForm;
-import edu.ncsu.csc.itrust.model.old.beans.forms.FetusForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ChildbirthVisitDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.enums.Role;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.model.old.validate.ChildbirthVisitValidator;
 import edu.ncsu.csc.itrust.model.old.validate.DeliveryRecordValidator;
 
@@ -108,16 +109,39 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 	 * @throws ITrustException
 	 * @throws FormValidationException
 	 */
-	public long addDelivery(DeliveryRecordBean newRecord, String patientID, String childbirthVisitID, String deliveryDateTime, String deliveryMethod) throws ITrustException, FormValidationException {
+	public long addDelivery(DeliveryRecordBean newRecord, String patientID, String childbirthVisitID, String gender, String deliveryDateTime, String deliveryMethod, String childFirstName, String childLastName) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-		DeliveryRecordForm form = new DeliveryRecordForm(patientID, childbirthVisitID, deliveryDateTime, deliveryMethod);
+		DeliveryRecordForm form = new DeliveryRecordForm(patientID, childbirthVisitID, deliveryDateTime, deliveryMethod, childFirstName, childLastName);
 		dValidator.validate(form);
 		
+		// For each baby that is delivered, a new patient is created
+		PatientBean p = new PatientBean();
+		p.setFirstName(childFirstName);
+		p.setLastName(childLastName);
+		p.setGenderStr(gender);
+		long newMID = patientDAO.addEmptyPatient();
+		p.setMID(newMID);
+		String pwd = authDAO.addUser(newMID, Role.PATIENT, RandomPassword.getRandomPassword());
+		p.setPassword(pwd);
+		patientDAO.editPatient(p, loggedInMID);
+		TransactionLogger.getInstance().logTransaction(TransactionType.PATIENT_CREATE, loggedInMID, p.getMID(), "");
+		
 		// set FetusBean manually after validation
+		newRecord.setChildID(newMID);
 		newRecord.setPatientID(Long.parseLong(patientID));
 		newRecord.setChildbirthVisitID(Long.parseLong(childbirthVisitID));
 		try {
-			newRecord.setDeliveryDateTime(sdf.parse(deliveryDateTime));
+			Date deliveryDate = sdf.parse(deliveryDateTime);
+			newRecord.setDeliveryDateTime(deliveryDate);
+			
+			long diffInMillies = Math.abs(getChildbirthVisit(Long.parseLong(childbirthVisitID)).getScheduledDate().getTime() - deliveryDate.getTime());
+		    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+			if (diff > 0){
+				newRecord.setIsEstimated(true);
+			}
+			else{
+				newRecord.setIsEstimated(false);
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,4 +161,5 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 	public DeliveryRecordBean getDeliveryRecord(long vid) throws ITrustException {
 		return childbirthDAO.getDeliveryRecord(vid);
 	}
+	
 }
