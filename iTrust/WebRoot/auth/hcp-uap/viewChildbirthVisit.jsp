@@ -48,7 +48,7 @@ if (true){
 
 	%>
 	<br />
-	<table class="fTable" align="center" id="OBlist">
+	<table class="fTable" align="center" id="CBlist">
 		<tr>
 			<th colspan="11">Childbirth Office Visits</th>
 		</tr>
