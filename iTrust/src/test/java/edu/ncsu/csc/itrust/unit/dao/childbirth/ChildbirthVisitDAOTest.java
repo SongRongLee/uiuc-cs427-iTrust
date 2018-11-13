@@ -38,7 +38,7 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		
 		// set delivery bean information
 		DeliveryRecordBean deliveryRecordBean = new DeliveryRecordBean();
-		deliveryRecordBean.setID(1);
+		
 		deliveryRecordBean.setPatientID(patientID);
 		deliveryRecordBean.setChildbirthVisitID(visitID);
 		deliveryRecordBean.setDeliveryDateTime(scheduledDate);
@@ -57,7 +57,8 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		
 		// add childbirth visit to the database
 		childbirthVisitDAO.addChildbirthVisit(cbvb);
-		childbirthVisitDAO.addDeliveryRecord(deliveryRecordBean);
+		long newDRID = childbirthVisitDAO.addDeliveryRecord(deliveryRecordBean);
+		deliveryRecordBean.setID(newDRID);
 		
 		// test getAllChildbirthVisits method
 		List<ChildbirthVisitBean> cbvList = childbirthVisitDAO.getAllChildbirthVisits(patientID);
@@ -96,7 +97,7 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		
 		// set delivery bean information
 		DeliveryRecordBean deliveryRecordBean = new DeliveryRecordBean();
-		deliveryRecordBean.setID(1);
+		
 		deliveryRecordBean.setPatientID(patientID);
 		deliveryRecordBean.setChildbirthVisitID(visitID);
 		deliveryRecordBean.setDeliveryDateTime(scheduledDate);
@@ -115,7 +116,8 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		
 		// add childbirth visit to the database
 		childbirthVisitDAO.addChildbirthVisit(cbvb);
-		childbirthVisitDAO.addDeliveryRecord(deliveryRecordBean);
+		long newDRID = childbirthVisitDAO.addDeliveryRecord(deliveryRecordBean);
+		deliveryRecordBean.setID(newDRID);
 		
 		// test updateDeliveryRecord method
 		cbvb.setDrugs("test");
@@ -130,5 +132,53 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		assertEquals(dateFormat.format(scheduledDate), dateFormat.format(cbvb1.getScheduledDate()));
 		assertEquals(preScheduled, cbvb1.isPreScheduled());
 		assertEquals(deliveryRecords.get(0).getID(), cbvb1.getDeliveryRecord().get(0).getID());
-	}	
+	}
+	
+	public void testDeliveryRecord() throws Exception {
+		// define DeliveryRecordBean
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+		long patientID = 1;
+		long childbirstVisitID = 1;
+		Timestamp deliveryDateTime = new Timestamp(System.currentTimeMillis());
+		String deliveryMethod = "caesarean section";
+		
+		// set DeliveryRecordBean
+		DeliveryRecordBean drb = new DeliveryRecordBean();
+		drb.setPatientID(patientID);
+		drb.setChildbirthVisitID(childbirstVisitID);
+		drb.setDeliveryDateTime(deliveryDateTime);
+		drb.setDeliveryMethod(deliveryMethod);
+				
+		// add DeliveryRecordBean to the database
+		long recordID = childbirthVisitDAO.addDeliveryRecord(drb);
+		drb.setID(recordID);
+		
+		// test the getDeliveryRecords method
+		DeliveryRecordBean drb1 = childbirthVisitDAO.getDeliveryRecord(recordID);
+		assertEquals(recordID, drb1.getID());
+		assertEquals(patientID, drb1.getPatientID());
+		assertEquals(childbirstVisitID, drb1.getChildbirthVisitID());
+		assertEquals(dateFormat.format(deliveryDateTime), dateFormat.format(drb1.getDeliveryDateTime()));
+		assertEquals(deliveryMethod, drb1.getDeliveryMethod());
+		
+		// test the getAllDeliveryRecords method
+		List<DeliveryRecordBean> drbList = childbirthVisitDAO.getAllDeliveryRecord(patientID);
+		boolean notNull = drbList.size() > 0;
+		assertEquals(true, notNull);
+		DeliveryRecordBean drbTest = drbList.get(0);
+		assertEquals(patientID, drbTest.getPatientID());
+		assertEquals(childbirstVisitID, drbTest.getChildbirthVisitID());
+		assertEquals(dateFormat.format(deliveryDateTime), dateFormat.format(drbTest.getDeliveryDateTime()));
+		assertEquals(deliveryMethod, drbTest.getDeliveryMethod());
+		
+		// test the updateDeliveryRecord method
+		long updateID = recordID;
+		String updateDeliveryMethod = "vaginal delivery forceps assist";
+		drb1.setDeliveryMethod(updateDeliveryMethod);
+		childbirthVisitDAO.updateDeliveryRecord(drb1);
+		drb1 = childbirthVisitDAO.getDeliveryRecord(updateID);
+		assertEquals(updateDeliveryMethod, drb1.getDeliveryMethod());
+		
+	}
+	
 }
