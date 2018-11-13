@@ -121,8 +121,8 @@ public enum ValidationFormat {
 			"must be one of vaginal delivery, vaginal delivery vacuum assist, "
 			+ "vaginal delivery forceps assist, caesarean section, miscarriage"),
 	BOOLEAN("^(?:TRUE|FALSE|true|false)", "must be some form of TRUE or FALSE"),
-	DRUGS("^(((\\w, \\w) (,(\\w, \\w) )*)|^$)", 
-			"must be a comma delimited list of non-empty 2 string tuples or the empty string")
+	DRUGS("^([(]\\w+[,][ ]\\w+[)])+|^$", // ([,][(]\\w*, \\w*[)])*
+			"must be a list of non-empty 2 string tuples or the empty string")
 	;
 
 	private Pattern regex;
