@@ -47,12 +47,23 @@ DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 Date now = new Date();
 
 /* get specific delivery visit */
+String vString = request.getParameter("childbirthVisitID");
+if (vString == null){
+	vString = request.getParameter("visitID");
+}
+long vid = Long.parseLong(vString);
+
+/* get specific record */
 String rrString = request.getParameter("requestID");
 if (rrString == null){
-	rrString = request.getParameter("ID");
+	rrString = request.getParameter("recordID");
 }
-long vid = Long.parseLong(rrString);
-DeliveryRecordBean delivery = action.getDeliveryRecord(vid);
+long rid = Long.parseLong(rrString);
+
+
+
+
+DeliveryRecordBean delivery = action.getDeliveryRecord(rid);
 
 /* Prompt error if not OB/GYN */
 if (specialty != null && specialty.equals("OB/GYN")){
@@ -64,7 +75,6 @@ if (specialty != null && specialty.equals("OB/GYN")){
 		&& request.getParameter("formIsFilled").equals("true");
 
 		if (formIsFilled) {
-			
 			/* Create new DeliveryRecordBean manually */
 			DeliveryRecordBean newRecord = new DeliveryRecordBean();
 			try{
@@ -72,8 +82,8 @@ if (specialty != null && specialty.equals("OB/GYN")){
 						request.getParameter("childID"), request.getParameter("gender"), request.getParameter("deliveryDateTime"), 
 						request.getParameter("deliveryMethod"), request.getParameter("childFirstName"), request.getParameter("childLastName"));
 				
-				//loggingAction.logEvent(TransactionType.EDIT_CHILDBIRTH_VISIT, loggedInMID.longValue(), pid, Long.toString(newVisit.getVisitID()));
-				response.sendRedirect("addNewborns.jsp");
+				loggingAction.logEvent(TransactionType.EDIT_CHILDBIRTH_VISIT, loggedInMID.longValue(), pid, Long.toString(newRecord.getID()));
+				response.sendRedirect("addNewborns.jsp?requestID=" + vString);
 				
 			} catch(FormValidationException e){
 			%>
@@ -86,11 +96,13 @@ if (specialty != null && specialty.equals("OB/GYN")){
 
 		%>
 		<div align=center>
-		<form action="editNewborns.jsp" method="post" id="editNBForm">
+		<form action="editNewborn.jsp" method="post" id="editNBForm">
 		<input type="hidden" name="formIsFilled" value="true">
-		<input type="hidden" name="ID" value="<%=rrString%>">
+		<input type="hidden" name="childID" value="<%=delivery.getChildID()%>">
+		<input type="hidden" name="childbirthVisitID" value="<%=vid%>"> 
+		<input type="hidden" name="recordID" value="<%=rid%>">
 		<br />
-			<div style="width: 50%; text-align:center;">Please Enter the Newborns' Information</div>
+			<div style="width: 50%; text-align:center;">Please Enter the Newborn's Information</div>
 			<br />
 			<table class="fTable">
 				<tr>
@@ -102,7 +114,7 @@ if (specialty != null && specialty.equals("OB/GYN")){
 				</tr>
 				<tr>
 					<td class="subHeaderVertical">Preferred Childbirth Method:</td>
-					<td><select name="preferredChildbirthMethod">
+					<td><select name="deliveryMethod">
 					<option value = "vaginal delivery">vaginal delivery</option>
 					<option value = "vaginal delivery vacuum assist">vaginal delivery vacuum assist</option>
 					<option value = "vaginal delivery forceps assist">vaginal delivery forceps assist</option>
@@ -110,24 +122,30 @@ if (specialty != null && specialty.equals("OB/GYN")){
 					<option value = "miscarriage">miscarriage</option>					
 				</tr>
 				<tr>
-					<td class="subHeaderVertical">Drugs:</td>
-					<td><input type="text" name="drugs"></td>
+					<td class="subHeaderVertical">Delivery Datetime:</td>
+					<td><input type="text" name="deliveryDateTime">
+					<input type=button value="Select Date" onclick="displayDatePicker('deliveryDateTime');"></td>
 				</tr>
 				<tr>
-					<td class="subHeaderVertical">Scheduled Datetime:</td>
-					<td><input type="text" name="scheduledDate">
-					<input type=button value="Select Date" onclick="displayDatePicker('scheduledDate');"></td>
+					<td class="subHeaderVertical">Child First Name:</td>
+					<td><input type="text" name="childFirstName"</td>
 				</tr>
 				<tr>
-					<td class="subHeaderVertical">Prescheduled:</td>
-					<td> <label for="preScheduled">Prescheduled</label>
-					<input type="radio" name="preScheduled" id="preScheduled" value="true" checked>
-					<label for="ER">ER</label>
-					<input type="radio" name="preScheduled" id="ER" value="false"></td>
+					<td class="subHeaderVertical">Child Last Name:</td>
+					<td><input type="text" name="childLastName"</td>
+				</tr>
+				<tr>
+					<td class="subHeaderVertical">Gender:</td>
+					<td> 
+						<label for="Male">Male</label>
+						<input type="radio" name="gender" id="Male" value="Male" checked>
+						<label for="Female">Female</label>
+						<input type="radio" name="gender" id="Female" value="Female">
+					</td>
 				</tr>
 			</table>
 			<br />
-			<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Edit Visit">
+			<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Submit">
 		</form>
 		<br />		
 		<%
