@@ -8,12 +8,16 @@ public class DeliveryRecordForm{
 	private String childbirthVisitID;
 	private String deliveryDateTime;
 	private String deliveryMethod;
+	private String childFirstName;
+	private String childLastName;
 	
-	public DeliveryRecordForm(String patientID, String childbirthVisitID, String deliveryDateTime, String deliveryMethod){
+	public DeliveryRecordForm(String patientID, String childbirthVisitID, String deliveryDateTime, String deliveryMethod, String childFirstName, String childLastName){
 		this.patientID = patientID;
 		this.childbirthVisitID = childbirthVisitID;
 		this.deliveryDateTime = deliveryDateTime;
 		this.deliveryMethod = deliveryMethod;
+		this.childFirstName = childFirstName;
+		this.childLastName = childLastName;
 	};
 	
 	public void setPatientID(String patientID) {
@@ -46,4 +50,19 @@ public class DeliveryRecordForm{
 		return deliveryMethod;
 	}
 	
+	public void setChildFirstName(String childFirstName) {
+		this.childFirstName = childFirstName;
+	}
+	
+	public String getChildFirstName() {
+		return childFirstName;
+	}
+	
+	public void setChildLastName(String childLastName) {
+		this.childLastName = childLastName;
+	}
+	
+	public String getChildLastName() {
+		return childLastName;
+	}
 }

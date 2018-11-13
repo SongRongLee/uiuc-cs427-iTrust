@@ -39,8 +39,11 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		d.setID(rs.getInt("ID"));
 		d.setPatientID(rs.getInt("PatientID"));
 		d.setChildbirthVisitID(rs.getInt("ChildbirthVisitID"));
+		d.setChildID(rs.getInt("ChildID"));
+		d.setGenderStr(rs.getString("Gender"));
 		d.setDeliveryDateTime(rs.getTimestamp("DeliveryDateTime"));
 		d.setDeliveryMethod(rs.getString("DeliveryMethod"));
+		d.setIsEstimated(rs.getBoolean("IsEstimated"));
 	}
 	
 	/**
@@ -66,6 +69,8 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		//ps.setInt(i++, d.getID());
 		ps.setLong(i++, d.getPatientID());
 		ps.setLong(i++, d.getChildbirthVisitID());
+		ps.setLong(i++, d.getChildID());
+		ps.setString(i++, d.getGender().getName());
 		Timestamp date = null;
 		try {
 			date = new java.sql.Timestamp(DATE_FORMAT.parse(d.getDeliveryDateTimeString()).getTime());
@@ -74,6 +79,7 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		}
 		ps.setTimestamp(i++, date);
 		ps.setString(i++, d.getDeliveryMethod());
+		ps.setBoolean(i++, d.getIsEstimated());
 		return ps;
 	}
 	
@@ -85,6 +91,8 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		int i = 1;
 		ps.setLong(i++, d.getPatientID());
 		ps.setLong(i++, d.getChildbirthVisitID());
+		ps.setLong(i++, d.getChildID());
+		ps.setString(i++, d.getGender().getName());
 		Timestamp date = null;
 		try {
 			date = new java.sql.Timestamp(DATE_FORMAT.parse(d.getDeliveryDateTimeString()).getTime());
@@ -94,6 +102,7 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		ps.setTimestamp(i++, date);
 		ps.setString(i++, d.getDeliveryMethod());
 		ps.setLong(i++, d.getID());
+		ps.setBoolean(i++, d.getIsEstimated());
 		return ps;
 	}
 }

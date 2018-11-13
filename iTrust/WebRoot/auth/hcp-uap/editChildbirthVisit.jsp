@@ -7,9 +7,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
-<%@page import="edu.ncsu.csc.itrust.action.ViewChildbirthVisitAction"%>
-<%@page import="edu.ncsu.csc.itrust.action.AddChildbirthVisitAction"%>
-<%@page import="edu.ncsu.csc.itrust.action.GetNextVisitAction"%>
+<%@page import="edu.ncsu.csc.itrust.action.EditChildbirthVisitAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PatientBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
@@ -20,7 +18,7 @@
 <%@include file="/global.jsp"%>
 
 <%
-	pageTitle = "iTrust - Add a Childbirth Visit";
+	pageTitle = "iTrust - Edit a Childbirth Visit";
 %>
 
 <%@include file="/header.jsp"%>
@@ -30,12 +28,12 @@
 String pidString = (String) session.getAttribute("pid");
 if (pidString == null || pidString.equals("") || 1 > pidString.length()) {
 	out.println("pidstring is null");
-	response.sendRedirect("/iTrust/auth/getPatientID.jsp?forward=hcp-uap/addChildbirthVisit.jsp");
+	response.sendRedirect("/iTrust/auth/getPatientID.jsp?forward=hcp-uap/editChildbirthVisit.jsp");
 	return;
 }
 
 /* Get selected patient and current personnel */
-AddChildbirthVisitAction action = new AddChildbirthVisitAction(prodDAO, loggedInMID.longValue(), pidString);
+EditChildbirthVisitAction action = new EditChildbirthVisitAction(prodDAO, loggedInMID.longValue(), pidString);
 PatientBean p = action.getPatient();
 long pid = action.getPid();
 
@@ -47,6 +45,14 @@ String specialty = personnel.getSpecialty();
 DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 Date now = new Date();
 
+/* get specific childbirth visit */
+String rrString = request.getParameter("requestID");
+if (rrString == null){
+	rrString = request.getParameter("ID");
+}
+long vid = Long.parseLong(rrString);
+ChildbirthVisitBean visit = action.getChildbirthVisit(vid);
+
 /* Prompt error if not OB/GYN */
 if (specialty != null && specialty.equals("OB/GYN")){
 	if (true){
@@ -55,17 +61,18 @@ if (specialty != null && specialty.equals("OB/GYN")){
 		<%
 		boolean formIsFilled = request.getParameter("formIsFilled") != null
 		&& request.getParameter("formIsFilled").equals("true");
-		boolean autoAdd = request.getParameter("autoAdd") != null 
-				&& request.getParameter("autoAdd").equals("true");
+
 		if (formIsFilled) {
+			
 			/* Create new ChildbirthVisitBean manually */
 			ChildbirthVisitBean newVisit = new ChildbirthVisitBean();
 			try{
-				action.addVisit(newVisit, request.getParameter("patientID"), request.getParameter("preferredChildbirthMethod"), 
+				action.editVisit(newVisit, rrString, request.getParameter("patientID"), request.getParameter("preferredChildbirthMethod"),
 						request.getParameter("drugs"), request.getParameter("scheduledDate"), request.getParameter("preScheduled"));
-				loggingAction.logEvent(TransactionType.ADD_CHILDBIRTH_DRUGS, loggedInMID.longValue(), pid, Long.toString(newVisit.getVisitID()));
-				loggingAction.logEvent(TransactionType.CREATE_CHILDBIRTH_VISIT, loggedInMID.longValue(), pid, Long.toString(newVisit.getVisitID()));
+				
+				loggingAction.logEvent(TransactionType.EDIT_CHILDBIRTH_VISIT, loggedInMID.longValue(), pid, Long.toString(newVisit.getVisitID()));
 				response.sendRedirect("viewChildbirthVisit.jsp");
+				
 			} catch(FormValidationException e){
 			%>
 				<div align=center>
@@ -74,17 +81,18 @@ if (specialty != null && specialty.equals("OB/GYN")){
 			<%
 			}
 		}
+
 		%>
-		
 		<div align=center>
-		
-		<form action="addChildbirthVisit.jsp" method="post" id="addCbVisitForm"><input type="hidden"
-			name="formIsFilled" value="true"> <br />
-			<div style="width: 50%; text-align:center;">Please Enter New Childbirth Office Visit</div>
+		<form action="editChildbirthVisit.jsp" method="post" id="editCbVisitForm">
+		<input type="hidden" name="formIsFilled" value="true">
+		<input type="hidden" name="ID" value="<%=rrString%>">
+		<br />
+			<div style="width: 50%; text-align:center;">Please Enter Childbirth Office Visit Information</div>
 			<br />
 			<table class="fTable">
 				<tr>
-					<th colspan=2>New Childbirth Visit</th>
+					<th colspan=2>Edit Childbirth Visit</th>
 				</tr>
 				<tr>
 					<td class="subHeaderVertical">Patient ID:</td>
@@ -117,10 +125,9 @@ if (specialty != null && specialty.equals("OB/GYN")){
 				</tr>
 			</table>
 			<br />
-			<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Add Visit">
+			<input type="submit" style="font-size: 14pt; font-weight: bold;" value="Edit Visit">
 		</form>
-		<br />
-		
+		<br />		
 		<%
 	}
 	else{
@@ -128,8 +135,8 @@ if (specialty != null && specialty.equals("OB/GYN")){
 		%>
 		<br />
 		<div align=center>
-			<span class="iTrustMessage" id="addObVisitPatientError">
-			The patient is not an obstetrics patient. Please <a href="addObstetricsVisit.jsp">try again</a>.</span>
+			<span class="iTrustMessage" id="editChildbirthVisitPatientError">
+			The patient is not an obstetrics patient. Please <a href="/iTrust/">try again</a>.</span>
 		</div>
 		<br />
 		<% 
@@ -139,7 +146,7 @@ else{
 	%>
 	<br />
 	<div align=center>
-		<span class="iTrustMessage" id="addObVisitHCPError">
+		<span class="iTrustMessage" id="editObVisitHCPError">
 		You are not an OB/GYN HCP. Please <a href="/iTrust/">go back</a> and create a regular office visit.</span>
 	</div>
 	<br />

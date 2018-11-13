@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import edu.ncsu.csc.itrust.model.old.enums.Gender;
+
 
 /**
  * A bean for storing data about delivery records.
@@ -19,8 +21,11 @@ public class DeliveryRecordBean implements Serializable, Comparable<DeliveryReco
 	private long ID = 0;
 	private long patientID = 0;
 	private long childbirthVisitID = 0;
+	private long childID = 0;
+	private Gender gender = Gender.NotSpecified;
 	private Date deliveryDateTime;
 	private String deliveryMethod = "";
+	private boolean isEstimated = false;
 	
 	public void setID(long ID) {
 		this.ID = ID;
@@ -39,8 +44,29 @@ public class DeliveryRecordBean implements Serializable, Comparable<DeliveryReco
 	public void setChildbirthVisitID(long childbirthVisitID) {
 		this.childbirthVisitID = childbirthVisitID;
 	}
+	
 	public long getChildbirthVisitID() {
 		return childbirthVisitID;
+	}
+	
+	public void setChildID(long childID) {
+		this.childID = childID;
+	}
+	
+	public long getChildID() {
+		return childID;
+	}
+	
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGenderStr(String gender) {
+		this.gender = Gender.parse(gender);
+	}
+	
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 	
 	public void setDeliveryDateTime(Date deliveryDateTime) {
@@ -59,8 +85,17 @@ public class DeliveryRecordBean implements Serializable, Comparable<DeliveryReco
 	public void setDeliveryMethod(String deliveryMethod) {
 		this.deliveryMethod = deliveryMethod;
 	}
+	
 	public String getDeliveryMethod() {
 		return deliveryMethod;
+	}
+	
+	public void setIsEstimated(boolean isEstimated) {
+		this.isEstimated = isEstimated;
+	}
+	
+	public boolean getIsEstimated() {
+		return isEstimated;
 	}
 	
 	@Override

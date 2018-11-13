@@ -31,7 +31,9 @@ public class DeliveryRecordValidator extends BeanValidator<DeliveryRecordForm> {
 		errorList.addIfNotNull(checkFormat("childbirthVisitID", newForm.getChildbirthVisitID(), ValidationFormat.MID, false));
 		errorList.addIfNotNull(checkFormat("deliveryDateTime", newForm.getDeliveryDateTime(), ValidationFormat.DATETIMESTAMP, false));
 		errorList.addIfNotNull(checkFormat("deliveryMethod", newForm.getDeliveryMethod(), ValidationFormat.PREFERREDCHILDBIRTHMETHOD, false));
-
+		errorList.addIfNotNull(checkFormat("childFirstName", newForm.getChildFirstName(), ValidationFormat.NAME, false));
+		errorList.addIfNotNull(checkFormat("childLastName", newForm.getChildLastName(), ValidationFormat.NAME, false));
+		
 		if (errorList.hasErrors())
 			throw new FormValidationException(errorList);
 	}
