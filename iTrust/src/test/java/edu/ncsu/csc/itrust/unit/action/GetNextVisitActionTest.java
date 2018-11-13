@@ -37,7 +37,7 @@ public class GetNextVisitActionTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		action = new GetNextVisitAction(factory);
+		action = new GetNextVisitAction(factory, 9000000012L);
 	}
 	
 	@Test

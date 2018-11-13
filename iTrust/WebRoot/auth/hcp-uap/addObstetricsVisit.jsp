@@ -101,7 +101,7 @@ if (specialty != null && specialty.equals("OB/GYN")){
 		String scheduledDate = null;
 		try{
 			latestVisit = visits.get(0);
-			nextAction = new GetNextVisitAction(prodDAO);
+			nextAction = new GetNextVisitAction(prodDAO, loggedInMID);
 			scheduledDate = nextAction.GetNextDateString(latestVisit);
 			%>	<div align="center">
 				<form action="addObstetricsVisit.jsp" method="post" id="addObVisitForm"><input type="hidden"
@@ -122,7 +122,6 @@ if (specialty != null && specialty.equals("OB/GYN")){
 				</div>
 			<%
 		}catch(Exception e){
-			e.printStackTrace();
 			%>
 				<div align=center>
 					<span class="iTrustError">No Previous Visits, Auto Add Not Available!</span>

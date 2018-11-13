@@ -30,15 +30,16 @@ import java.text.SimpleDateFormat;
 public class GetNextVisitAction {
 	private ApptDAO apptDAO;
 	private ApptTypeDAO apptTypeDAO;
-	
+	private long loggedInMID;
 	/**
 	 * 
 	 * Approximately calculate next visit date
 	 */
 	public GetNextVisitAction(){}
-	public GetNextVisitAction(DAOFactory factory){
+	public GetNextVisitAction(DAOFactory factory, long loggedInMID){
 		this.apptDAO = factory.getApptDAO();
 		this.apptTypeDAO = factory.getApptTypeDAO();
+		this.loggedInMID = loggedInMID;
 	}
 	public String GetNextDateString(ObstetricsVisitBean v){
 		int numWeeks = Integer.parseInt(v.getNumWeeks().split("-",0)[0]);
@@ -263,6 +264,7 @@ public class GetNextVisitAction {
 	public List<Timestamp> getSchedule(Timestamp tMin, Timestamp tMax, long pid) throws Exception{
 		List<Timestamp> listSchedule = new ArrayList<Timestamp>();
 		List<ApptBean> appts = apptDAO.getApptsFor(pid);
+		appts.addAll(apptDAO.getApptsFor(loggedInMID));
 		for (int i = 0; i < appts.size(); i++){
 			if (appts.get(i).getDate().after(tMin)&&appts.get(i).getDate().before(tMax)){
 				listSchedule.add(appts.get(i).getDate());
