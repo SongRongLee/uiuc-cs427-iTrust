@@ -28,6 +28,9 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class AddChildbirthVisitActionTest extends TestCase {
 	
 	private DAOFactory factory = TestDAOFactory.getTestInstance();
@@ -74,7 +77,14 @@ public class AddChildbirthVisitActionTest extends TestCase {
 	public void testAddVisit() throws Exception {
 		ChildbirthVisitDAO childbirthDAO = factory.getChildbirthVisitDAO();
 		ChildbirthVisitBean cbvb = new ChildbirthVisitBean();
-		long newOID = action.addVisit(cbvb,"1","vaginal delivery","t, 2 ", "06/25/2015","false");
+		long newOID = action.addVisit(cbvb,"1","vaginal delivery","(Pethidine, 2)", "06/25/2015","false");
+		assertEquals(action.getChildbirthVisit(newOID).getVisitID(), newOID);
+	}
+	
+	public void testAddVisit2() throws Exception {
+		ChildbirthVisitDAO childbirthDAO = factory.getChildbirthVisitDAO();
+		ChildbirthVisitBean cbvb = new ChildbirthVisitBean();
+		long newOID = action.addVisit(cbvb,"1","vaginal delivery","(Pethidine, 2)(Arginine, 4)", "06/25/2015","false");
 		assertEquals(action.getChildbirthVisit(newOID).getVisitID(), newOID);
 	}
 	
