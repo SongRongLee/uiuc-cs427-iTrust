@@ -63,7 +63,7 @@ public class ChildbirthVisitDAO {
 			ChildbirthVisitBean cbVisit = rs.next() ? childbirthVisitLoader.loadSingle(rs) : null;
 			rs.close();
 			
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE ChildbirthVisitID = ? ORDER BY DeliveryDateTime DESC");
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE ChildbirthVisitID = ? ORDER BY DeliveryDateTime DESC, ID DESC");
 			ps1.setLong(1, vid);
 			ResultSet rs1 = ps1.executeQuery();
 			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs1);
@@ -93,7 +93,7 @@ public class ChildbirthVisitDAO {
 			ResultSet rs = ps.executeQuery();
 			List<ChildbirthVisitBean> cbVisits = childbirthVisitLoader.loadList(rs);
 			rs.close();
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY DeliveryDateTime DESC");
+			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY DeliveryDateTime DESC, ID DESC");
 			ps1.setLong(1, pid);
 			ResultSet rs1 = ps1.executeQuery();
 			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs1);
@@ -140,7 +140,7 @@ public class ChildbirthVisitDAO {
 	public List<DeliveryRecordBean> getAllDeliveryRecord(long pid) throws DBException {
 		try (
 				Connection conn = factory.getConnection();
-				PreparedStatement ps = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY DeliveryDateTime DESC");
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY DeliveryDateTime DESC, ID DESC");
 				) {
 			ps.setLong(1, pid);
 			ResultSet rs = ps.executeQuery();
@@ -183,8 +183,8 @@ public class ChildbirthVisitDAO {
 	public long addDeliveryRecord(DeliveryRecordBean newDeliveryRecord) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = deliveryRecordLoader.loadParameters(conn.prepareStatement(
-						"INSERT INTO deliveryrecords (PatientID, ChildbirthVisitID, DeliveryDateTime, DeliveryMethod)"
-								+ " VALUES (?, ?, ?, ?)"), newDeliveryRecord)) {
+						"INSERT INTO deliveryrecords (PatientID, ChildbirthVisitID, ChildID, Gender, DeliveryDateTime, DeliveryMethod, IsEstimated)"
+								+ " VALUES (?, ?, ?, ?, ?, ?, ?)"), newDeliveryRecord)) {
 			stmt.executeUpdate();
 			return DBUtil.getLastInsert(conn);
 		} catch (SQLException e) {
@@ -221,8 +221,8 @@ public class ChildbirthVisitDAO {
 	public void updateDeliveryRecord(DeliveryRecordBean DeliveryRecord) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = deliveryRecordLoader.loadParametersUpdate(conn.prepareStatement(
-						"UPDATE deliveryrecords SET PatientID=?, ChildbirthVisitID=?,"
-						+ "DeliveryDateTime=?, DeliveryMethod=? WHERE ID=?"),
+						"UPDATE deliveryrecords SET PatientID=?, ChildbirthVisitID=?, ChildID=?, Gender=?,"
+						+ "DeliveryDateTime=?, DeliveryMethod=?, IsEstimated=? WHERE ID=?"),
 						DeliveryRecord)) {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
