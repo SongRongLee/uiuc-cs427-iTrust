@@ -15,9 +15,9 @@ import org.openqa.selenium.support.ui.Select;
 public class AddNewbornsTest extends iTrustSeleniumTest {
 	@Override
 	protected void setUp() throws Exception {
-		//super.setUp();
-		//gen.clearAllTables();
-		//gen.standardData();
+		super.setUp();
+		gen.clearAllTables();
+		gen.standardData();
 		// Turn off htmlunit warnings
 		java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(java.util.logging.Level.OFF);
 		java.util.logging.Logger.getLogger("org.apache.http").setLevel(java.util.logging.Level.OFF);
@@ -34,12 +34,40 @@ public class AddNewbornsTest extends iTrustSeleniumTest {
 		WebDriver wd = login("9000000012","pw");
 		assertEquals("iTrust - HCP Home", wd.getTitle());
 		
-		wd.findElement(By.linkText("View Childbirth Office Visit")).click();
-		assertEquals("iTrust - Please Select a Patient", wd.getTitle());
 		
-		// Select a patient and go to the add childbirth visits records 
+		// Add new childbirth visit
+		wd.findElement(By.linkText("Document Childbirth Office Visit")).click();
 		wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");
 		wd.findElement(By.id("mainForm")).submit();
+		WebElement tableElem = wd.findElements(By.tagName("table")).get(0);
+		List<WebElement> tableData = tableElem.findElements(By.tagName("tr"));
+		Iterator<WebElement> rowsOnTable = tableData.iterator();
+		
+		// Check the title and fields of the table
+		WebElement row = rowsOnTable.next();
+		assertTrue(row.getText().contains("New Childbirth Visit"));
+		row = rowsOnTable.next();
+		assertTrue(row.getText().contains("Patient ID:"));
+		
+		// Get the add cb visit form
+		WebElement form = wd.findElement(By.id("addCbVisitForm"));
+				
+		// Create a new cb visit
+		WebElement pcm = wd.findElement(By.name("preferredChildbirthMethod"));
+		Select pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("caesarean section");
+		form.findElement(By.name("drugs")).sendKeys("t, 5 ");
+		form.findElement(By.name("scheduledDate")).sendKeys("11/03/2019");
+		WebElement chk_prescd = form.findElement(By.id("ER"));
+		chk_prescd.click();
+		form.submit();
+		
+		wd.findElement(By.linkText("View Childbirth Office Visit")).click();
+		
+		// Select a patient and go to the add childbirth visits records 
+		//wd.findElement(By.name("UID_PATIENTID")).sendKeys("1");
+		//wd.findElement(By.id("mainForm")).submit();
+		
 		assertEquals("iTrust - View Childbirth Office Visits", wd.getTitle());
 		
 		// Get the childbirth visits table
@@ -47,7 +75,7 @@ public class AddNewbornsTest extends iTrustSeleniumTest {
 		assertEquals("iTrust - Add Newborns", wd.getTitle());
 		
 		// Fill in form and send
-		WebElement form = wd.findElement(By.id("addNewborns"));
+		form = wd.findElement(By.id("addNewborns"));
 		WebElement dm = wd.findElement(By.name("deliveryMethod"));
 		Select dm_dropdown= new Select(dm);
 		dm.clear();
@@ -62,9 +90,9 @@ public class AddNewbornsTest extends iTrustSeleniumTest {
 		
 		assertEquals("iTrust - Add Newborns", wd.getTitle());
 		WebElement table = wd.findElement(By.id("CBlist"));
-		List<WebElement> tableData = table.findElements(By.tagName("tr"));
-		Iterator<WebElement> rowsOnTable = tableData.iterator();
-		WebElement row = rowsOnTable.next();
+		tableData = table.findElements(By.tagName("tr"));
+		rowsOnTable = tableData.iterator();
+		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Delivery Records"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("Child ID"));
