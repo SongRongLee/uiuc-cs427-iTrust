@@ -30,13 +30,14 @@ import junit.framework.TestCase;
 public class GetNextVisitActionTest extends TestCase {
 	
 	private GetNextVisitAction action;
+	private DAOFactory factory = TestDAOFactory.getTestInstance();
 	
 	/**
 	 * Sets up defaults
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		action = new GetNextVisitAction();
+		action = new GetNextVisitAction(factory);
 	}
 	
 	@Test
@@ -82,9 +83,10 @@ public class GetNextVisitActionTest extends TestCase {
 			time = date.getTime();
 			Timestamp tMax = new Timestamp(time);
 			
-			List<Timestamp> l = action.getSchedule(tMin, tMax);
+			List<Timestamp> l = action.getSchedule(tMin, tMax, 1);
 			assertEquals(0, l.size());
 		} catch (Exception e){
+			e.printStackTrace();
 			fail();
 		}
 	}
