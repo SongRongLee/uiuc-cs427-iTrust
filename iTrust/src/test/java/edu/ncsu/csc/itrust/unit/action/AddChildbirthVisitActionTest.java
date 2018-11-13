@@ -79,10 +79,10 @@ public class AddChildbirthVisitActionTest extends TestCase {
 	}
 	
 	public void testAddDelivery() throws Exception {
-		ChildbirthVisitDAO childbirthDAO = factory.getChildbirthVisitDAO();
 		DeliveryRecordBean drb = new DeliveryRecordBean();
-		long newID = action.addDelivery(drb, "1", "1", "11/11/2018 11:11", "caesarean section");
+		long newID = action.addDelivery(drb, "1", "1", "Female", "11/11/2018 11:11", "caesarean section", "Baby", "Boss");
 		assertEquals(action.getDeliveryRecord(newID).getID(), newID);
+		
 	}
 
 }

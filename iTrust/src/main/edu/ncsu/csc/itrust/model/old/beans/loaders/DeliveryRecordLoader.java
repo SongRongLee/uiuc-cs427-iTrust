@@ -101,8 +101,8 @@ public class DeliveryRecordLoader implements BeanLoader<DeliveryRecordBean> {
 		}
 		ps.setTimestamp(i++, date);
 		ps.setString(i++, d.getDeliveryMethod());
-		ps.setLong(i++, d.getID());
 		ps.setBoolean(i++, d.getIsEstimated());
+		ps.setLong(i++, d.getID());
 		return ps;
 	}
 }

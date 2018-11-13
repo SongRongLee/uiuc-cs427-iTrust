@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ChildbirthVisitDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
+import edu.ncsu.csc.itrust.model.old.enums.Gender;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
@@ -139,15 +140,21 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 		long patientID = 1;
 		long childbirstVisitID = 1;
+		long childID = 7;
+		Gender gender = Gender.Male;
 		Timestamp deliveryDateTime = new Timestamp(System.currentTimeMillis());
 		String deliveryMethod = "caesarean section";
+		boolean isEstimated = true;
 		
 		// set DeliveryRecordBean
 		DeliveryRecordBean drb = new DeliveryRecordBean();
 		drb.setPatientID(patientID);
 		drb.setChildbirthVisitID(childbirstVisitID);
+		drb.setChildID(childID);
+		drb.setGender(gender);
 		drb.setDeliveryDateTime(deliveryDateTime);
 		drb.setDeliveryMethod(deliveryMethod);
+		drb.setIsEstimated(isEstimated);
 				
 		// add DeliveryRecordBean to the database
 		long recordID = childbirthVisitDAO.addDeliveryRecord(drb);
@@ -158,8 +165,11 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		assertEquals(recordID, drb1.getID());
 		assertEquals(patientID, drb1.getPatientID());
 		assertEquals(childbirstVisitID, drb1.getChildbirthVisitID());
+		assertEquals(childID, drb1.getChildID());
+		assertEquals(gender, drb1.getGender());
 		assertEquals(dateFormat.format(deliveryDateTime), dateFormat.format(drb1.getDeliveryDateTime()));
 		assertEquals(deliveryMethod, drb1.getDeliveryMethod());
+		assertEquals(isEstimated, drb1.getIsEstimated());
 		
 		// test the getAllDeliveryRecords method
 		List<DeliveryRecordBean> drbList = childbirthVisitDAO.getAllDeliveryRecord(patientID);
@@ -168,8 +178,11 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		DeliveryRecordBean drbTest = drbList.get(0);
 		assertEquals(patientID, drbTest.getPatientID());
 		assertEquals(childbirstVisitID, drbTest.getChildbirthVisitID());
+		assertEquals(childID, drbTest.getChildID());
+		assertEquals(gender, drbTest.getGender());
 		assertEquals(dateFormat.format(deliveryDateTime), dateFormat.format(drbTest.getDeliveryDateTime()));
 		assertEquals(deliveryMethod, drbTest.getDeliveryMethod());
+		assertEquals(isEstimated, drbTest.getIsEstimated());
 		
 		// test the updateDeliveryRecord method
 		long updateID = recordID;

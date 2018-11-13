@@ -99,13 +99,16 @@ public class EditChildbirthVisitActionTest extends TestCase {
 		DeliveryRecordBean drb = new DeliveryRecordBean();
 		drb.setPatientID(1);	
 		drb.setChildbirthVisitID(1);
+		drb.setChildID(7);
+		drb.setGenderStr("Male");
 		drb.setDeliveryMethod("caesarean section");
 		drb.setDeliveryDateTime(new Timestamp(System.currentTimeMillis()));
+		drb.setIsEstimated(true);
 		
 		long newID = childbirthDAO.addDeliveryRecord(drb);
 		
-		action.editDeliveryRecord(drb, Long.toString(newID), "1", "1", 
-				sdf.format(new Timestamp(System.currentTimeMillis())), "vaginal delivery");
+		action.editDeliveryRecord(drb, Long.toString(newID), "1", "1", "7", "Male",
+				sdf.format(new Timestamp(System.currentTimeMillis())), "vaginal delivery", "Baby", "Boss");
 		// self added getDeliveryRecord() in ChildbirthDAO
 		DeliveryRecordBean drb2 = childbirthDAO.getDeliveryRecord(newID);
 		assertEquals(drb2.getID(), newID);
