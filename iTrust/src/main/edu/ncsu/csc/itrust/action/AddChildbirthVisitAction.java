@@ -14,6 +14,7 @@ import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.DeliveryRecordBean;
 import edu.ncsu.csc.itrust.model.old.beans.FetusBean;
+import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.forms.ChildbirthVisitForm;
 import edu.ncsu.csc.itrust.model.old.beans.forms.DeliveryRecordForm;
@@ -124,5 +125,16 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 		newRecord.setDeliveryMethod(deliveryMethod);
 				
 		return childbirthDAO.addDeliveryRecord(newRecord);
+	}
+	
+	/**
+	 * Return a childbirth visit that vid represents
+	 * 
+	 * @param vid The id of the childbirth visit we are looking for.
+	 * @return a ChildbirthVisitBean
+	 * @throws ITrustException
+	 */
+	public DeliveryRecordBean getDeliveryRecord(long vid) throws ITrustException {
+		return childbirthDAO.getDeliveryRecord(vid);
 	}
 }

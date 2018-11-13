@@ -72,7 +72,6 @@ if (action.isObstericsPatient(pid)){
 	  			if (specialty != null && specialty.equals("OB/GYN")){
 					%>
 					<td>Action</td>
-					<td>Google Calendar</td>
 					<%
 				}
 	  			%>
@@ -100,9 +99,6 @@ if (action.isObstericsPatient(pid)){
 					%>
 					<td><a id="editButton"
 					href="editObstetricsVisit.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (obvisit.getID()))%>">Edit</a></td>
-					<td>
-						<a id="editButton" href="<%=nvAction.getGoogleCalendarLink(obvisit.getScheduledDate())%>">Add</a>
-					</td>
 					<%
 				}
 	  			%>

@@ -109,6 +109,29 @@ public class ChildbirthVisitDAO {
 	}
 	
 	/**
+	 * Returns the deliveryRecord for a given ID
+	 * 
+	 * @param vid
+	 *            The deliveryRecord ID to retrieve.
+	 * @return A DeliveryRecordBean.
+	 * @throws DBException
+	 */
+	public DeliveryRecordBean getDeliveryRecord(long drid) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE ID = ?");
+				) {
+			ps.setLong(1, drid);
+			ResultSet rs = ps.executeQuery();
+			DeliveryRecordBean drb = rs.next() ? deliveryRecordLoader.loadSingle(rs) : null;
+			rs.close();
+						
+			return drb;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	/**
 	 * Lists every delivery record for a certain patient
 	 * 
 	 * @return A java.util.List of FetusBean representing the records.
@@ -117,7 +140,7 @@ public class ChildbirthVisitDAO {
 	public List<DeliveryRecordBean> getAllDeliveryRecord(long pid) throws DBException {
 		try (
 				Connection conn = factory.getConnection();
-				PreparedStatement ps = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY created_on DESC");
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM deliveryrecords WHERE PatientID = ? ORDER BY DeliveryDateTime DESC");
 				) {
 			ps.setLong(1, pid);
 			ResultSet rs = ps.executeQuery();
