@@ -102,6 +102,7 @@ public class EditChildbirthVisitAction extends PatientBaseAction {
 		newRecord.setPatientID(Integer.parseInt(patientID));
 		newRecord.setChildbirthVisitID(Integer.parseInt(childbirthVisitID));
 		newRecord.setChildID(Integer.parseInt(childID));
+		newRecord.setGenderStr(gender);
 		try {
 			Date deliveryDate = sdf.parse(deliveryDateTime);
 			newRecord.setDeliveryDateTime(deliveryDate);
@@ -131,5 +132,16 @@ public class EditChildbirthVisitAction extends PatientBaseAction {
 	 */
 	public ChildbirthVisitBean getChildbirthVisit(long vid) throws ITrustException {
 		return cbDAO.getChildbirthVisit(vid);
+	}
+	
+	/**
+	 * Return a delivery record that vid represents
+	 * 
+	 * @param vid The id of the delivery record we are looking for.
+	 * @return an DeliveryRecordBean
+	 * @throws ITrustException
+	 */
+	public DeliveryRecordBean getDeliveryRecord(long vid) throws ITrustException {
+		return cbDAO.getDeliveryRecord(vid);
 	}
 }

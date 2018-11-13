@@ -130,10 +130,10 @@ public class AddChildbirthVisitAction extends PatientBaseAction {
 		newRecord.setChildID(newMID);
 		newRecord.setPatientID(Long.parseLong(patientID));
 		newRecord.setChildbirthVisitID(Long.parseLong(childbirthVisitID));
+		newRecord.setGenderStr(gender);
 		try {
 			Date deliveryDate = sdf.parse(deliveryDateTime);
 			newRecord.setDeliveryDateTime(deliveryDate);
-			
 			long diffInMillies = Math.abs(getChildbirthVisit(Long.parseLong(childbirthVisitID)).getScheduledDate().getTime() - deliveryDate.getTime());
 		    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 			if (diff > 0){
