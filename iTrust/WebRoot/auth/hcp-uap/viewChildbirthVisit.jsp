@@ -85,7 +85,7 @@ if (true){
 						<a id="editButton" href="editChildbirthVisit.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (cbvisit.getVisitID()))%>">Edit</a>
 					</td>
 					<td>
-						<a id="editButton" href="addNewborns.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (cbvisit.getVisitID()))%>">Add</a>
+						<a id="addButton" href="addNewborns.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (cbvisit.getVisitID()))%>">Add</a>
 					</td>
 					<%
 				}
