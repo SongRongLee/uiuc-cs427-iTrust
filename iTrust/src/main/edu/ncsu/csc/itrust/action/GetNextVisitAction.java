@@ -1,6 +1,11 @@
 package edu.ncsu.csc.itrust.action;
 
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.beans.ApptTypeBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptTypeDAO;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -23,10 +28,18 @@ import java.text.SimpleDateFormat;
  *
  */
 public class GetNextVisitAction {
+	private ApptDAO apptDAO;
+	private ApptTypeDAO apptTypeDAO;
+	
 	/**
 	 * 
 	 * Approximately calculate next visit date
 	 */
+	public GetNextVisitAction(){}
+	public GetNextVisitAction(DAOFactory factory){
+		this.apptDAO = factory.getApptDAO();
+		this.apptTypeDAO = factory.getApptTypeDAO();
+	}
 	public String GetNextDateString(ObstetricsVisitBean v){
 		int numWeeks = Integer.parseInt(v.getNumWeeks().split("-",0)[0]);
 		Timestamp oldTs = v.getScheduledDate();
@@ -61,9 +74,9 @@ public class GetNextVisitAction {
 		Timestamp endTime = new Timestamp(cal.getTime().getTime());
 		List<Timestamp>listSchedule = new ArrayList<Timestamp>();
 		try {
-			listSchedule = getSchedule(startTime,endTime);
+			listSchedule = getSchedule(startTime,endTime,v.getPatientID());
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		defaultTime = GetNextTime(listSchedule, defaultTime);
 		
@@ -247,11 +260,24 @@ public class GetNextVisitAction {
 		return ts;
 	}
 	
-	public List<Timestamp> getSchedule(Timestamp tMin, Timestamp tMax) throws Exception{
-		
+	public List<Timestamp> getSchedule(Timestamp tMin, Timestamp tMax, long pid) throws Exception{
 		List<Timestamp> listSchedule = new ArrayList<Timestamp>();
-		
-		String timeMin = TimestampToRFC3399(tMin);
+		List<ApptBean> appts = apptDAO.getApptsFor(pid);
+		for (int i = 0; i < appts.size(); i++){
+			if (appts.get(i).getDate().after(tMin)&&appts.get(i).getDate().before(tMax)){
+				listSchedule.add(appts.get(i).getDate());
+				ApptTypeBean apptType = apptTypeDAO.getApptType(appts.get(i).getApptType());
+				
+		        Calendar cal = Calendar.getInstance();
+		        cal.setTimeInMillis(appts.get(i).getDate().getTime());
+		        cal.add(Calendar.MINUTE, apptType.getDuration());
+		        Timestamp endTime = new Timestamp(cal.getTime().getTime());
+		        
+				listSchedule.add(endTime);
+			}
+		}
+		// check google calendar
+		/*String timeMin = TimestampToRFC3399(tMin);
 		String timeMax = TimestampToRFC3399(tMax);
 		String url = "https://www.googleapis.com/calendar/v3/calendars/"
 				+ "osha1mpeirdg6m5uun9rmnbass@group.calendar.google.com/events?"
@@ -280,8 +306,7 @@ public class GetNextVisitAction {
 			endStr = endStr.substring(1, endStr.length()-1);
 			listSchedule.add(RFC3399ToTimestamp(startStr));
 			listSchedule.add(RFC3399ToTimestamp(endStr));
-		}
-		
+		}*/
 		return listSchedule;
 	}
 	
