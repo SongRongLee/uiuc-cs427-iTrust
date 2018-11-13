@@ -62,6 +62,7 @@ if (true){
 	  			if (specialty != null && specialty.equals("OB/GYN")){
 					%>
 					<td>Action</td>
+					<td>Add Newborns</td>
 					<%
 				}
 	  			%>
@@ -80,8 +81,12 @@ if (true){
 				<%
 	  			if (specialty != null && specialty.equals("OB/GYN")){
 					%>
-					<td><a id="editButton"
-					href="editChildbirthVisit.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (cbvisit.getVisitID()))%>">Edit</a></td>
+					<td>
+						<a id="editButton" href="editChildbirthVisit.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (cbvisit.getVisitID()))%>">Edit</a>
+					</td>
+					<td>
+						<a id="editButton" href="addNewborns.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (cbvisit.getVisitID()))%>">Add</a>
+					</td>
 					<%
 				}
 	  			%>

@@ -116,7 +116,7 @@ public enum ValidationFormat {
 	HSS_OV("^[1-3]$","1, 2, or 3, representing household smoking status"),
 	PSS_OV("^[1-59]$","1-5 or 9, representing patient smoking status"),
 	IMAGETYPE("^(?:image/png|image/jpeg|application/pdf)$", "must be one of {image/png, image/jpeg, application/pdf}"),
-	PREFERREDCHILDBIRTHMETHOD("^(?:vaginal delivery|vaginal delivery|vacuum assist|"
+	PREFERREDCHILDBIRTHMETHOD("^(?:vaginal delivery|vaginal delivery vacuum assist|"
 			+ "vaginal delivery forceps assist|caesarean section|miscarriage)$",
 			"must be one of vaginal delivery, vaginal delivery vacuum assist, "
 			+ "vaginal delivery forceps assist, caesarean section, miscarriage"),
