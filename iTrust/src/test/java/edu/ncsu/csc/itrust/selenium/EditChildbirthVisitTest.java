@@ -52,7 +52,7 @@ public class EditChildbirthVisitTest extends iTrustSeleniumTest {
 		WebElement pcm = wd.findElement(By.name("preferredChildbirthMethod"));
 		Select pcm_dropdown= new Select(pcm);
 		pcm_dropdown.selectByVisibleText("caesarean section");
-		form.findElement(By.name("drugs")).sendKeys("t, 5 ");
+		form.findElement(By.name("drugs")).sendKeys("(t, 5)");
 		form.findElement(By.name("scheduledDate")).sendKeys("11/03/2019");
 		WebElement chk_prescd = form.findElement(By.id("ER"));
 		chk_prescd.click();
@@ -69,7 +69,7 @@ public class EditChildbirthVisitTest extends iTrustSeleniumTest {
 		assertTrue(row.getText().contains("ID"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("caesarean section"));
-		assertTrue(row.getText().contains("t, 5 "));
+		assertTrue(row.getText().contains("(t, 5)"));
 		assertTrue(row.getText().contains("11/03/2019"));
 		assertTrue(row.getText().contains("false"));
 		
@@ -82,7 +82,7 @@ public class EditChildbirthVisitTest extends iTrustSeleniumTest {
 		pcm.clear();
 		pcm_dropdown.selectByVisibleText("miscarriage");
 		form.findElement(By.name("drugs")).clear();
-		form.findElement(By.name("drugs")).sendKeys("t, 6 ");
+		form.findElement(By.name("drugs")).sendKeys("(t, 6)");
 		form.findElement(By.name("scheduledDate")).clear();
 		form.findElement(By.name("scheduledDate")).sendKeys("11/03/2020");
 		chk_prescd = form.findElement(By.id("ER"));
@@ -102,7 +102,7 @@ public class EditChildbirthVisitTest extends iTrustSeleniumTest {
 		assertTrue(row.getText().contains("ID"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("miscarriage"));
-		assertTrue(row.getText().contains("t, 6 "));
+		assertTrue(row.getText().contains("(t, 6)"));
 		assertTrue(row.getText().contains("11/03/2020"));
 		assertTrue(row.getText().contains("true"));
 	}
