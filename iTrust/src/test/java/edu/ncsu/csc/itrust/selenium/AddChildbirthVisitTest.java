@@ -60,7 +60,7 @@ public class AddChildbirthVisitTest extends iTrustSeleniumTest {
 		WebElement pcm = wd.findElement(By.name("preferredChildbirthMethod"));
 		Select pcm_dropdown= new Select(pcm);
 		pcm_dropdown.selectByVisibleText("caesarean section");
-		form.findElement(By.name("drugs")).sendKeys("t, 5 ");
+		form.findElement(By.name("drugs")).sendKeys("(t, 5)");
 		form.findElement(By.name("scheduledDate")).sendKeys("11/03/2019");
 		WebElement chk_prescd = form.findElement(By.id("ER"));
 		chk_prescd.click();
@@ -78,7 +78,7 @@ public class AddChildbirthVisitTest extends iTrustSeleniumTest {
 		assertTrue(row.getText().contains("ID"));
 		row = rowsOnTable.next();
 		assertTrue(row.getText().contains("caesarean section"));
-		assertTrue(row.getText().contains("t, 5 "));
+		assertTrue(row.getText().contains("(t, 5)"));
 		assertTrue(row.getText().contains("11/03/2019"));
 		assertTrue(row.getText().contains("false"));
 				

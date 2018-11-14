@@ -176,8 +176,7 @@ if (specialty != null && specialty.equals("OB/GYN")){
 		  			if (specialty != null && specialty.equals("OB/GYN")){
 						%>
 						<td>
-							<a id="editButton" href="editNewborn.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (record.getID()))%>&
-							visitID=<%=StringEscapeUtils.escapeHtml("" + (rrString))%>">Edit</a>
+							<a id="editButton" href="http://localhost:8080/iTrust/auth/hcp-uap/editNewborn.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (record.getID()))%>&visitID=<%=StringEscapeUtils.escapeHtml("" + (rrString))%>">Edit</a>
 						</td>
 						<%
 					}
