@@ -92,7 +92,7 @@ public class ObstetricsValidatorTest extends TestCase {
     		assertEquals("num_hours_labor: " + ValidationFormat.HOURS_LABOR.getDescription(), e.getErrorList().get(3));
     		assertEquals("YOC: " + ValidationFormat.YEAR.getDescription(), e.getErrorList().get(4));
     		assertEquals("weight_gain: " + ValidationFormat.WEIGHT.getDescription(), e.getErrorList().get(5));
-    		assertEquals("num_children: " + ValidationFormat.FHR.getDescription(), e.getErrorList().get(6));
+    		assertEquals("num_children: " + ValidationFormat.CHILD_NUM.getDescription(), e.getErrorList().get(6));
     		assertEquals("number of errors", 7, e.getErrorList().size());
         }
 	}

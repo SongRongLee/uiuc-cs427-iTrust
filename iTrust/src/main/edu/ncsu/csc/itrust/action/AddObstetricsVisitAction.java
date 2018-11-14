@@ -158,8 +158,6 @@ public class AddObstetricsVisitAction extends PatientBaseAction {
 		appValidator.validate(appt);
 		try {
 			apptDAO.scheduleAppt(appt);
-			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_ADD, loggedInMID, appt.getPatient(), "");
-			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, appt.getPatient(), "");
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

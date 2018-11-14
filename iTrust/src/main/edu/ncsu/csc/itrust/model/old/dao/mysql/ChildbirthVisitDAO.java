@@ -68,7 +68,6 @@ public class ChildbirthVisitDAO {
 			ResultSet rs1 = ps1.executeQuery();
 			List<DeliveryRecordBean> deliveryRecords = deliveryRecordLoader.loadList(rs1);
 			rs1.close();
-			
 			cbVisit.setDeliveryRecord(deliveryRecords);
 			
 			return cbVisit;
