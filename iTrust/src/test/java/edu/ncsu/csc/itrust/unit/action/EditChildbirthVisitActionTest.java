@@ -79,14 +79,14 @@ public class EditChildbirthVisitActionTest extends TestCase {
 		ChildbirthVisitBean cbvb = new ChildbirthVisitBean();
 		cbvb.setPatientID(1);	
 		cbvb.setPreferredChildbirthMethod("vaginal delivery");
-		cbvb.setDrugs("t, 2 ");
+		cbvb.setDrugs("(t, 2)");
 		cbvb.setScheduledDate(new Timestamp(System.currentTimeMillis()));
 		cbvb.setPreScheduled(false);
 		
 		long newID = childbirthDAO.addChildbirthVisit(cbvb);
 		
 		cbvb.setPreScheduled(true);
-		action.editVisit(cbvb, Long.toString(newID), "1", "vaginal delivery", "t, 2 ", 
+		action.editVisit(cbvb, Long.toString(newID), "1", "vaginal delivery", "(t, 2)", 
 				sdf.format(new Timestamp(System.currentTimeMillis())), "true");
 		ChildbirthVisitBean cbvb2 = childbirthDAO.getChildbirthVisit(newID);
 		assertEquals(cbvb2.getVisitID(), newID);

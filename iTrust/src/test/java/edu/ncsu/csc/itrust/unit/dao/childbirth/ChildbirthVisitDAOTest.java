@@ -90,10 +90,13 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		long visitID = 1;
 		long patientID = 1;
+		long childID = 7;
+		Gender gender = Gender.Male;
 		String preferredChildbirthMethod = "vaginal delivery";
 		String drugs = "Pitocin";
 		Timestamp scheduledDate = new Timestamp(System.currentTimeMillis());
 		boolean preScheduled = false;
+		boolean isEstimated = true;
 		List<DeliveryRecordBean> deliveryRecords = new ArrayList<DeliveryRecordBean>();
 		
 		// set delivery bean information
@@ -101,8 +104,11 @@ public class ChildbirthVisitDAOTest extends TestCase {
 		
 		deliveryRecordBean.setPatientID(patientID);
 		deliveryRecordBean.setChildbirthVisitID(visitID);
+		deliveryRecordBean.setChildID(childID);
+		deliveryRecordBean.setGender(gender);
 		deliveryRecordBean.setDeliveryDateTime(scheduledDate);
 		deliveryRecordBean.setDeliveryMethod(preferredChildbirthMethod);
+		deliveryRecordBean.setIsEstimated(isEstimated);
 		deliveryRecords.add(deliveryRecordBean);
 		
 		// set childbirth bean information

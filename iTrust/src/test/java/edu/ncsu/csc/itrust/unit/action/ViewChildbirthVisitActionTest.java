@@ -80,7 +80,7 @@ public class ViewChildbirthVisitActionTest extends TestCase {
 		ChildbirthVisitBean cbvb = new ChildbirthVisitBean();
 		cbvb.setPatientID(1);	
 		cbvb.setPreferredChildbirthMethod("vaginal delivery");
-		cbvb.setDrugs("t, 2 ");
+		cbvb.setDrugs("(t, 2)");
 		cbvb.setScheduledDate(new Timestamp(System.currentTimeMillis()));
 		cbvb.setPreScheduled(false);
 		
@@ -96,7 +96,7 @@ public class ViewChildbirthVisitActionTest extends TestCase {
 		ChildbirthVisitBean cbvb = new ChildbirthVisitBean();
 		cbvb.setPatientID(1);	
 		cbvb.setPreferredChildbirthMethod("vaginal delivery");
-		cbvb.setDrugs("t, 2 ");
+		cbvb.setDrugs("(t,2)");
 		cbvb.setScheduledDate(new Timestamp(System.currentTimeMillis()));
 		cbvb.setPreScheduled(false);
 		
