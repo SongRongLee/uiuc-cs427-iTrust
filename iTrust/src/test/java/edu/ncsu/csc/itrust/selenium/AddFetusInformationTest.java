@@ -79,18 +79,18 @@ public class AddFetusInformationTest extends iTrustSeleniumTest {
 		form.submit();
 		
 		// add a second fetus 
-//		wd.findElement(By.id("addButton")).click();
-//		assertEquals("iTrust - Add a Fetus Information", wd.getTitle());
-//		form = wd.findElement(By.id("addFetusForm"));
-//		form.findElement(By.name("CRL")).sendKeys("20.0");
-//		form.findElement(By.name("BPD")).sendKeys("20.0");
-//		form.findElement(By.name("HC")).sendKeys("20.0");
-//		form.findElement(By.name("FL")).sendKeys("20.0");
-//		form.findElement(By.name("OFD")).sendKeys("20.0");
-//		form.findElement(By.name("AC")).sendKeys("20.0");
-//		form.findElement(By.name("HL")).sendKeys("20.0");
-//		form.findElement(By.name("EFW")).sendKeys("20.0");
-//		form.submit();
+		wd.findElement(By.id("addButton")).click();
+		assertEquals("iTrust - Add a Fetus Information", wd.getTitle());
+		form = wd.findElement(By.id("addFetusForm"));
+		form.findElement(By.name("CRL")).sendKeys("20.0");
+		form.findElement(By.name("BPD")).sendKeys("20.0");
+		form.findElement(By.name("HC")).sendKeys("20.0");
+		form.findElement(By.name("FL")).sendKeys("20.0");
+		form.findElement(By.name("OFD")).sendKeys("20.0");
+		form.findElement(By.name("AC")).sendKeys("20.0");
+		form.findElement(By.name("HL")).sendKeys("20.0");
+		form.findElement(By.name("EFW")).sendKeys("20.0");
+		form.submit();
 		
 		// verify the fetus record was saved
 		assertEquals("iTrust - View an Ultrasound Record", wd.getTitle());

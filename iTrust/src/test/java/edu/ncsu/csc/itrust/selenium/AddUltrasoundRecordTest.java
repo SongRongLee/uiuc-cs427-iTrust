@@ -65,7 +65,7 @@ public class AddUltrasoundRecordTest extends iTrustSeleniumTest {
 		assertEquals("iTrust - View an Ultrasound Record", wd.getTitle());
 		
 		//top table
-		tableElem = wd.findElements(By.tagName("table")).get(0);
+		tableElem = wd.findElements(By.id("topTable")).get(0);
 		tableData = tableElem.findElements(By.tagName("tr"));
 		rowsOnTable = tableData.iterator();
 		row = rowsOnTable.next();

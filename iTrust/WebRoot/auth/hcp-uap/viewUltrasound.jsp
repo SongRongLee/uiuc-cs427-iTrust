@@ -52,7 +52,7 @@
 <table cellspacing=0 align=center cellpadding=0>
 	<tr>
     	<td valign=top>
-    		<table class="fTable" align="center">
+    		<table class="fTable" align="center" id="topTable">
 				<tr>
 					<th colspan="10">Ultrasound Record</th>
 				</tr>
