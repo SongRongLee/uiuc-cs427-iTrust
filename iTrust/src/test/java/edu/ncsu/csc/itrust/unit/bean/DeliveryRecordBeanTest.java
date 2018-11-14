@@ -41,7 +41,7 @@ public class DeliveryRecordBeanTest extends TestCase {
 		assertEquals(childbirthVisitID, drb.getChildbirthVisitID());
 		assertEquals(childID, drb.getChildID());
 		assertEquals(gender, drb.getGender());
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		assertEquals(dateFormat.format(deliveryDateTime), dateFormat.format(drb.getDeliveryDateTime()));
 		assertEquals(dateFormat.format(deliveryDateTime), drb.getDeliveryDateTimeString());
 		assertEquals(deliveryMethod, drb.getDeliveryMethod());

@@ -36,7 +36,7 @@ public class ChildbirthVisitValidatorTest extends TestCase {
 		
 	public void testSubmitChildbirthVisit() throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-		ChildbirthVisitForm f = new ChildbirthVisitForm("1","vaginal delivery","t, 2 ",
+		ChildbirthVisitForm f = new ChildbirthVisitForm("1","vaginal delivery","(t, 2)",
 				dateFormat.format(new Timestamp(System.currentTimeMillis())),"false");
 
 		Exception ex = null;
