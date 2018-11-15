@@ -152,7 +152,12 @@
 			</tr>
 			<tr>
 				<td class="subHeaderVertical">Delivery Type:</td>
-				<td><input type="text" name="delivery_type"></td>
+				<td><select name="delivery_type">
+				<option value = "vaginal delivery">vaginal delivery</option>
+				<option value = "vaginal delivery vacuum assist">vaginal delivery vacuum assist</option>
+				<option value = "vaginal delivery forceps assist">vaginal delivery forceps assist</option>
+				<option value = "caesarean section">caesarean section</option>
+				<option value = "miscarriage">miscarriage</option>					
 			</tr>
 			<tr>
 				<td class="subHeaderVertical">Number of Children:</td>
