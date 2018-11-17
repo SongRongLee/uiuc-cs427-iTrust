@@ -224,6 +224,26 @@ public class  GenObstetricsReportAction extends PatientBaseAction {
 	}
 	
 	/**
+	 * Return true if the patient is of high potential for miscarriage
+	 * 
+	 * @return a Boolean
+	 * @throws ITrustException
+	 */
+	public Boolean isHighPotentialMiscarriage() throws ITrustException {
+		String[] miscarriageList = {"D6851"};
+		List<OfficeVisit> ovList = officeVisitData.getVisitsForPatient(pid);
+		for (OfficeVisit ov : ovList) {
+			List<Diagnosis> diagList = diagnosisData.getAllDiagnosisByOfficeVisit(ov.getVisitID());
+			for (Diagnosis diag : diagList) {
+				if (Arrays.asList(miscarriageList).contains(diag.getIcdCode().getCode())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Return true if the fetus has abnormal heart rate
 	 * during the given obstetrics visit
 	 * 
@@ -252,13 +272,64 @@ public class  GenObstetricsReportAction extends PatientBaseAction {
 	}
 	
 	/**
-	 * Returns a list of AllergyBeans for the patient
+	 * Return true if the patient is of hyperemesis gravidarum
 	 * 
-	 * @return a list of AllergyBeans
+	 * @return a Boolean
 	 * @throws ITrustException
 	 */
-	public List<AllergyBean> getAllergies() throws ITrustException {
-		return allergyDAO.getAllergies(pid);
+	public Boolean isHyperemesisGravidarum() throws ITrustException {
+		String[] hgList = {"O211"};
+		List<OfficeVisit> ovList = officeVisitData.getVisitsForPatient(pid);
+		for (OfficeVisit ov : ovList) {
+			List<Diagnosis> diagList = diagnosisData.getAllDiagnosisByOfficeVisit(ov.getVisitID());
+			for (Diagnosis diag : diagList) {
+				if (Arrays.asList(hgList).contains(diag.getIcdCode().getCode())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Return true if the patient is of Hypothyroidism
+	 * 
+	 * @return a Boolean
+	 * @throws ITrustException
+	 */
+	public Boolean isHypothyroidism() throws ITrustException {
+		String[] hypothyroidismList = {"E039"};
+		List<OfficeVisit> ovList = officeVisitData.getVisitsForPatient(pid);
+		for (OfficeVisit ov : ovList) {
+			List<Diagnosis> diagList = diagnosisData.getAllDiagnosisByOfficeVisit(ov.getVisitID());
+			for (Diagnosis diag : diagList) {
+				if (Arrays.asList(hypothyroidismList).contains(diag.getIcdCode().getCode())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns a list of ICDCode of diabetes for the patient
+	 * 
+	 * @return a list of ICDCode
+	 * @throws ITrustException
+	 */
+	public List<ICDCode> getDiabetes() throws ITrustException {
+		String[] diabetesList = {"E10", "E11", "E08"};
+		List<ICDCode> results = new ArrayList<ICDCode>();
+		List<OfficeVisit> ovList = officeVisitData.getVisitsForPatient(pid);
+		for (OfficeVisit ov : ovList) {
+			List<Diagnosis> diagList = diagnosisData.getAllDiagnosisByOfficeVisit(ov.getVisitID());
+			for (Diagnosis diag : diagList) {
+				if (Arrays.asList(diabetesList).contains(diag.getIcdCode().getCode())){
+					results.add(diag.getIcdCode());
+				}
+			}
+		}
+		return results;
 	}
 	
 	/**
@@ -274,6 +345,27 @@ public class  GenObstetricsReportAction extends PatientBaseAction {
 			List<Diagnosis> diagList = diagnosisData.getAllDiagnosisByOfficeVisit(ov.getVisitID());
 			for (Diagnosis diag : diagList) {
 				if (diag.getIcdCode().isChronic()){
+					results.add(diag.getIcdCode());
+				}
+			}
+		}
+		return results;
+	}
+	
+	/**
+	 * Returns a list of ICDCode of cancers for the patient
+	 * 
+	 * @return a list of ICDCode
+	 * @throws ITrustException
+	 */
+	public List<ICDCode> getCancers() throws ITrustException {
+		String[] cancerList = {"C50", "C7A", "C15"};
+		List<ICDCode> results = new ArrayList<ICDCode>();
+		List<OfficeVisit> ovList = officeVisitData.getVisitsForPatient(pid);
+		for (OfficeVisit ov : ovList) {
+			List<Diagnosis> diagList = diagnosisData.getAllDiagnosisByOfficeVisit(ov.getVisitID());
+			for (Diagnosis diag : diagList) {
+				if (Arrays.asList(cancerList).contains(diag.getIcdCode().getCode())){
 					results.add(diag.getIcdCode());
 				}
 			}
@@ -300,5 +392,15 @@ public class  GenObstetricsReportAction extends PatientBaseAction {
 			}
 		}
 		return results;
+	}
+	
+	/**
+	 * Returns a list of AllergyBeans for the patient
+	 * 
+	 * @return a list of AllergyBeans
+	 * @throws ITrustException
+	 */
+	public List<AllergyBean> getAllergies() throws ITrustException {
+		return allergyDAO.getAllergies(pid);
 	}
 }

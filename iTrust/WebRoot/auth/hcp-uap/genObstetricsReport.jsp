@@ -40,7 +40,7 @@ PersonnelDAO personnelDAO = new PersonnelDAO(prodDAO);
 PersonnelBean personnel = personnelDAO.getPersonnel(loggedInMID);
 String specialty = personnel.getSpecialty();
 %>
-<p><%=action.getSTDs().size() %></p>
+<p><%=action.isHyperemesisGravidarum() %></p>
 
 
 <%@include file="/footer.jsp"%>
