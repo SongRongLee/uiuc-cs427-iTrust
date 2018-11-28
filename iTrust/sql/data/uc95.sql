@@ -7,7 +7,8 @@ INSERT INTO icdcode (code, name, is_chronic) VALUES
 ('E08', 'Diabetes mellitus due to underlying condition', 1),
 ('C50', 'Malignant neoplasm of breast', 0),
 ('C7A', 'Malignant neuroendocrine tumors', 0), 
-('C15', 'Malignant neoplasm of esophagus', 0)
+('C15', 'Malignant neoplasm of esophagus', 0),
+('A568', 'STD', 0)
 ON duplicate key update code=code;
 
 /*Inserting obstetrics records*/
@@ -45,5 +46,9 @@ set @ov = LAST_INSERT_ID();
 
 /*Insert diagnoses*/
 INSERT INTO diagnosis (visitId, icdCode)
-VALUES (@ov, 'D6851'), (@ov, 'O211'), (@ov, 'E039');
+VALUES (@ov, 'D6851'), (@ov, 'O211'), (@ov, 'E039'), (@ov, 'E10'), (@ov, 'C50'), (@ov, 'A568');
+
+/*Insert Allergies*/
+INSERT INTO allergies (PatientID, Description, FirstFound, Code)
+VALUES (1, 'Penicillin', '2018-10-01', 'Z88');
 

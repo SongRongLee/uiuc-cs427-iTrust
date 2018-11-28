@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -17,9 +19,11 @@ import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.old.beans.AllergyBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
+import edu.ncsu.csc.itrust.model.old.beans.PregnancyBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
@@ -32,8 +36,11 @@ public class GenObstetricsReportActionTest {
 	private GenObstetricsReportAction action;
 	private DataSource ds;
 	private ObstetricsVisitDAO obstetricsVisitDAO;
+	private ObstetricsDAO obstetricsDAO;
 	private ObstetricsVisitBean obTrue = new ObstetricsVisitBean();
 	private ObstetricsVisitBean obFalse = new ObstetricsVisitBean();
+	private ObstetricsBean ob = new ObstetricsBean();
+	private PregnancyBean pb = new PregnancyBean();
 	
 	@Before
 	public void setUp() throws Exception {
@@ -46,7 +53,7 @@ public class GenObstetricsReportActionTest {
 		obTrue.setPatientID(1);
 		obTrue.setScheduledDate(new Timestamp(new Date(0).getTime()));
 		obTrue.setCreatedDate(new Timestamp(new Date(0).getTime()));
-		obTrue.setNumWeeks("17");
+		obTrue.setNumWeeks("17-3");
 		obTrue.setWeight((float)200);
 		obTrue.setBloodPressure("160/100");
 		obTrue.setFHR(60);
@@ -54,6 +61,31 @@ public class GenObstetricsReportActionTest {
 		obTrue.setLLP((Boolean)false);
 		obstetricsVisitDAO = new ObstetricsVisitDAO(factory);
 		obstetricsVisitDAO.addObstetricsVisit(obTrue);
+		
+		pb.setDate(new Timestamp(new Date(0).getTime()));
+		pb.setDelivery_type("caesarean section");
+		pb.setNum_children(12);
+		pb.setNum_hours_labor(12);
+		pb.setNum_weeks_pregnant(17);
+		pb.setPatientID(1);
+		pb.setWeight_gain(50);
+		pb.setYOC(2018);
+		obstetricsDAO = new ObstetricsDAO(factory);
+		obstetricsDAO.addPregnancy(pb);
+		
+		List<PregnancyBean> pList = new ArrayList<>();
+		pList.add(pb);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = new java.sql.Date(sdf.parse("1969-08-31").getTime());
+		
+		ob.setID(1);
+		ob.setPatientID(1);
+		ob.setCreated_on(new Timestamp(new Date(0).getTime()));
+		ob.setLMP(new Timestamp(d.getTime()));
+		ob.setNumber_of_weeks_pregnant(145);
+		ob.setPregnancies(pList);
+		obstetricsDAO.addRecord(ob);
 		
 	}
 	
@@ -146,22 +178,22 @@ public class GenObstetricsReportActionTest {
 			stdList = action.getSTDs();
 			allergyList = action.getAllergies();
 		} catch (ITrustException e) {
-			fail();
+			fail("ITrust Exception");
 		}
 		if (diabetesList == null) {
-			fail();
+			fail("Diabetes");
 		} 
 		if (chronicList == null) {
-			fail();
+			fail("Chronic");
 		} 
 		if (cancerList == null) {
-			fail();
+			fail("Cancer");
 		} 
 		if (stdList == null) {
-			fail();
+			fail("STD");
 		} 
 		if (allergyList == null) {
-			fail();
+			fail("Allergy");
 		} 
 			
 		assertTrue(diabetesList.size() > 0 );
@@ -176,10 +208,13 @@ public class GenObstetricsReportActionTest {
 		
 		long trueVid = 1;
 		
+		List<ObstetricsBean> obList = obstetricsDAO.getAllObstetrics(1);
+		int obIdx = obList.get(0).getID();
+		
 		assertTrue(action.isHighBloodPressure(trueVid));
 		//assertTrue(action.isAdvancedMaternalAge(trueVid));
 		assertTrue(action.isAbormalHeartRate(trueVid));
-		assertTrue(action.isAtypicalWeightChange(trueVid));
+		assertTrue(action.isAtypicalWeightChange(obIdx));
 
 	}
 	
