@@ -31,7 +31,7 @@ loggingAction.logEvent(TransactionType.HOME_VIEW, loggedInMID.longValue(), 0, ""
 	<div class="panel-body">
 	<span>
 		2018-11-05
-		<a href="/auth/hcp/viewBulletinPost.jsp">Title</a>
+		<a href="/iTrust/auth/hcp/viewBulletinPost.jsp">Title</a>
 	</span>
 </div>
 </div>
