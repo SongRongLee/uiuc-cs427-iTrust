@@ -23,7 +23,7 @@ loggingAction.logEvent(TransactionType.HOME_VIEW, loggedInMID.longValue(), 0, ""
 
 
 <div class="col-sm-12">
-	<a href="/auth/hcp/addBulletinPost.jsp">Add New Post</a>
+	<a href="/iTrust/auth/hcp/addBulletinPost.jsp">Add New Post</a>
 	<div class="panel panel-primary panel-notification">
 	<div class="panel-heading">
 		<h3 class="panel-title">Bulletin Board</h3>
