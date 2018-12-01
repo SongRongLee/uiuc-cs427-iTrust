@@ -587,3 +587,13 @@ CREATE TABLE deliveryrecords (
   IsEstimated BOOLEAN NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
+
+CREATE TABLE comments (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  BulletinBoardID int(11) NOT NULL,
+  PosterFirstName VARCHAR(20) NOT NULL,
+  PosterLastName VARCHAR(20) NOT NULL,
+  Text VARCHAR(1000) NOT NULL,
+  CreatedOn timestamp NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;

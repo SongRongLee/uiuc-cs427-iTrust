@@ -255,6 +255,9 @@ public class DAOFactory {
 	public ChildbirthVisitDAO getChildbirthVisitDAO() {
 		return new ChildbirthVisitDAO(this);
 	}
-	
+
+	public BulletinBoardDAO getBulletinBoardDAO() {
+		return new BulletinBoardDAO(this);
+	}
 
 }

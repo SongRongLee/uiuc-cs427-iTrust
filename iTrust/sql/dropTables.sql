@@ -58,3 +58,4 @@ DROP TABLE IF EXISTS fetusrecords;
 DROP TABLE IF EXISTS ultrasoundrecords;
 DROP TABLE IF EXISTS childbirthvisit;
 DROP TABLE IF EXISTS deliveryrecords;
+DROP TABLE IF EXISTS comments;
