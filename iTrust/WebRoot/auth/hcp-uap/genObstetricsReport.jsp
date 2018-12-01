@@ -48,7 +48,11 @@ int index = 0;
 
 <!-- BEGIN DISPLAYING TABLES -->
 
-<% if (action.isObstericsPatient()){ %> 
+<% if (action.isObstericsPatient()){ 
+	loggingAction.logEvent(TransactionType.GENERATE_REPORT,
+			loggedInMID.longValue(), pid, "");
+
+%> 
 	<br /><br />
 <!-- PATIENT INFORMATION TABLE -->
 	<table class="fTable" align="center" id="patientInfoList">
@@ -69,7 +73,7 @@ int index = 0;
 		  if (!action.getDiabetes().isEmpty()) { %>
 		<tr>
 				<td>Diabetes</td>
-				<td><%=StringEscapeUtils.escapeHtml("" + action.getDiabetes())%></td>
+				<td><%=StringEscapeUtils.escapeHtml("" + action.getDiabetes() )%></td>
 		</tr>
 		<% }
 		  if (!action.getChronicIllness().isEmpty()) { %>
@@ -197,7 +201,44 @@ int index = 0;
 	    		<td><%=StringEscapeUtils.escapeHtml("" + (obvisit.getNumChildren()))%></td>
 	    		<td><%=StringEscapeUtils.escapeHtml("" + (obvisit.getLLP()))%></td>
 <!-- COMPLICATIONS BEGIN -->
-	  			<td><%=StringEscapeUtils.escapeHtml("placeholder")%></td>
+	  			<td>
+			  	<% 
+			  	long vid = obvisit.getID();
+			  	 if (!action.getRHFlag()) { %>
+						<%=StringEscapeUtils.escapeHtml("RH Negative")%><br/>
+				<% }
+				 if (action.isHighBloodPressure(vid)) { %>
+						<%=StringEscapeUtils.escapeHtml("High Blood Pressure")%><br/>
+				<% }
+				 if (action.isAdvancedMaternalAge(vid)) { %>
+					<%=StringEscapeUtils.escapeHtml("Advanced Maternal Age")%><br/>
+				<% }
+				 if (obvisit.getLLP()) { %>
+					<%=StringEscapeUtils.escapeHtml("Low-lying placenta")%><br/>
+				<% }
+				 if (action.isHighPotentialMiscarriage()) { %>
+					<%=StringEscapeUtils.escapeHtml("High genetic potential for miscarriage")%><br/>
+				<% }
+				 if (action.isAbormalHeartRate(vid)) { %>
+					<%=StringEscapeUtils.escapeHtml("Abnormal fetal heart rate")%><br/>
+				<% }
+				 if (obvisit.getNumChildren()>1) { %>
+					<%=StringEscapeUtils.escapeHtml("Multiples in current pregnancy")%><br/>
+				<% }
+				 if (action.isAtypicalWeightChange(vid)) { %>
+					<%=StringEscapeUtils.escapeHtml("Atypical weight change")%><br/>
+				<% }
+				 if (action.isHyperemesisGravidarum()) { %>
+					<%=StringEscapeUtils.escapeHtml("Hyperemesis gravidarum")%><br/>
+				<% }
+				 if (action.isHypothyroidism()) { %>
+					<%=StringEscapeUtils.escapeHtml("Hypothyroidism")%><br/>
+				<% }
+				  
+				%>
+	  			
+	  			</td>
+	  			
 <!-- COMPLICATIONS END -->
 			</tr>
 		<%
@@ -212,12 +253,13 @@ int index = 0;
 	<%
 }
 else{
+	
 	session.setAttribute("pid", "");
 	%>
 	<br />
 	<div align=center>
 		<span class="iTrustMessage" id="ViewUltrasoundPatientError">
-		The patient is not an obstetrics patient. Please <a href="genObstetricsReport.jsp">try again</a>.</span>
+		Selected patient does not have an obstetrics record. Please <a href="genObstetricsReport.jsp">try again</a>.</span>
 	</div>
 	<br />
 	<% 
