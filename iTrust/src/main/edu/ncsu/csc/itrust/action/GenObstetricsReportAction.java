@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.sql.DataSource;
+
 import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
@@ -64,6 +66,26 @@ public class  GenObstetricsReportAction extends PatientBaseAction {
 		this.allergyDAO = factory.getAllergyDAO();
 		this.officeVisitData = new OfficeVisitMySQL();
 		this.diagnosisData = new DiagnosisMySQL();
+		this.loggedInMID = loggedInMID;
+	}
+	
+	/**
+	 * The super class validates the patient id
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs for this action.
+	 * @param loggedInMID The MID of the user who is authorizing this action.
+	 * @param pidString The MID of the patient being edited.
+	 * @throws ITrustException
+	 */
+	public GenObstetricsReportAction(DAOFactory factory, long loggedInMID, String pidString, DataSource ds) throws ITrustException {
+		super(factory, pidString);
+		this.patientDAO = factory.getPatientDAO();
+		this.authDAO = factory.getAuthDAO();
+		this.obstetricsDAO = factory.getObstetricsDAO();
+		this.obstetricsVisitDAO = factory.getObstetricsVisitDAO();
+		this.allergyDAO = factory.getAllergyDAO();
+		this.officeVisitData = new OfficeVisitMySQL(ds);
+		this.diagnosisData = new DiagnosisMySQL(ds);
 		this.loggedInMID = loggedInMID;
 	}
 	
