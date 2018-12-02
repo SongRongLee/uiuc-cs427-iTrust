@@ -13,9 +13,11 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
 import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 //import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.beans.forms.BulletinBoardForm;
 //import edu.ncsu.csc.itrust.model.old.beans.forms.BulletinBoardForm;
 import edu.ncsu.csc.itrust.model.old.beans.forms.CommentForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
@@ -24,6 +26,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.BulletinBoardDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.enums.Role;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.old.validate.BulletinBoardValidator;
 //import edu.ncsu.csc.itrust.model.old.validate.BulletinBoardValidator;
 import edu.ncsu.csc.itrust.model.old.validate.CommentValidator;
 
@@ -34,7 +37,7 @@ import edu.ncsu.csc.itrust.model.old.validate.CommentValidator;
  * 
  */
 public class AddBulletinBoardAction extends PatientBaseAction {
-//	private BulletinBoardValidator bValidator = new BulletinBoardValidator();
+	private BulletinBoardValidator bValidator = new BulletinBoardValidator();
 	private CommentValidator cValidator = new CommentValidator();
 	private PatientDAO patientDAO;
 	private BulletinBoardDAO bulletinBoardDAO;
@@ -74,14 +77,31 @@ public class AddBulletinBoardAction extends PatientBaseAction {
 	 * @return a BulletinBoardBean
 	 * @throws ITrustException
 	 */
-//	public BulletinBoardBean getBulletinBoard(long bid) throws ITrustException {
-//		return bulletinBoardDAO.getBulletinBoard(bid);
-//	}
+	public BulletinBoardBean getBulletinBoard(long bid) throws ITrustException {
+		return bulletinBoardDAO.getBulletinBoard(bid);
+	}
 	
 	
-//	public long addBulletinBoard(BulletinBoardBean newBulletinBoard   ) throws ITrustException, FormValidationException {
-//		
-//	}
+	public long addBulletinBoard(BulletinBoardBean newBulletinBoard, String title, String posterFirstName, String posterLastName, String createdOn, String content) throws ITrustException, FormValidationException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		BulletinBoardForm form = new BulletinBoardForm(title, posterFirstName, posterLastName, createdOn, content);
+		bValidator.validate(form);
+	
+		// set CommentBean manually after validation
+		newBulletinBoard.setTitle(title);
+		newBulletinBoard.setPosterFirstName(posterFirstName);
+		newBulletinBoard.setPosterLastName(posterLastName);
+		try {
+			Date CreatedOn = sdf.parse(createdOn);
+			newBulletinBoard.setCreatedOn(CreatedOn);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		newBulletinBoard.setContent(content);
+				
+		return bulletinBoardDAO.addBulletinBoard(newBulletinBoard);
+	}
 	
 
 	public long addComment(CommentBean newComment, String bulletinBoardID, String posterFirstName, String posterLastName, String text, String createdOn) throws ITrustException, FormValidationException {

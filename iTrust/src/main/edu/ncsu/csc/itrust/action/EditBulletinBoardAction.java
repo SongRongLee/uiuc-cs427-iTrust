@@ -11,14 +11,17 @@ import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 //import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.beans.forms.BulletinBoardForm;
 //import edu.ncsu.csc.itrust.model.old.beans.forms.BulletinBoardForm;
 import edu.ncsu.csc.itrust.model.old.beans.forms.CommentForm;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.validate.BulletinBoardValidator;
 //import edu.ncsu.csc.itrust.model.old.validate.BulletinBoardValidator;
 import edu.ncsu.csc.itrust.model.old.validate.CommentValidator;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.BulletinBoardDAO;
@@ -30,7 +33,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.BulletinBoardDAO;
  * 
  */
 public class EditBulletinBoardAction extends PatientBaseAction {
-//	private BulletinBoardValidator bValidator = new BulletinBoardValidator();
+	private BulletinBoardValidator bValidator = new BulletinBoardValidator();
 	private CommentValidator cValidator = new CommentValidator();
 	private BulletinBoardDAO bulletinBoardDAO;
 	private PatientDAO patientDAO;
@@ -63,9 +66,26 @@ public class EditBulletinBoardAction extends PatientBaseAction {
 		return patientDAO.getPatient(this.getPid());
 	}
 	
-//	public void editBulletinBoard(BulletinBoardBean newBulletinBoard) throws ITrustException, FormValidationException {
-//		
-//	}
+	public void editBulletinBoard(BulletinBoardBean newBulletinBoard, String ID, String title, String posterFirstName, String posterLastName, String createdOn, String content) throws ITrustException, FormValidationException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		BulletinBoardForm form = new BulletinBoardForm(title, posterFirstName, posterLastName, createdOn, content);
+		bValidator.validate(form);
+		
+		// set DeliveryRecordBean manually after validation
+		newBulletinBoard.setID(Integer.parseInt(ID));
+		newBulletinBoard.setTitle(title);
+		newBulletinBoard.setPosterFirstName(posterFirstName);
+		newBulletinBoard.setPosterLastName(posterLastName);
+		try {
+			Date CreatedOn = sdf.parse(createdOn);
+			newBulletinBoard.setCreatedOn(CreatedOn);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		newBulletinBoard.setContent(content);
+		
+		bulletinBoardDAO.updateBulletinBoard(newBulletinBoard);
+	}
 	
 	public void editComment(CommentBean newComment, String ID, String bulletinBoardID, String posterFirstName, String posterLastName, String text, String createdOn) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
@@ -95,9 +115,9 @@ public class EditBulletinBoardAction extends PatientBaseAction {
 	 * @return a BulletinBoardBean
 	 * @throws ITrustException
 	 */
-//	public BulletinBoardBean getBulletinBoard(long bid) throws ITrustException {
-//		return bulletinBoardDAO.getBulletinBoard(bid);
-//	}
+	public BulletinBoardBean getBulletinBoard(long bid) throws ITrustException {
+		return bulletinBoardDAO.getBulletinBoard(bid);
+	}
 	
 	/**
 	 * Return a comment that cid represents
@@ -115,9 +135,13 @@ public class EditBulletinBoardAction extends PatientBaseAction {
 	 * @param bid
 	 * @return a string indicates successfully deleted or not
 	 */
-//	public String deleteBulletinBoard(long bid) throws ITrustException, FormValidationException{
-//
-//	}
+	public String deleteBulletinBoard(long bid) throws ITrustException, FormValidationException{
+		if (bulletinBoardDAO.deleteBulletinBoard(bid)){
+			return "BulletinBoard deleted successfully";
+		} else {
+			return "BulletinBoard could not be deleted";
+		}
+	}
 	
 	/**
 	 * Method to delete a comment
