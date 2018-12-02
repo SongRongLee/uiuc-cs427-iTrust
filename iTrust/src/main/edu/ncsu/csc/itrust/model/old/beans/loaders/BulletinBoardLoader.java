@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
+import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
 /**
  * A loader for PregnancyBeans.
  * 
@@ -75,6 +77,27 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 		ps.setDate(i++, date);
 		ps.setString(i++, p.getContent());
 		
+		return ps;
+	}
+	
+	/**
+	 * loadParameters for update
+	 * @throws SQLException
+	 */
+	public PreparedStatement loadParametersUpdate(PreparedStatement ps, BulletinBoardBean b) throws SQLException {
+		int i = 1;
+		ps.setString(i++, b.getTitle());
+		ps.setString(i++, b.getPosterFirstName());
+		ps.setString(i++, b.getPosterLastName());
+		ps.setString(i++, b.getContent());
+		Timestamp date = null;
+		try {
+			date = new java.sql.Timestamp(DATE_FORMAT.parse(b.getCreatedOnString()).getTime());
+		} catch (ParseException e) {
+			//TODO
+		}
+		ps.setTimestamp(i++, date);
+		ps.setLong(i++, b.getID());
 		return ps;
 	}
 }

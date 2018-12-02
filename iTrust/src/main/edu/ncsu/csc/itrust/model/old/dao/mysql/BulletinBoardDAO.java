@@ -8,15 +8,14 @@ import java.util.List;
 
 import edu.ncsu.csc.itrust.DBUtil;
 import edu.ncsu.csc.itrust.exception.DBException;
-//import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
+import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
-import edu.ncsu.csc.itrust.model.old.beans.FetusBean;
-//import edu.ncsu.csc.itrust.model.old.beans.loaders.BulletinBoardLoader;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.BulletinBoardLoader;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.CommentLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
 /**
- * Used for managing all static information related to an obstetrics visit record. 
+ * Used for managing all static information related to a bulletin board. 
  * 
  * DAO stands for Database Access Object. All DAOs are intended to be
  * reflections of the database, that is, one DAO per table in the database (most
@@ -30,7 +29,7 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
  */
 public class BulletinBoardDAO {
 	private DAOFactory factory;
-//	private BulletinBoardLoader bulletinBoardLoader;
+	private BulletinBoardLoader bulletinBoardLoader;
 	private CommentLoader commentLoader;
 
 	/**
@@ -42,7 +41,7 @@ public class BulletinBoardDAO {
 	 */
 	public BulletinBoardDAO(DAOFactory factory) {
 		this.factory = factory;
-		//this.bulletinBoardLoader = new BulletinBoardLoader();
+		this.bulletinBoardLoader = new BulletinBoardLoader();
 		this.commentLoader = new CommentLoader();
 	}
 
@@ -54,9 +53,22 @@ public class BulletinBoardDAO {
 	 * @return A BulletinBoardBean.
 	 * @throws DBException
 	 */
-//	public BulletinBoardBean getBulletinBoard(long bid) throws DBException {
-//		
-//	}
+	public BulletinBoardBean getBulletinBoard(long bid) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM bulletin WHERE ID = ?");
+				) {
+			ps.setLong(1, bid);
+			ResultSet rs = ps.executeQuery();
+			BulletinBoardBean bb = rs.next() ? bulletinBoardLoader.loadSingle(rs) : null;
+			rs.close();
+						
+			bb.setComments(getAllComment(bid));
+			
+			return bb;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
 
 	/**
 	 * Lists every bulletin board
@@ -64,9 +76,24 @@ public class BulletinBoardDAO {
 	 * @return A java.util.List of BulletinBoard Beans representing the records.
 	 * @throws DBException
 	 */
-//	public List<BulletinBoardBean> getAllBulletinBoards() throws DBException {
-//		
-//	}
+	public List<BulletinBoardBean> getAllBulletinBoards() throws DBException {
+		try (
+				Connection conn = factory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM bulletin ORDER BY CreatedOn DESC");
+				) 
+		{
+			ResultSet rs = ps.executeQuery();
+			List<BulletinBoardBean> bulletins = bulletinBoardLoader.loadList(rs);
+			for (BulletinBoardBean bulletin : bulletins) {
+				bulletin.setComments(getAllComment(bulletin.getID()));
+			}
+			rs.close();
+			return bulletins;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
 	
 	/**
 	 * Returns the comment for a given ID
@@ -120,9 +147,19 @@ public class BulletinBoardDAO {
 	 *            The BulletinBoard bean representing the new information
 	 * @throws DBException
 	 */
-//	public long addBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
-//
-//	}
+	public long addBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = bulletinBoardLoader.loadParameters(conn.prepareStatement(
+						"INSERT INTO bulletin (Title, PosterFirstName, PosterLastName, "
+						+ "Content, CreatedOn) VALUES (?, ?, ?, ?, ?)"),
+						newBulletinBoard)) {
+			stmt.executeUpdate();
+			return DBUtil.getLastInsert(conn);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new DBException(e);
+		}
+	}
 	
 	/**
 	 * Add a comment
@@ -152,9 +189,17 @@ public class BulletinBoardDAO {
 	 *            The BulletinBoard bean representing the new information
 	 * @throws DBException
 	 */
-//	public void updateBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
-//		
-//	}
+	public void updateBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = bulletinBoardLoader.loadParametersUpdate(conn.prepareStatement(
+						"UPDATE bulletin SET Title, PosterFirstName=?, PosterLastName=?, Content=?,"
+						+ "CreatedOn=? WHERE ID=?"),
+						newBulletinBoard)) {
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
 	
 	/**
 	 * update a comment
@@ -176,15 +221,22 @@ public class BulletinBoardDAO {
 	}
 	
 	/**
-	 * Remove a bullentin board from the database
+	 * Remove a bulletin board from the database
 	 * 
 	 * @param bid
 	 *            The The bulletin board ID of the bulletin board record to delete.
 	 * @return true if removed successfully, false if not in list
 	 */
-//	public boolean deleteBulletinBoard(long bid) throws DBException {
-//
-//	}
+	public boolean deleteBulletinBoard(long bid) throws DBException {
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(
+						"DELETE FROM bulletin WHERE ID=?")) {
+			stmt.setLong(1, bid);
+			return stmt.executeUpdate() != 0;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
 	
 	/**
 	 * Remove a comment from the database
