@@ -8,10 +8,10 @@ import java.util.List;
 
 import edu.ncsu.csc.itrust.DBUtil;
 import edu.ncsu.csc.itrust.exception.DBException;
-import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
+//import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
 import edu.ncsu.csc.itrust.model.old.beans.FetusBean;
-import edu.ncsu.csc.itrust.model.old.beans.loaders.BulletinBoardLoader;
+//import edu.ncsu.csc.itrust.model.old.beans.loaders.BulletinBoardLoader;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.CommentLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
@@ -30,7 +30,7 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
  */
 public class BulletinBoardDAO {
 	private DAOFactory factory;
-	private BulletinBoardLoader bulletinBoardLoader;
+//	private BulletinBoardLoader bulletinBoardLoader;
 	private CommentLoader commentLoader;
 
 	/**
@@ -42,7 +42,7 @@ public class BulletinBoardDAO {
 	 */
 	public BulletinBoardDAO(DAOFactory factory) {
 		this.factory = factory;
-		this.bulletinBoardLoader = new BulletinBoardLoader();
+		//this.bulletinBoardLoader = new BulletinBoardLoader();
 		this.commentLoader = new CommentLoader();
 	}
 
@@ -54,9 +54,9 @@ public class BulletinBoardDAO {
 	 * @return A BulletinBoardBean.
 	 * @throws DBException
 	 */
-	public BulletinBoardBean getBulletinBoard(long bid) throws DBException {
-		
-	}
+//	public BulletinBoardBean getBulletinBoard(long bid) throws DBException {
+//		
+//	}
 
 	/**
 	 * Lists every bulletin board
@@ -64,9 +64,9 @@ public class BulletinBoardDAO {
 	 * @return A java.util.List of BulletinBoard Beans representing the records.
 	 * @throws DBException
 	 */
-	public List<BulletinBoardBean> getAllBulletinBoards() throws DBException {
-		
-	}
+//	public List<BulletinBoardBean> getAllBulletinBoards() throws DBException {
+//		
+//	}
 	
 	/**
 	 * Returns the comment for a given ID
@@ -120,9 +120,9 @@ public class BulletinBoardDAO {
 	 *            The BulletinBoard bean representing the new information
 	 * @throws DBException
 	 */
-	public long addBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
-
-	}
+//	public long addBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
+//
+//	}
 	
 	/**
 	 * Add a comment
@@ -140,6 +140,7 @@ public class BulletinBoardDAO {
 			stmt.executeUpdate();
 			return DBUtil.getLastInsert(conn);
 		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			throw new DBException(e);
 		}
 	}
@@ -151,9 +152,9 @@ public class BulletinBoardDAO {
 	 *            The BulletinBoard bean representing the new information
 	 * @throws DBException
 	 */
-	public void updateBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
-		
-	}
+//	public void updateBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
+//		
+//	}
 	
 	/**
 	 * update a comment
@@ -181,9 +182,9 @@ public class BulletinBoardDAO {
 	 *            The The bulletin board ID of the bulletin board record to delete.
 	 * @return true if removed successfully, false if not in list
 	 */
-	public boolean deleteBulletinBoard(long bid) throws DBException {
-
-	}
+//	public boolean deleteBulletinBoard(long bid) throws DBException {
+//
+//	}
 	
 	/**
 	 * Remove a comment from the database

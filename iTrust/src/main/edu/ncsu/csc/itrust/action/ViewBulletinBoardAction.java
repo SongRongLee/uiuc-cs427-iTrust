@@ -9,7 +9,7 @@ import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
-import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
+//import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
@@ -59,9 +59,9 @@ public class ViewBulletinBoardAction extends PatientBaseAction {
 	 * @return a list of BulletinBoardBean
 	 * @throws ITrustException
 	 */
-	public List<BulletinBoardBean> getAllBulletinBoards() throws ITrustException {
-		return bulletinBoardDAO.getAllBulletinBoards();
-	}
+//	public List<BulletinBoardBean> getAllBulletinBoards() throws ITrustException {
+//		return bulletinBoardDAO.getAllBulletinBoards();
+//	}
 
 	
 	/**
@@ -71,9 +71,9 @@ public class ViewBulletinBoardAction extends PatientBaseAction {
 	 * @return a BulletinBoardBean
 	 * @throws ITrustException
 	 */
-	public BulletinBoardBean getBulletinBoard(long bid) throws ITrustException {
-		return bulletinBoardDAO.getBulletinBoard(bid);
-	}
+//	public BulletinBoardBean getBulletinBoard(long bid) throws ITrustException {
+//		return bulletinBoardDAO.getBulletinBoard(bid);
+//	}
 	
 	
 }

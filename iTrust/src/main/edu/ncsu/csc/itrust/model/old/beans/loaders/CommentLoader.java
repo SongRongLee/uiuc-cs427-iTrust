@@ -19,7 +19,7 @@ import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
  * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
  */
 public class CommentLoader implements BeanLoader<CommentBean> {
-	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
 	/**
 	 * loadList
