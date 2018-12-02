@@ -8,21 +8,22 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A bean for storing data about bulletin board comments.
+ * A bean for storing data about bulletin boards.
  * 
  * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
  * (with the exception of minor formatting such as concatenating phone numbers together). 
  * A bean must only have Getters and Setters (Eclipse Hint: Use Source > Generate Getters and Setters 
  * to create these easily)
  */
-public class CommentBean implements Serializable, Comparable<CommentBean> {
+public class BulletinBean implements Serializable, Comparable<BulletinBean> {
 	
 	private long ID = 0;
-	private long bulletinBoardID = 0;
+	private String title = "";
 	private String posterFirstName = "";
 	private String posterLastName = "";
-	private String text = "";
+	private String content = "";
 	private Date createdOn;
+	private List<CommentBean> comments;
 	
 	public long getID() {
 		return ID;
@@ -31,13 +32,14 @@ public class CommentBean implements Serializable, Comparable<CommentBean> {
 		this.ID = ID;
 	}
 	
-	public long getBulletinBoardID() {
-		return bulletinBoardID;
-	}
-	public void setBulletinBoardID(long ID) {
-		this.bulletinBoardID = ID;
+	public String getTitle() {
+		return title;
 	}
 	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getPosterFirstName() {
 		return posterFirstName;
 	}
@@ -52,11 +54,11 @@ public class CommentBean implements Serializable, Comparable<CommentBean> {
 		this.posterLastName = posterLastName;
 	}
 	
-	public String getText() {
-		return text;
+	public String getContent() {
+		return content;
 	}
-	public void setText(String text) {
-		this.text = text;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	
 	public void setCreatedOn(Date createdOn) {
@@ -72,8 +74,16 @@ public class CommentBean implements Serializable, Comparable<CommentBean> {
 		return f.format(createdOn);
 	}
 	
+	public void setComments(List<CommentBean> comments) {
+		this.comments = comments;
+	}
+	
+	public List<CommentBean> getComments() {
+		return comments;
+	}
+	
 	@Override
-	public int compareTo(CommentBean cb) {
-		return (int)(cb.ID - this.ID);
+	public int compareTo(BulletinBean bb) {
+		return (int)(bb.ID - this.ID);
 	}
 }
