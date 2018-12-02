@@ -597,3 +597,12 @@ CREATE TABLE comments (
   CreatedOn timestamp NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM;
+
+CREATE TABLE bulletin (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PosterFirstName VARCHAR(20) NOT NULL,
+  PosterLastName VARCHAR(20) NOT NULL,
+  Content VARCHAR(1000) NOT NULL,
+  CreatedOn timestamp NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE = MyISAM;
