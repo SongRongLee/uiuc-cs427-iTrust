@@ -21,7 +21,7 @@
 <%@include file="/global.jsp"%>
 
 <%
-	pageTitle = "iTrust - View Obstetrics Obstetrics Report";
+	pageTitle = "iTrust - View Labor and Delivery Report";
 %>
 
 <%@include file="/header.jsp"%>
@@ -55,7 +55,7 @@ int index = 0;
 %> 
 	<br /><br />
 <!-- PATIENT INFORMATION TABLE -->
-	<table class="fTable" align="center" id="patientInfoList">
+	<table class="fTable" align="justify" id="patientInfoList">
 		<tr>
 			<th colspan="10">Patient Information</th>
 		</tr>
@@ -129,7 +129,7 @@ int index = 0;
 	
 <!-- PAST PREGNANCIES TABLE -->
 	
-	<table class="fTable" align="center" id="pastPregnancyList">
+	<table class="fTable" align="justify" id="pastPregnancyList">
 		<tr>
 			<th colspan="10">Past Pregnancies</th>
 		</tr>
@@ -137,34 +137,27 @@ int index = 0;
 	    		<td>Pregnancy term</td>
 	   			<td>Delivery type</td>
 	  			<td>Conception year</td>
-	  			<td>Estimated delivery date</td>
-	  			<td>Blood type</td>
 	  			
 		</tr>
 		<% 
 		List<ObstetricsBean> records = action.getAllObstetrics();
-		index = 0;
-		for (ObstetricsBean obsbean : records) {
-			List<PregnancyBean> priorPregnancies = obsbean.getPregnancies();
-			Date obstetricsDate = obsbean.getCreated_onAsDate();
+		ObstetricsBean obsbean = records.get(0);
+		List<PregnancyBean> priorPregnancies = obsbean.getPregnancies();
+		Date obstetricsDate = obsbean.getCreated_onAsDate();
 		
-			for (PregnancyBean pregBean : priorPregnancies) {
-				Date pregDate = pregBean.getDateAsDate();
-				if(pregDate.before(obstetricsDate) || pregDate.equals(obstetricsDate)) {
-			%>
-				<tr>
-					<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_weeks_pregnant())+ " weeks")%></td>
-					<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDelivery_type()))%></td>
-					<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getYOC()))%></td>
-					<td><%=StringEscapeUtils.escapeHtml("" + (obsbean.getEDD()))%></td>
-					<td><%=StringEscapeUtils.escapeHtml("" + p.getBloodType())%></td>
-				</tr>
-				<%
-					index++;
-				}
+		for (PregnancyBean pregBean : priorPregnancies) {
+			Date pregDate = pregBean.getDateAsDate();
+			if(pregDate.before(obstetricsDate) || pregDate.equals(obstetricsDate)) {
+		%>
+			<tr>
+				<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getNum_weeks_pregnant())+ " weeks")%></td>
+				<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getDelivery_type()))%></td>
+				<td><%=StringEscapeUtils.escapeHtml("" + (pregBean.getYOC()))%></td>
+			</tr>
+			<%
 			}
 		}
-		%>
+	%>
 		
 	</table>
 	
@@ -172,9 +165,39 @@ int index = 0;
 	
 	<br />
 	
+<!-- ESTIMATED DELIVERY DATE TABLE -->
+	
+	<table class="fTable" align="justify" id="estimtedDeliveryList">
+		<tr>
+			<th colspan="10">Estimated Delivery Date</th>
+		</tr>
+			<tr>
+				<td><%=StringEscapeUtils.escapeHtml("" + (obsbean.getEDD()))%></td>
+			</tr>		
+	</table>
+	
+<!-- ESTIMATED DELIVERY DATE TABLE -->
+	
+	<br />
+	
+<!-- BLOOD TYPE TABLE -->
+	
+	<table class="fTable" align="justify" id="bloodTypeList">
+		<tr>
+			<th colspan="10">Blood Type</th>
+		</tr>
+		<tr>
+			<td><%=StringEscapeUtils.escapeHtml("" + p.getBloodType())%></td>
+		</tr>
+	</table>
+	
+<!-- BLOOD TYPE TABLE -->
+	
+	<br />
+	
 <!-- OB OFFICE VISITS TABLE -->
 	
-	<table class="fTable" align="center" id="OBlist">
+	<table class="fTable" align="justify" id="OBlist">
 		<tr>
 			<th colspan="11">Obstretrics Office Visits</th>
 		</tr>
@@ -258,7 +281,7 @@ else{
 	%>
 	<br />
 	<div align=center>
-		<span class="iTrustMessage" id="ViewUltrasoundPatientError">
+		<span class="iTrustMessage" id="GenReportError">
 		Selected patient does not have an obstetrics record. Please <a href="genObstetricsReport.jsp">try again</a>.</span>
 	</div>
 	<br />
