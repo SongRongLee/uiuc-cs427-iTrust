@@ -52,3 +52,6 @@ VALUES (@ov, 'D6851'), (@ov, 'O211'), (@ov, 'E039'), (@ov, 'E10'), (@ov, 'C50'),
 INSERT INTO allergies (PatientID, Description, FirstFound, Code)
 VALUES (1, 'Penicillin', '2018-10-01', 'Z88');
 
+/*Insert obstetrics office visit*/
+INSERT INTO obstetricsVisit (patientID, scheduledDate, createdDate, numWeeks, weight, bloodPressure, FHR, numChildren, LLP)
+VALUES (1, '2018-12-19 14:00:00', '2018-12-01 20:51:00', '11-2', 25, '120/180', 250, 2, 0);
