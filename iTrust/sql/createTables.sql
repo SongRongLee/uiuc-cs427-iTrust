@@ -600,6 +600,7 @@ CREATE TABLE comments (
 
 CREATE TABLE bulletin (
   ID int(11) NOT NULL AUTO_INCREMENT,
+  Title VARCHAR(50) NOT NULL,
   PosterFirstName VARCHAR(20) NOT NULL,
   PosterLastName VARCHAR(20) NOT NULL,
   Content VARCHAR(1000) NOT NULL,
