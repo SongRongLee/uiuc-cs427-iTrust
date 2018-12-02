@@ -15,7 +15,7 @@ import java.util.List;
  * A bean must only have Getters and Setters (Eclipse Hint: Use Source > Generate Getters and Setters 
  * to create these easily)
  */
-public class BulletinBean implements Serializable, Comparable<BulletinBean> {
+public class BulletinBoardBean implements Serializable, Comparable<BulletinBoardBean> {
 	
 	private long ID = 0;
 	private String title = "";
@@ -83,7 +83,7 @@ public class BulletinBean implements Serializable, Comparable<BulletinBean> {
 	}
 	
 	@Override
-	public int compareTo(BulletinBean bb) {
+	public int compareTo(BulletinBoardBean bb) {
 		return (int)(bb.ID - this.ID);
 	}
 }
