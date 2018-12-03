@@ -1,6 +1,6 @@
 <%@page errorPage="/auth/exceptionHandler.jsp"%>
 
-<%@page import="edu.ncsu.csc.itrust.action.AddBulletinBoardAction"%>
+<%@page import="edu.ncsu.csc.itrust.action.EditBulletinBoardAction"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.CommentBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
@@ -17,7 +17,7 @@
 <%@include file="/global.jsp" %>
 
 <%
-	pageTitle = "iTrust - Add a Bulletin Post";
+	pageTitle = "iTrust - Edit a Bulletin Post";
 %>
 
 <%@include file="/header.jsp" %>
@@ -25,11 +25,17 @@
 
 
 <%
-	AddBulletinBoardAction action = new AddBulletinBoardAction(prodDAO, loggedInMID.longValue(),"1");
+	EditBulletinBoardAction action = new EditBulletinBoardAction(prodDAO, loggedInMID.longValue(),"1");
+	String eid = request.getParameter("requestID");
+	if (eid == null){
+		eid = request.getParameter("ID");
+	}
 	
+	BulletinBoardBean bb = new BulletinBoardBean();
+	bb = action.getBulletinBoard(Long.parseLong(eid));
 		
 	if (request.getParameter("postBody") != null) {
-		BulletinBoardBean bb = new BulletinBoardBean();
+		String createdOn = bb.getCreatedOnString();
 		String title = request.getParameter("subject");		
 		PersonnelDAO personnelDAO = new PersonnelDAO(prodDAO);
 		PersonnelBean personnel = personnelDAO.getPersonnel(loggedInMID);
@@ -38,7 +44,7 @@
 		String content = request.getParameter("postBody");
 
 		try {
-			action.addBulletinBoard(bb, title, posterFirstName, posterLastName, content);			
+			action.editBulletinBoard(bb, eid, title, posterFirstName, posterLastName, createdOn, content);			
 			response.sendRedirect("/iTrust/auth/hcp/home.jsp");
 	
 		} catch (FormValidationException e){
@@ -51,17 +57,18 @@
 
 
 <div align="left">
-	<h2>Add a Bulletin Post</h2>
-	<form id="mainForm" method="post" action="addBulletinPost.jsp">
+	<h2>Edit a Bulletin Post</h2>
+	<form id="mainForm" method="post" action="editBulletinPost.jsp">
+	<input type="hidden" name="ID" value="<%=eid%>">
 		<% long ignoreMID = loggedInMID; %>
 		
-		<p><b>Subject:</b> <input width="50%" class="form-control" type="text" name="subject"/></p>
+		<p><b>Subject:</b> <input width="50%" class="form-control"   type="text" name="subject" value="<%=bb.getTitle()%>"/></p>
 		<br>
 		<br>
 		<p><b>Content:</b> </p>
-		<textarea class="form-control" rows="3" type="text" name="postBody"></textarea><br />
+		<textarea class="form-control" rows="3" type="text" name="postBody"><%=bb.getContent()%></textarea><br />
 		<br />
-		<input class="btn btn-default" type="submit" value="Post" name="postBulletinPost"/>
+		<input class="btn btn-default" type="submit" value="Edit" name="postBulletinPost"/>
 		
 	</form>
 	<br />

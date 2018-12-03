@@ -19,36 +19,25 @@ ViewBulletinBoardAction action = new ViewBulletinBoardAction(prodDAO,
 
 PersonnelDAO personnelDAO = new PersonnelDAO(prodDAO);
 PersonnelBean personnel = personnelDAO.getPersonnel(loggedInMID);
-
-/* Check if the patient is current obstetrics */
-if (true){
-	%>
-	<br />
-	<%
-
-	%>
-	<br />
-
-		<% 
-		List<BulletinBoardBean> bbs = action.getAllBulletinBoards();
-		int i = 0;
-		for (BulletinBoardBean bb : bbs) {
-		%>
-			<tr>
-				<td><%=StringEscapeUtils.escapeHtml("" + (bb.getCreatedOnString()))%></td>
-				<a href="/iTrust/auth/hcp/viewBulletinPost.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (bb.getID()))%>"><%=bb.getTitle()%></a>
-			</tr>
-		<%
-			i++;
-		}
-		
-		%>
-	<%
-	
-}
-else{
-
-}
 %>
+<br />
+<br />
+
+<% 
+List<BulletinBoardBean> bbs = action.getAllBulletinBoards();
+int i = 0;
+for (BulletinBoardBean bb : bbs) {
+%>
+	<tr>
+		<td><%=StringEscapeUtils.escapeHtml("" + (bb.getCreatedOnString()))%></td>
+		<a href="/iTrust/auth/hcp/viewBulletinPost.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (bb.getID()))%>"><%=bb.getTitle()%></a>
+		<br>
+	</tr>
+<%
+	i++;
+}
+
+%>
+
 
 <%@include file="/footer.jsp"%>

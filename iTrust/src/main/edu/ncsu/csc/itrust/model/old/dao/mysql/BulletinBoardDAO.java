@@ -192,7 +192,7 @@ public class BulletinBoardDAO {
 	public void updateBulletinBoard(BulletinBoardBean newBulletinBoard) throws DBException {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = bulletinBoardLoader.loadParametersUpdate(conn.prepareStatement(
-						"UPDATE bulletin SET Title, PosterFirstName=?, PosterLastName=?, Content=?,"
+						"UPDATE bulletin SET Title=?, PosterFirstName=?, PosterLastName=?, Content=?,"
 						+ "CreatedOn=? WHERE ID=?"),
 						newBulletinBoard)) {
 			stmt.executeUpdate();

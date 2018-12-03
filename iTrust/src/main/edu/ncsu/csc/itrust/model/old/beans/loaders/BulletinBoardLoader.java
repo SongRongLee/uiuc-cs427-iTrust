@@ -86,7 +86,6 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 	 */
 	public PreparedStatement loadParametersUpdate(PreparedStatement ps, BulletinBoardBean b) throws SQLException {
 		int i = 1;
-		//ps.setLong(i++, b.getID());
 		ps.setString(i++, b.getTitle());
 		ps.setString(i++, b.getPosterFirstName());
 		ps.setString(i++, b.getPosterLastName());
@@ -98,6 +97,7 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 			//TODO
 		}
 		ps.setTimestamp(i++, date);
+		ps.setLong(i++, b.getID());
 		return ps;
 	}
 }

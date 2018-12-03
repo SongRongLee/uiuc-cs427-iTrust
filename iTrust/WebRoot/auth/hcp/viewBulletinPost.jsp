@@ -26,6 +26,24 @@ if(deleteRequest!=null){
 	return;
 }
 
+String editRequest = request.getParameter("edit");
+
+if(editRequest!=null){
+	long eid = Long.parseLong(editRequest);
+	EditBulletinBoardAction editAction = new EditBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1");
+	BulletinBoardBean editbb = editAction.getBulletinBoard(eid);
+	
+	//editbb.setContent(content);
+	
+	response.sendRedirect("/iTrust/auth/hcp/editBulletinPost.jsp?requestID=" + Long.toString(eid));
+	
+	//editAction.editBulletinBoard(editbb, Long.toString(eid), editbb.getTitle(), 
+		//	editbb.getPosterFirstName(), editbb.getPosterLastName(), 
+		//	editbb.getCreatedOnString(), content);
+	
+	return;
+}
+
 PersonnelDAO personnelDAO = new PersonnelDAO(prodDAO);
 PersonnelBean personnel = personnelDAO.getPersonnel(loggedInMID);
 String viewerFirstName = personnel.getFirstName();
@@ -52,7 +70,7 @@ BulletinBoardBean bb = action.getBulletinBoard(bid);
 			<tr>
 				<td>
 					<b>Content:</b>
-					<textarea readonly rows="10" class="form-control" ><%=bb.getContent()%></textarea>
+						<textarea readonly rows="10" class="form-control" name="postBody"><%=bb.getContent()%></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -78,6 +96,12 @@ BulletinBoardBean bb = action.getBulletinBoard(bid);
 						<form action="viewBulletinPost.jsp">
 							<input type="hidden" name="delete" value="<%=bid%>">
 						    <input type="submit" value="Delete this post" />
+						</form>
+					</td>
+					<td>
+						<form action="viewBulletinPost.jsp">
+							<input type="hidden" name="edit" value="<%=bid%>">
+						    <input type="submit" value="Edit this post" />
 						</form>
 					</td>
 				<%
