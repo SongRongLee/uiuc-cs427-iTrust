@@ -64,7 +64,7 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 	@Override
 	public PreparedStatement loadParameters(PreparedStatement ps, BulletinBoardBean p) throws SQLException {
 		int i = 1;
-		ps.setLong(i++, p.getID());
+		//ps.setLong(i++, p.getID());
 		ps.setString(i++, p.getTitle());
 		ps.setString(i++, p.getPosterFirstName());
 		ps.setString(i++, p.getPosterLastName());
@@ -74,8 +74,8 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 		} catch (ParseException e) {
 			//TODO
 		}
-		ps.setDate(i++, date);
 		ps.setString(i++, p.getContent());
+		ps.setDate(i++, date);
 		
 		return ps;
 	}
@@ -86,6 +86,7 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 	 */
 	public PreparedStatement loadParametersUpdate(PreparedStatement ps, BulletinBoardBean b) throws SQLException {
 		int i = 1;
+		//ps.setLong(i++, b.getID());
 		ps.setString(i++, b.getTitle());
 		ps.setString(i++, b.getPosterFirstName());
 		ps.setString(i++, b.getPosterLastName());
@@ -97,7 +98,6 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 			//TODO
 		}
 		ps.setTimestamp(i++, date);
-		ps.setLong(i++, b.getID());
 		return ps;
 	}
 }
