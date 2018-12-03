@@ -82,22 +82,17 @@ public class AddBulletinBoardAction extends PatientBaseAction {
 	}
 	
 	
-	public long addBulletinBoard(BulletinBoardBean newBulletinBoard, String title, String posterFirstName, String posterLastName, String createdOn, String content) throws ITrustException, FormValidationException {
+	public long addBulletinBoard(BulletinBoardBean newBulletinBoard, String title, String posterFirstName, String posterLastName, String content) throws ITrustException, FormValidationException {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-		BulletinBoardForm form = new BulletinBoardForm(title, posterFirstName, posterLastName, createdOn, content);
+		BulletinBoardForm form = new BulletinBoardForm(title, posterFirstName, posterLastName, content);
 		bValidator.validate(form);
 	
 		// set CommentBean manually after validation
 		newBulletinBoard.setTitle(title);
 		newBulletinBoard.setPosterFirstName(posterFirstName);
 		newBulletinBoard.setPosterLastName(posterLastName);
-		try {
-			Date CreatedOn = sdf.parse(createdOn);
-			newBulletinBoard.setCreatedOn(CreatedOn);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Date CreatedOn = new Date();
+		newBulletinBoard.setCreatedOn(CreatedOn);
 		newBulletinBoard.setContent(content);
 				
 		return bulletinBoardDAO.addBulletinBoard(newBulletinBoard);

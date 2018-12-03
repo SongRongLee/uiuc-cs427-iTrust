@@ -28,7 +28,6 @@ public class BulletinBoardValidator extends BeanValidator<BulletinBoardForm> {
 		errorList.addIfNotNull(checkFormat("Title", newForm.getTitle(), ValidationFormat.QUESTION, false));
 		errorList.addIfNotNull(checkFormat("PosterFirstName", newForm.getPosterFirstName(), ValidationFormat.NAME, false));
 		errorList.addIfNotNull(checkFormat("PosterLastName", newForm.getPosterLastName(), ValidationFormat.NAME, false));
-		errorList.addIfNotNull(checkFormat("CreatedDate", newForm.getCreatedDate(), ValidationFormat.DATE, false));
 		errorList.addIfNotNull(checkFormat("Content", newForm.getContent(), ValidationFormat.MESSAGES_BODY, false));
 
 		if (errorList.hasErrors())

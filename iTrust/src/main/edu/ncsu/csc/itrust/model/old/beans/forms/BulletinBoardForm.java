@@ -4,14 +4,12 @@ public class BulletinBoardForm{
 	private String Title = "";
 	private String PosterFirstName = "";
 	private String PosterLastName = "";
-	private String CreatedDate = "";
 	private String Content = "";
 	
-	public BulletinBoardForm(String Title, String PosterFirstName, String PosterLastName, String CreatedDate, String Content){
+	public BulletinBoardForm(String Title, String PosterFirstName, String PosterLastName, String Content){
 		this.Title = Title;
 		this.PosterFirstName = PosterFirstName;
 		this.PosterLastName = PosterLastName;
-		this.CreatedDate = CreatedDate;
 		this.Content = Content;
 	}
 	
@@ -32,12 +30,6 @@ public class BulletinBoardForm{
 	}
 	public void setPosterLastName(String posterLastName) {
 		PosterLastName = posterLastName;
-	}
-	public String getCreatedDate() {
-		return CreatedDate;
-	}
-	public void setCreatedDate(String createdDate) {
-		CreatedDate = createdDate;
 	}
 	public String getContent() {
 		return Content;
