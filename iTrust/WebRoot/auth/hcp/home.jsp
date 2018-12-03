@@ -30,8 +30,7 @@ loggingAction.logEvent(TransactionType.HOME_VIEW, loggedInMID.longValue(), 0, ""
 	</div>
 	<div class="panel-body">
 	<span>
-		2018-11-05
-		<a href="/iTrust/auth/hcp/viewBulletinPost.jsp">Title</a>
+		<%@include file="/auth/hcp/BulletinPost.jsp" %>
 	</span>
 </div>
 </div>
