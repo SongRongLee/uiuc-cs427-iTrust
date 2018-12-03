@@ -36,7 +36,7 @@ if (true){
 		%>
 			<tr>
 				<td><%=StringEscapeUtils.escapeHtml("" + (bb.getCreatedOnString()))%></td>
-				<a href="/auth/hcp/viewBulletinPost.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (bb.getID()))%>"><%=bb.getTitle()%></a>
+				<a href="/iTrust/auth/hcp/viewBulletinPost.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (bb.getID()))%>"><%=bb.getTitle()%></a>
 			</tr>
 		<%
 			i++;
