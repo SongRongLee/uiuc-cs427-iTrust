@@ -20,8 +20,6 @@ ViewBulletinBoardAction action = new ViewBulletinBoardAction(prodDAO,
 PersonnelDAO personnelDAO = new PersonnelDAO(prodDAO);
 PersonnelBean personnel = personnelDAO.getPersonnel(loggedInMID);
 %>
-<br />
-<br />
 
 <% 
 List<BulletinBoardBean> bbs = action.getAllBulletinBoards();

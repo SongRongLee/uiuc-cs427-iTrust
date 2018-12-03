@@ -32,15 +32,7 @@ if(editRequest!=null){
 	long eid = Long.parseLong(editRequest);
 	EditBulletinBoardAction editAction = new EditBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1");
 	BulletinBoardBean editbb = editAction.getBulletinBoard(eid);
-	
-	//editbb.setContent(content);
-	
 	response.sendRedirect("/iTrust/auth/hcp/editBulletinPost.jsp?requestID=" + Long.toString(eid));
-	
-	//editAction.editBulletinBoard(editbb, Long.toString(eid), editbb.getTitle(), 
-		//	editbb.getPosterFirstName(), editbb.getPosterLastName(), 
-		//	editbb.getCreatedOnString(), content);
-	
 	return;
 }
 
