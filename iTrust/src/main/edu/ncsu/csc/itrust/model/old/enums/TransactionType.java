@@ -530,6 +530,8 @@ public enum TransactionType {
 	EDIT_CHILDBIRTH_VISIT(9604, "Edit Childbirth Visit", "Edit Childbirth Visit", true),
 	/**CREATE_BULLETIN_BOARD**/
 	CREATE_BULLETIN_BOARD(9900, "Create Bulletin Board", "Create Bulletin Board", true),
+	/**CREATE_COMMENT**/
+	CREATE_COMMENT(9901, "Create Comment", "Create Comment", true),
 	/**DELETE_BULLETIN_BOARD**/
 	DELETE_BULLETIN_BOARD(9902, "Delete Bulletin Board", "Delete Bulletin Board", true),
 	;
