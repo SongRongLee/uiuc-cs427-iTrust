@@ -67,7 +67,7 @@ public class ViewBulletinPostTest extends iTrustSeleniumTest {
 		WebElement textarea = wd.findElement(By.name("postBody"));
 		String content = textarea.getText();
 		assertEquals("test content", content);
-		Boolean foundcommentarea = wd.findElement(By.name("newcomment"))!=null;
+		Boolean foundcommentarea = wd.findElement(By.name("comment"))!=null;
 		assertTrue(foundcommentarea);
 	}
 		
