@@ -114,15 +114,11 @@ if(delCommentRequest!=null){
 			<tr>
 				<td>
 					<b>Comment:</b>
-<<<<<<< HEAD
-					<textarea rows="2" class="form-control" name="newcomment"></textarea>
-=======
 					<form action="viewBulletinPost.jsp">
 						<input type="hidden" name="requestID" value="<%=rString%>">
 						<textarea name="comment" rows="2" class="form-control" ></textarea>
 						<input class="btn btn-default" type="submit" value="Submit">
 					</form>
->>>>>>> 3f45ce39500bcf440688841fd3bbec79baf7331a
 				</td>
 			</tr>
 			<tr>
