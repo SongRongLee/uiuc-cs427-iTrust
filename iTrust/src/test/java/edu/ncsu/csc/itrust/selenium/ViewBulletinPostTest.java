@@ -76,7 +76,7 @@ public class ViewBulletinPostTest extends iTrustSeleniumTest {
 	 * @throws Exception
 	 */
 	@Test
-		public void testChangeBulletinBoardNotEligible() throws Exception{
+	public void testChangeBulletinBoardNotEligible() throws Exception{
 		// Log in as another HCP
 		WebDriver wd = login("9000000000","pw");
 		assertEquals("iTrust - HCP Home", wd.getTitle());

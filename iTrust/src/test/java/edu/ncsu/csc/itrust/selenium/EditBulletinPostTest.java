@@ -98,4 +98,41 @@ public class EditBulletinPostTest extends iTrustSeleniumTest {
 	    }
 		assertTrue(linknotfound);
 	}
+	
+	@Test
+	public void testDeleteComment() throws Exception{
+		// Log in as ObHCP
+		WebDriver wd = login("9000000012","pw");
+		assertEquals("iTrust - HCP Home", wd.getTitle());
+		
+		// Get the bulletin board panel
+		wd.findElement(By.linkText("Add New Post")).click();
+		assertEquals("iTrust - Add a Bulletin Post", wd.getTitle());
+		
+		// Get the add bulletin post form
+		WebElement form = wd.findElement(By.id("mainForm"));
+		
+		// Create a new bulletin post
+		form.findElement(By.name("subject")).sendKeys("test subject");
+		form.findElement(By.name("postBody")).sendKeys("test content");
+		// Get the date of today
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = new Date();
+		String date_s = dateFormat.format(date);
+		form.submit();
+		
+		wd.findElement(By.linkText("test subject")).click();
+		
+		form = wd.findElement(By.name("addCommentForm"));
+		form.findElement(By.name("comment")).clear();
+		form.findElement(By.name("comment")).sendKeys("this is a test.");
+		form.submit();
+		
+		form = wd.findElement(By.name("delCommentForm"));
+		form.submit();
+		
+		String source = wd.getPageSource();
+		assertFalse(source.contains("this is a test."));
+		
+	}
 }

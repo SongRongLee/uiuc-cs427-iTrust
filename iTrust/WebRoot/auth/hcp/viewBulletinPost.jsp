@@ -96,7 +96,7 @@ if(delCommentRequest!=null){
 							<%
 							if(viewerFirstName.equals(cb.getPosterFirstName())&&viewerLastName.equals(cb.getPosterLastName())){
 							%>
-								<form action="viewBulletinPost.jsp" style="display: inline-block; ">
+								<form name="delCommentForm" action="viewBulletinPost.jsp" style="display: inline-block; ">
 									<input type="hidden" name="requestID" value="<%=rString%>">
 									<input type="hidden" name="deleteComment" value="<%=cb.getID()%>">
 									<input type="submit" value="delete">
@@ -114,7 +114,7 @@ if(delCommentRequest!=null){
 			<tr>
 				<td>
 					<b>Comment:</b>
-					<form action="viewBulletinPost.jsp">
+					<form name="addCommentForm" action="viewBulletinPost.jsp">
 						<input type="hidden" name="requestID" value="<%=rString%>">
 						<textarea name="comment" rows="2" class="form-control" ></textarea>
 						<input class="btn btn-default" type="submit" value="Submit">
