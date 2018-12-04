@@ -70,7 +70,7 @@ public class BulletinBoardBean implements Serializable, Comparable<BulletinBoard
 	}
 	
 	public String getCreatedOnString() {
-		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 		return f.format(createdOn);
 	}
 	

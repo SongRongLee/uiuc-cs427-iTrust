@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.BulletinBoardDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
+import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
@@ -23,7 +24,7 @@ public class BulletinBoardDAOTest extends TestCase {
 	protected void setUp() throws Exception {
 		gen.clearAllTables();
 	}
-		
+	
 	public void testGetComment() throws Exception {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
@@ -132,4 +133,140 @@ public class BulletinBoardDAOTest extends TestCase {
 
 		assertEquals(null, cResult);
 	}
+	
+	public void testGetBulletinBoard() throws Exception {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+		String title = "Test";
+		String posterFirstName = "FIRST";
+		String posterLastName = "LAST";
+		String content = "TestTest";
+		Date createdOn = new Date();
+		
+		BulletinBoardBean bbb = new BulletinBoardBean();
+		bbb.setID(1);
+		bbb.setTitle(title);
+		bbb.setPosterFirstName(posterFirstName);
+		bbb.setPosterLastName(posterLastName);
+		bbb.setContent(content);
+		bbb.setCreatedOn(createdOn);
+		
+		CommentBean c = new CommentBean();
+		c.setID(1);
+		c.setBulletinBoardID(1);
+		c.setPosterFirstName(posterFirstName);
+		c.setPosterLastName(posterLastName);
+		c.setText("HAHA");
+		c.setCreatedOn(createdOn);
+		List<CommentBean> cList = new ArrayList<>();
+		cList.add(c);
+		bbb.setComments(cList);
+		
+		bbDAO.addBulletinBoard(bbb);
+		BulletinBoardBean bResult = bbDAO.getBulletinBoard(1);
+
+		assertEquals(title, bResult.getTitle());
+		assertEquals(posterFirstName, bResult.getPosterFirstName());
+		assertEquals(posterLastName, bResult.getPosterLastName());
+		assertEquals(content, bResult.getContent());
+		assertEquals(dateFormat.format(createdOn), bResult.getCreatedOnString());
+		
+	}
+	
+	public void testGetAllBulletinBoard() throws Exception {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+		String title = "Test";
+		String posterFirstName = "FIRST";
+		String posterLastName = "LAST";
+		String content = "TestTest";
+		Date createdOn = new Date();
+		
+		BulletinBoardBean bbb = new BulletinBoardBean();
+		bbb.setTitle(title);
+		bbb.setPosterFirstName(posterFirstName);
+		bbb.setPosterLastName(posterLastName);
+		bbb.setContent(content);
+		bbb.setCreatedOn(createdOn);
+		bbb.setComments(null);
+		
+		bbDAO.addBulletinBoard(bbb);
+		
+		List<BulletinBoardBean> bResults = bbDAO.getAllBulletinBoards();
+		//System.out.println(bResults.size());
+		assertEquals(1, bResults.size());
+
+		assertEquals(title, bResults.get(0).getTitle());
+		assertEquals(posterFirstName, bResults.get(0).getPosterFirstName());
+		assertEquals(posterLastName, bResults.get(0).getPosterLastName());
+		assertEquals(content, bResults.get(0).getContent());
+		assertEquals(dateFormat.format(createdOn), bResults.get(0).getCreatedOnString());
+	}
+	
+	public void testUpdateBulletinBoard() throws Exception {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+		String title = "Test";
+		String posterFirstName = "FIRST";
+		String posterLastName = "LAST";
+		String content = "TestTest";
+		Date createdOn = new Date();
+		
+		BulletinBoardBean bbb = new BulletinBoardBean();
+		bbb.setID(1);
+		bbb.setTitle(title);
+		bbb.setPosterFirstName(posterFirstName);
+		bbb.setPosterLastName(posterLastName);
+		bbb.setContent(content);
+		bbb.setCreatedOn(createdOn);
+		bbb.setComments(null);
+				 
+		bbDAO.addBulletinBoard(bbb);
+		
+		bbb.setContent("Update");
+		bbDAO.updateBulletinBoard(bbb);
+		BulletinBoardBean bResult = bbDAO.getBulletinBoard(1);
+
+		assertEquals(title, bResult.getTitle());
+		assertEquals(posterFirstName, bResult.getPosterFirstName());
+		assertEquals(posterLastName, bResult.getPosterLastName());
+		assertEquals("Update", bResult.getContent());
+		assertEquals(dateFormat.format(createdOn), bResult.getCreatedOnString());
+	}
+	
+	public void testDeleteBulletinBoard() throws Exception {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+		String title = "Test";
+		String posterFirstName = "FIRST";
+		String posterLastName = "LAST";
+		String content = "TestTest";
+		Date createdOn = new Date();
+		
+		BulletinBoardBean bbb = new BulletinBoardBean();
+		bbb.setID(1);
+		bbb.setTitle(title);
+		bbb.setPosterFirstName(posterFirstName);
+		bbb.setPosterLastName(posterLastName);
+		bbb.setContent(content);
+		bbb.setCreatedOn(createdOn);
+		
+		CommentBean c = new CommentBean();
+		c.setID(1);
+		c.setBulletinBoardID(1);
+		c.setPosterFirstName(posterFirstName);
+		c.setPosterLastName(posterLastName);
+		c.setText("HAHA");
+		c.setCreatedOn(createdOn);
+		List<CommentBean> cList = new ArrayList<>();
+		cList.add(c);
+		bbb.setComments(cList);
+				
+		bbDAO.addBulletinBoard(bbb);
+		bbDAO.deleteBulletinBoard(1);
+		BulletinBoardBean bResult = bbDAO.getBulletinBoard(1);
+
+		assertEquals(null, bResult);
+	}
+	
 }

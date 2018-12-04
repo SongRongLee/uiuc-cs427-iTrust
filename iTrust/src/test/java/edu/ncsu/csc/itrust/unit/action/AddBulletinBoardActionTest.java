@@ -22,6 +22,7 @@ import edu.ncsu.csc.itrust.action.ViewBulletinBoardAction;
 import edu.ncsu.csc.itrust.action.ViewChildbirthVisitAction;
 import edu.ncsu.csc.itrust.action.ViewObstetricsAction;
 import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
 import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
@@ -108,5 +109,37 @@ public class AddBulletinBoardActionTest extends TestCase {
 		
 		CommentBean cResult = action.getComment(1);
 		assertEquals(cResult.getID(), 1);
+	}
+	
+	@Test
+	public void testAddBulletinBoard() throws Exception {
+		BulletinBoardBean bbb = new BulletinBoardBean();
+		long newBID = action.addBulletinBoard(bbb, "Test", "FIRST", "LAST", "ACTION TEST");
+		assertEquals(action.getBulletinBoard(newBID).getID(), newBID);
+	}
+	
+	@Test
+	public void testGetBulletinBoard() throws Exception {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		BulletinBoardDAO bbDAO = factory.getBulletinBoardDAO();
+
+		String title = "Test";
+		String posterFirstName = "FIRST";
+		String posterLastName = "LAST";
+		String content = "TestTest";
+		Date createdOn = new Date();
+		
+		BulletinBoardBean bbb = new BulletinBoardBean();
+		bbb.setTitle(title);
+		bbb.setPosterFirstName(posterFirstName);
+		bbb.setPosterLastName(posterLastName);
+		bbb.setContent(content);
+		bbb.setCreatedOn(createdOn);
+		bbb.setComments(null);
+		
+		bbDAO.addBulletinBoard(bbb);
+		
+		BulletinBoardBean bResult = action.getBulletinBoard(1);
+		assertEquals(bResult.getID(), 1);
 	}
 }

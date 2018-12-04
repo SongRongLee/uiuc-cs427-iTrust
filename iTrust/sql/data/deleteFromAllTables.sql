@@ -102,3 +102,6 @@ ALTER TABLE childbirthvisit AUTO_INCREMENT = 0;
 
 DELETE FROM comments;
 ALTER TABLE comments AUTO_INCREMENT = 0;
+
+DELETE FROM bulletin;
+ALTER TABLE bulletin AUTO_INCREMENT = 0;

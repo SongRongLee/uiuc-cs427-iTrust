@@ -1,6 +1,5 @@
 package edu.ncsu.csc.itrust.model.old.beans.loaders;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean;
-import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
 /**
  * A loader for PregnancyBeans.
  * 
@@ -19,7 +17,7 @@ import edu.ncsu.csc.itrust.model.old.beans.CommentBean;
  * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
  */
 public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
-	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
 	/**
 	 * loadList
@@ -40,7 +38,7 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 		p.setTitle(rs.getString("Title"));
 		p.setPosterFirstName(rs.getString("PosterFirstName"));
 		p.setPosterLastName(rs.getString("PosterLastName"));
-		p.setCreatedOn(rs.getDate("CreatedOn"));
+		p.setCreatedOn(rs.getTimestamp("CreatedOn"));
 		p.setContent(rs.getString("Content"));
 	}
 	
@@ -68,24 +66,25 @@ public class BulletinBoardLoader implements BeanLoader<BulletinBoardBean> {
 		ps.setString(i++, p.getTitle());
 		ps.setString(i++, p.getPosterFirstName());
 		ps.setString(i++, p.getPosterLastName());
-		Date date = null;
+		ps.setString(i++, p.getContent());
+		Timestamp date = null;
 		try {
-			date = new java.sql.Date(DATE_FORMAT.parse(DATE_FORMAT.format(p.getCreatedOn())).getTime());
+			date = new java.sql.Timestamp(DATE_FORMAT.parse(p.getCreatedOnString()).getTime());
 		} catch (ParseException e) {
 			//TODO
 		}
-		ps.setString(i++, p.getContent());
-		ps.setDate(i++, date);
+		ps.setTimestamp(i++, date);
 		
 		return ps;
 	}
 	
-	/**
+	/** 
 	 * loadParameters for update
 	 * @throws SQLException
 	 */
 	public PreparedStatement loadParametersUpdate(PreparedStatement ps, BulletinBoardBean b) throws SQLException {
 		int i = 1;
+		//ps.setLong(i++, b.getID());
 		ps.setString(i++, b.getTitle());
 		ps.setString(i++, b.getPosterFirstName());
 		ps.setString(i++, b.getPosterLastName());

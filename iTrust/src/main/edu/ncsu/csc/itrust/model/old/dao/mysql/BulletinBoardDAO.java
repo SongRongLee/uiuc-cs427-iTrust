@@ -61,7 +61,8 @@ public class BulletinBoardDAO {
 			ResultSet rs = ps.executeQuery();
 			BulletinBoardBean bb = rs.next() ? bulletinBoardLoader.loadSingle(rs) : null;
 			rs.close();
-						
+			if (bb == null)
+				return bb;
 			bb.setComments(getAllComment(bid));
 			
 			return bb;
