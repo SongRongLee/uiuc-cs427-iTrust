@@ -1,7 +1,8 @@
 <%@page errorPage="/auth/exceptionHandler.jsp"%>
-
+<%@page import="edu.ncsu.csc.itrust.action.AddBulletinBoardAction"%>
 <%@page import="edu.ncsu.csc.itrust.action.ViewBulletinBoardAction"%>
 <%@page import="edu.ncsu.csc.itrust.action.EditBulletinBoardAction"%>
+<%@page import="edu.ncsu.csc.itrust.model.old.beans.CommentBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.BulletinBoardBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO"%>
@@ -27,7 +28,6 @@ if(deleteRequest!=null){
 }
 
 String editRequest = request.getParameter("edit");
-
 if(editRequest!=null){
 	long eid = Long.parseLong(editRequest);
 	EditBulletinBoardAction editAction = new EditBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1");
@@ -43,9 +43,27 @@ String viewerLastName = personnel.getLastName();
 
 String rString = request.getParameter("requestID");
 long bid = Long.parseLong(rString);
+
 ViewBulletinBoardAction action = new ViewBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1"); 
 BulletinBoardBean bb = action.getBulletinBoard(bid);
 
+String addCommentRequest = request.getParameter("comment");
+if(addCommentRequest!=null){
+	AddBulletinBoardAction addAction = new AddBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1");
+	CommentBean newComment = new CommentBean();
+	addAction.addComment(newComment, rString, viewerFirstName, viewerLastName, addCommentRequest, "11/05/1996 12:25");
+	response.sendRedirect("/iTrust/auth/hcp/viewBulletinPost.jsp?requestID=" + rString);
+	return;
+}
+
+String delCommentRequest = request.getParameter("deleteComment");
+if(delCommentRequest!=null){
+	Long cid = Long.parseLong(delCommentRequest);
+	EditBulletinBoardAction editAction = new EditBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1");
+	editAction.deleteComment(cid);
+	response.sendRedirect("/iTrust/auth/hcp/viewBulletinPost.jsp?requestID=" + rString);
+	return;
+}
 	
 %>
 	<div>
@@ -68,15 +86,37 @@ BulletinBoardBean bb = action.getBulletinBoard(bid);
 			<tr>
 				<td>
 					<b>Comments:</b><br>
-					<span>[2018-11-05] Robert:<br>aiwejfoiwjgjwoegjiwengoiniw</span><br><br>
-					<span>[2018-11-05] Robert:<br>aiwejfoiwjgjwoegjiwengoiniw</span><br><br>
-					<span>[2018-11-05] Robert:<br>aiwejfoiwjgjwoegjiwengoiniw</span><br><br>
+					<%
+						List<CommentBean> commentList = bb.getComments();
+						for(CommentBean cb:commentList){
+							%>
+							<span>[<%=cb.getCreatedOnString()%>] <%=cb.getPosterFirstName() + " " + cb.getPosterLastName()%>:
+							<%
+							if(viewerFirstName.equals(cb.getPosterFirstName())&&viewerLastName.equals(cb.getPosterLastName())){
+							%>
+								<form action="viewBulletinPost.jsp" style="display: inline-block; ">
+									<input type="hidden" name="requestID" value="<%=rString%>">
+									<input type="hidden" name="deleteComment" value="<%=cb.getID()%>">
+									<input type="submit" value="delete">
+								</form>
+								<br>
+							<%
+							}
+							%>
+							<%=cb.getText() %></span><br><br>
+							<%
+						}
+					%>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<b>Comment:</b>
-					<textarea rows="2" class="form-control" ></textarea>
+					<form action="viewBulletinPost.jsp">
+						<input type="hidden" name="requestID" value="<%=rString%>">
+						<textarea name="comment" rows="2" class="form-control" ></textarea>
+						<input class="btn btn-default" type="submit" value="Submit">
+					</form>
 				</td>
 			</tr>
 			<tr>

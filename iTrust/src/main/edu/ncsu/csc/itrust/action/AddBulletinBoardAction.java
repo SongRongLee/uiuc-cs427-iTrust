@@ -109,13 +109,8 @@ public class AddBulletinBoardAction extends PatientBaseAction {
 		newComment.setPosterFirstName(posterFirstName);
 		newComment.setPosterLastName(posterLastName);
 		newComment.setText(text);
-		try {
-			Date CreatedOn = sdf.parse(createdOn);
-			newComment.setCreatedOn(CreatedOn);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Date CreatedOn = new Date();
+		newComment.setCreatedOn(CreatedOn);
 				
 		return bulletinBoardDAO.addComment(newComment);
 	}
