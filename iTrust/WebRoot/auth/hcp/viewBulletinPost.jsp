@@ -53,6 +53,7 @@ if(addCommentRequest!=null){
 	AddBulletinBoardAction addAction = new AddBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1");
 	CommentBean newComment = new CommentBean();
 	addAction.addComment(newComment, rString, viewerFirstName, viewerLastName, addCommentRequest, "11/05/1996 12:25");
+	loggingAction.logEvent(TransactionType.CREATE_COMMENT, loggedInMID.longValue(), 0, Long.toString(newComment.getID()));
 	response.sendRedirect("/iTrust/auth/hcp/viewBulletinPost.jsp?requestID=" + rString);
 	return;
 }
