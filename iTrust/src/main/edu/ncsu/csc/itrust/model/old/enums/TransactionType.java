@@ -528,6 +528,10 @@ public enum TransactionType {
 	CREATE_BABY_RECORD(9603, "Create Baby Record", "Create Baby Record", true),
 	/**EDIT_CHILDBIRTH_VISIT**/
 	EDIT_CHILDBIRTH_VISIT(9604, "Edit Childbirth Visit", "Edit Childbirth Visit", true),
+	/**CREATE_BULLETIN_BOARD**/
+	CREATE_BULLETIN_BOARD(9900, "Create Bulletin Board", "Create Bulletin Board", true),
+	/**DELETE_BULLETIN_BOARD**/
+	DELETE_BULLETIN_BOARD(9902, "Delete Bulletin Board", "Delete Bulletin Board", true),
 	;
 	/**
 	 * This string is used in the SQL statement associated with pulling events for

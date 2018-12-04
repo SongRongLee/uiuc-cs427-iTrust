@@ -38,7 +38,8 @@
 		String content = request.getParameter("postBody");
 
 		try {
-			action.addBulletinBoard(bb, title, posterFirstName, posterLastName, content);			
+			action.addBulletinBoard(bb, title, posterFirstName, posterLastName, content);
+			loggingAction.logEvent(TransactionType.CREATE_BULLETIN_BOARD, loggedInMID.longValue(), 0, Long.toString(bb.getID()));
 			response.sendRedirect("/iTrust/auth/hcp/home.jsp");
 	
 		} catch (FormValidationException e){

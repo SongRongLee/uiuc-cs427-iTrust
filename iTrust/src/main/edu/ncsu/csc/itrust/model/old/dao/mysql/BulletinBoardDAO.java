@@ -79,7 +79,7 @@ public class BulletinBoardDAO {
 	public List<BulletinBoardBean> getAllBulletinBoards() throws DBException {
 		try (
 				Connection conn = factory.getConnection();
-				PreparedStatement ps = conn.prepareStatement("SELECT * FROM bulletin ORDER BY CreatedOn DESC");
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM bulletin ORDER BY ID DESC");
 				) 
 		{
 			ResultSet rs = ps.executeQuery();

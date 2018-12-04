@@ -22,6 +22,7 @@ if(deleteRequest!=null){
 	long did = Long.parseLong(deleteRequest);
 	EditBulletinBoardAction editAction = new EditBulletinBoardAction(prodDAO, loggedInMID.longValue(), "1");
 	editAction.deleteBulletinBoard(did);
+	loggingAction.logEvent(TransactionType.DELETE_BULLETIN_BOARD, loggedInMID.longValue(), 0, Long.toString(did));
 	response.sendRedirect("/iTrust/auth/hcp/home.jsp");
 	return;
 }
@@ -76,7 +77,7 @@ BulletinBoardBean bb = action.getBulletinBoard(bid);
 			<tr>
 				<td>
 					<b>Comment:</b>
-					<textarea rows="2" class="form-control" ></textarea>
+					<textarea rows="2" class="form-control" name="newcomment"></textarea>
 				</td>
 			</tr>
 			<tr>
