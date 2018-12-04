@@ -25,9 +25,11 @@ PersonnelBean personnel = personnelDAO.getPersonnel(loggedInMID);
 List<BulletinBoardBean> bbs = action.getAllBulletinBoards();
 int i = 0;
 for (BulletinBoardBean bb : bbs) {
+	String datetime = bb.getCreatedOnString();
+	String[] date = datetime.split(" ");
 %>
 	<tr>
-		<td><%=StringEscapeUtils.escapeHtml("" + (bb.getCreatedOnString()))%></td>
+		<td><%=StringEscapeUtils.escapeHtml("" + date[0])%></td>
 		<a href="/iTrust/auth/hcp/viewBulletinPost.jsp?requestID=<%=StringEscapeUtils.escapeHtml("" + (bb.getID()))%>"><%=bb.getTitle()%></a>
 		<br>
 	</tr>

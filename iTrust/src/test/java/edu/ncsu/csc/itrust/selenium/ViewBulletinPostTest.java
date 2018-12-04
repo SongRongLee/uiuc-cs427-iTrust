@@ -77,8 +77,22 @@ public class ViewBulletinPostTest extends iTrustSeleniumTest {
 	 */
 	@Test
 	public void testChangeBulletinBoardNotEligible() throws Exception{
+		// Log in as ObHCP
+		WebDriver wd = login("9000000012","pw");
+		assertEquals("iTrust - HCP Home", wd.getTitle());
+		// Get the bulletin board panel
+		wd.findElement(By.linkText("Add New Post")).click();
+		assertEquals("iTrust - Add a Bulletin Post", wd.getTitle());
+		
+		// Get the add bulletin post form
+		WebElement form = wd.findElement(By.id("mainForm"));
+		
+		// Create a new bulletin post
+		form.findElement(By.name("subject")).sendKeys("test subject");
+		form.findElement(By.name("postBody")).sendKeys("test content");
+		form.submit();
 		// Log in as another HCP
-		WebDriver wd = login("9000000000","pw");
+		wd = login("9000000000","pw");
 		assertEquals("iTrust - HCP Home", wd.getTitle());
 		wd.findElement(By.linkText("test subject")).click();
 		// verify neither the delete or the edit button is present
