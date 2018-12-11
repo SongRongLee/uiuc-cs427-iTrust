@@ -162,6 +162,22 @@ public class DAOFactory {
 	public PatientDAO getPatientDAO() {
 		return new PatientDAO(this);
 	}
+	
+	/**
+	 * 
+	 * @return this DAOFactory's ObstetricsDAO
+	 */
+	public ObstetricsDAO getObstetricsDAO() {
+		return new ObstetricsDAO(this);
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's ObstetricsDAO
+	 */
+	public ObstetricsVisitDAO getObstetricsVisitDAO() {
+		return new ObstetricsVisitDAO(this);
+	}
 
 	/**
 	 * 
@@ -231,6 +247,17 @@ public class DAOFactory {
 	public ReviewsDAO getReviewsDAO() {
 		return new ReviewsDAO(this);
 	}
+
+	public UltrasoundDAO getUltrasoundDAO() {
+		return new UltrasoundDAO(this);
+	}
 	
+	public ChildbirthVisitDAO getChildbirthVisitDAO() {
+		return new ChildbirthVisitDAO(this);
+	}
+
+	public BulletinBoardDAO getBulletinBoardDAO() {
+		return new BulletinBoardDAO(this);
+	}
 
 }

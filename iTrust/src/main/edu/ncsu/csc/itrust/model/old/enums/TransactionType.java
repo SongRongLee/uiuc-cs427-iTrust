@@ -498,6 +498,42 @@ public enum TransactionType {
 	/**EDIT_OPHTHALMOLOGY_SURGERY**/
 	EDIT_OPHTHALMOLOGY_SURGERY(8602, "Edit Ophthalmology Surgery", "Edit Ophthalmology Surgery", true),
 	/**PATIENT_VIEW_OPHTHALMOLOGY_SURGERY**/
+	
+	/**CREATE_INITIAL_OBSTETRIC_RECORD**/
+	CREATE_INITIAL_OBSTETRIC_RECORD(9300, "Create Initial Obstetric Record", "Create Initial Obstetric Record", true),
+	/**VIEW_INITIAL_OBSTETRIC_RECORD**/
+	VIEW_INITIAL_OBSTETRIC_RECORD(9301, "View Initial Obstetric Record", "View Initial Obstetric Record", true),
+	
+	/**CREATE_OBSTETRIC_OFFICE_VISIT**/
+	CREATE_OBSTETRIC_OFFICE_VISIT(9400, "Create Obstetric Office Visit", "Create Obstetric Office Visit", true),
+	/**VIEW_OBSTETRIC_OFFICE_VISIT**/
+	VIEW_OBSTETRIC_OFFICE_VISIT(9401, "View Obstetric Office Visit", "View Obstetric Office Visit", true),
+	/**EDIT_OBSTETRIC_OFFICE_VISIT**/
+	EDIT_OBSTETRIC_OFFICE_VISIT(9402, "Edit Obstetric Office Visit", "Edit Obstetric Office Visit", true),
+	/**ULTRASOUND**/
+	ULTRASOUND(9403, "Ultrasound", "Ultrasound", true),
+	/**SCHEDULE_NEXT_OFFICE_VISIT**/
+	SCHEDULE_NEXT_OFFICE_VISIT(9404, "Schedule Next Office Visit", "Schedule Next Office Visit", true),
+	/**SCHEDULE_BIRTH**/
+	SCHEDULE_BIRTH(9405, "Schedule Birth", "Schedule Birth", true),
+	/**Labor and Delivery Report**/
+	GENERATE_REPORT(9500, "Labor and Delivery Report", "Labor and Delivery Report", true),
+	/**CREATE_CHILDBIRTH_VISIT**/
+	CREATE_CHILDBIRTH_VISIT(9600, "Create Childbirth Visit", "Create Childbirth Visit", true),
+	/**ADD_CHILDBIRTH_DRUGS**/
+	ADD_CHILDBIRTH_DRUGS(9601, "Add Childbirth Drugs", "Add Childbirth Drugs", true),
+	/**A_BABY_IS_BORN**/
+	A_BABY_IS_BORN(9602, "A Baby Is Born", "A Baby Is Born", true),
+	/**CREATE_BABY_RECORD**/
+	CREATE_BABY_RECORD(9603, "Create Baby Record", "Create Baby Record", true),
+	/**EDIT_CHILDBIRTH_VISIT**/
+	EDIT_CHILDBIRTH_VISIT(9604, "Edit Childbirth Visit", "Edit Childbirth Visit", true),
+	/**CREATE_BULLETIN_BOARD**/
+	CREATE_BULLETIN_BOARD(9900, "Create Bulletin Board", "Create Bulletin Board", true),
+	/**CREATE_COMMENT**/
+	CREATE_COMMENT(9901, "Create Comment", "Create Comment", true),
+	/**DELETE_BULLETIN_BOARD**/
+	DELETE_BULLETIN_BOARD(9902, "Delete Bulletin Board", "Delete Bulletin Board", true),
 	;
 	/**
 	 * This string is used in the SQL statement associated with pulling events for

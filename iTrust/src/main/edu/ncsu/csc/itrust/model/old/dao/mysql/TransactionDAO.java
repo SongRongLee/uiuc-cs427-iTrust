@@ -96,6 +96,7 @@ public class TransactionDAO {
 			ps.setString(4, addedInfo);
 			ps.executeUpdate();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DBException(e);
 		}
 	}

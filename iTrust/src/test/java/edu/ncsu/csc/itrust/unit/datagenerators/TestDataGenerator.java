@@ -873,6 +873,26 @@ public class TestDataGenerator {
 	public void icdCode() throws FileNotFoundException, SQLException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/icdcode.sql");
 	}
+	
+	public void uc93() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc93.sql");
+	}
+	
+	public void uc94() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc94.sql");
+	}
+	
+	public void uc95() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc95.sql");
+	}
+	
+	public void uc96() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc96.sql");
+	}
+	
+	public void ucCustom() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/ucCustom.sql");
+	}
 
 	public void standardData() throws FileNotFoundException, IOException, SQLException {
 	
@@ -979,6 +999,10 @@ public class TestDataGenerator {
 		patient28();
 		patient29();
 		patient30();
+		
+		// Added for UC 93
+		uc93();
+		uc95();
 		
 		setMode();
 	}

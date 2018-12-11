@@ -22,17 +22,30 @@ loggingAction.logEvent(TransactionType.HOME_VIEW, loggedInMID.longValue(), 0, ""
 <%@include file="/auth/hcp/notificationArea.jsp" %>
 
 
-<div class="col-sm-12">
+<div id="Bulletin Board" class="col-sm-12">
+	<a href="/iTrust/auth/hcp/addBulletinPost.jsp">Add New Post</a>
 	<div class="panel panel-primary panel-notification">
-	<div class="panel-heading"><h3 class="panel-title">Comprehensive Report History</h3></div>
-	<div class="panel-body">
+		<div class="panel-heading">
+			<h3 class="panel-title">Bulletin Board</h3>
+		</div>
+		<div class="panel-body">
+			<span>
+				<%@include file="/auth/hcp/BulletinPost.jsp" %>
+			</span>
+		</div>
+	</div>
 </div>
-</div>
-
+<div class="col-sm-8" style="position:relative;left:350px">
 	<div class="panel panel-primary panel-notification">
-	<div class="panel-heading"><h3 class="panel-title">Lab Procedures Completed in the Last Month</h3></div>
-	<div class="panel-body">
+		<div class="panel-heading"><h3 class="panel-title">Comprehensive Report History</h3></div>
+		<div class="panel-body"></div>
+	</div>
 </div>
+<div class="col-sm-8" style="position:relative;left:350px">
+	<div class="panel panel-primary panel-notification">
+		<div class="panel-heading"><h3 class="panel-title">Lab Procedures Completed in the Last Month</h3></div>
+		<div class="panel-body"></div>
+	</div>
 </div>
 
 </div>

@@ -90,6 +90,7 @@ CREATE TABLE patients(
 	SpiritualPractices varchar(512) default '',
 	AlternateName varchar(32) default '',
 	DateOfDeactivation DATE default NULL,
+	ObstetricEligible BOOLEAN default false,
 	PRIMARY KEY (MID)
 ) ENGINE=MyISAM;
 
@@ -503,3 +504,106 @@ CREATE TABLE medicalProcedure
 	FOREIGN KEY (visitId) 	REFERENCES officeVisit(visitID),
 	FOREIGN KEY (cptCode) 	REFERENCES cptCode(code)
 ) ENGINE=MyISAM;
+
+CREATE TABLE obstetricsrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  LMP date NOT NULL,
+  number_of_weeks_pregnant int(11) NOT NULL,
+  created_on date NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE pregnancyrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  YOC int(11) NOT NULL,
+  num_weeks_pregnant int(11) NOT NULL,
+  num_hours_labor double DEFAULT NULL,
+  weight_gain float,
+  delivery_type varchar(45) NOT NULL,
+  num_children int(11),
+  Date_delivery date,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE obstetricsVisit (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  patientID int(11) NOT NULL,
+  scheduledDate datetime NOT NULL,
+  createdDate datetime NOT NULL,
+  numWeeks varchar(5) NOT NULL,
+  weight float NOT NULL,
+  bloodPressure varchar(8) NOT NULL,
+  FHR int(11) NOT NULL,
+  numChildren int(11) NOT NULL,
+  LLP BOOLEAN NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE ultrasoundrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  created_on date NOT NULL,
+  Image LONGBLOB,
+  ImageType varchar(15) NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE fetusrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  UltrasoundID int(11) NOT NULL,
+  created_on date NOT NULL,
+  CRL float NOT NULL,
+  BPD float NOT NULL,
+  HC float NOT NULL,
+  FL float NOT NULL,
+  OFD float NOT NULL,
+  AC float NOT NULL,
+  HL float NOT NULL,
+  EFW float NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE childbirthvisit (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  PreferredChildbirthMethod VARCHAR(50) NOT NULL,
+  Drugs VARCHAR(1000) NOT NULL,
+  ScheduledDate date NOT NULL,
+  PreScheduled BOOLEAN NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE deliveryrecords (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  PatientID int(11) NOT NULL,
+  ChildbirthVisitID int(11) NOT NULL,
+  ChildID int(11) NOT NULL,
+  Gender VARCHAR(13) default 'Not Specified',
+  DeliveryDateTime timestamp NOT NULL,
+  DeliveryMethod VARCHAR(50) NOT NULL,
+  IsEstimated BOOLEAN NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE comments (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  BulletinBoardID int(11) NOT NULL,
+  PosterFirstName VARCHAR(20) NOT NULL,
+  PosterLastName VARCHAR(20) NOT NULL,
+  Text VARCHAR(1000) NOT NULL,
+  CreatedOn timestamp NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=MyISAM;
+
+CREATE TABLE bulletin (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  Title VARCHAR(50) NOT NULL,
+  PosterFirstName VARCHAR(20) NOT NULL,
+  PosterLastName VARCHAR(20) NOT NULL,
+  Content VARCHAR(1000) NOT NULL,
+  CreatedOn timestamp NOT NULL,
+  PRIMARY KEY (ID)
+) ENGINE = MyISAM;
