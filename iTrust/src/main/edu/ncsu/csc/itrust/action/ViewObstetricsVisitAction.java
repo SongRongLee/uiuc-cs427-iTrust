@@ -9,6 +9,7 @@ import edu.ncsu.csc.itrust.action.base.PatientBaseAction;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.ChildbirthVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsBean;
 import edu.ncsu.csc.itrust.model.old.beans.ObstetricsVisitBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
@@ -17,6 +18,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ObstetricsVisitDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ChildbirthVisitDAO;
 import edu.ncsu.csc.itrust.model.old.enums.BloodType;
 
 
@@ -29,6 +31,7 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 	private PatientDAO patientDAO;
 	private ObstetricsDAO obstetricsDAO;
 	private ObstetricsVisitDAO obstetricsVisitDAO;
+	private ChildbirthVisitDAO childbirthVisitDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
 
@@ -46,6 +49,7 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 		this.authDAO = factory.getAuthDAO();
 		this.obstetricsDAO = factory.getObstetricsDAO();
 		this.obstetricsVisitDAO = factory.getObstetricsVisitDAO();
+		this.childbirthVisitDAO = factory.getChildbirthVisitDAO();
 		this.loggedInMID = loggedInMID;
 	}
 	
@@ -144,10 +148,16 @@ public class ViewObstetricsVisitAction extends PatientBaseAction {
 			numWeeks = Integer.parseInt(OVBs.get(0).getNumWeeks().split("-")[0]);
 		}
 		
-		// checking of RH shot history needs to wait for UC96 [S4]
-		// as of now (UC94), assume patient never receives one
-		// will come back after UC 96
-		if (bloodType.charAt(bloodType.length()-1) == '-' && numWeeks > 28)
+		List<ChildbirthVisitBean> CVBs = childbirthVisitDAO.getAllChildbirthVisits(pid);
+		Boolean neverReceived = true;
+		for (ChildbirthVisitBean cvb : CVBs) {
+			if (cvb.getDrugs().contains("globulin") || cvb.getDrugs().contains("RH")) {
+				neverReceived = false;
+				break;
+			}
+		}
+
+		if (bloodType.charAt(bloodType.length()-1) == '-' && numWeeks > 28 && neverReceived)
 			return true;
 		
 		return false;
