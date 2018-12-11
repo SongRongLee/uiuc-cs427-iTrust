@@ -1,10 +1,12 @@
 package edu.ncsu.csc.itrust.action;
 
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -69,10 +71,36 @@ public class DisplayServlet extends HttpServlet {
         	response.reset();
         	//System.out.printf(imageType);
         	response.setContentType(imageType);
-        	while ((size = sImage.read(byteArray)) != -1 ) {
-                response.getOutputStream().
-                write(byteArray, 0, size);
-        }
+        	
+        	if (imageType == "application/pdf") { 
+        		BufferedOutputStream fos1 = new BufferedOutputStream(response.getOutputStream());
+        		byte[] byteArray2 = new byte[2048576];
+        		sImage.read(byteArray2);
+        		fos1.write(byteArray2);
+        		fos1.flush();
+        		fos1.close();
+        	}
+        	else {
+        		while ((size = sImage.read(byteArray)) != -1 ) {
+        			response.getOutputStream().
+        			write(byteArray, 0, size);
+        		}
+        	}
+        	
+        	if (imageType == "application/pdf") { 
+        		BufferedOutputStream fos1 = new BufferedOutputStream(response.getOutputStream());
+        		byte[] byteArray2 = new byte[2048576];
+        		sImage.read(byteArray2);
+        		fos1.write(byteArray2);
+        		fos1.flush();
+        		fos1.close();
+        	}
+        	else {
+        		while ((size = sImage.read(byteArray)) != -1 ) {
+        			response.getOutputStream().
+        			write(byteArray, 0, size);
+        		}
+        	}
         } catch (Exception e){
             e.printStackTrace();
         }

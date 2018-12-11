@@ -70,7 +70,18 @@
     	</td>
    		<td width="15px">&nbsp;</td>
 		<td valign=top>
-			<img src="DisplayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" height="150px" width="150px" alt="Oops... Where is the image?">
+		<% 
+	        if(record.getImageType().contains("application/pdf")){
+			%>
+			    <embed src="DisplayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" width="350px" height="350px" alt="Oops... Where is the image?"/>
+			<%
+	        }
+	        else{
+	        %>   
+				<img src="DisplayServlet?id=<%=StringEscapeUtils.escapeHtml("" + (uid))%>" height="250px" width="250px" alt="Oops... Where is the image?">
+			<%
+	        }
+			%>
   		</td>
   	</tr>
 <br>
