@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class AddObstetricRecordTest extends iTrustSeleniumTest{
 	
@@ -53,7 +54,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("20");
 		form.findElement(By.name("weight_gain")).sendKeys("10.0");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		WebElement pcm = wd.findElement(By.name("delivery_type"));
+		Select pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		
@@ -167,7 +170,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		WebElement pcm = wd.findElement(By.name("delivery_type"));
+		Select pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
@@ -177,7 +182,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		pcm = wd.findElement(By.name("delivery_type"));
+		pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
@@ -187,7 +194,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		pcm = wd.findElement(By.name("delivery_type"));
+		pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
@@ -197,7 +206,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("YOC")).sendKeys("2012");
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		pcm = wd.findElement(By.name("delivery_type"));
+		pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
@@ -218,7 +229,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("40");
 		form.findElement(By.name("num_hours_labor")).sendKeys("25");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		pcm = wd.findElement(By.name("delivery_type"));
+		pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));		
 	}
@@ -263,7 +276,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("37");
 		form.findElement(By.name("num_hours_labor")).sendKeys("20");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		WebElement pcm = wd.findElement(By.name("delivery_type"));
+		Select pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
@@ -274,7 +289,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("370");
 		form.findElement(By.name("num_hours_labor")).sendKeys("20");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		pcm = wd.findElement(By.name("delivery_type"));
+		pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
@@ -285,7 +302,9 @@ public class AddObstetricRecordTest extends iTrustSeleniumTest{
 		form.findElement(By.name("num_weeks_pregnant")).sendKeys("37");
 		form.findElement(By.name("num_hours_labor")).sendKeys("200");
 		form.findElement(By.name("weight_gain")).sendKeys("10");
-		form.findElement(By.name("delivery_type")).sendKeys("vaginal delivery");
+		pcm = wd.findElement(By.name("delivery_type"));
+		pcm_dropdown= new Select(pcm);
+		pcm_dropdown.selectByVisibleText("vaginal delivery");
 		form.findElement(By.name("num_children")).sendKeys("2");
 		form.submit();
 		assertTrue(wd.findElement(By.xpath("//body")).getText().contains("This form has not been validated correctly."));
