@@ -16,93 +16,71 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.UltrasoundDAO;
 
-
 /**
  * Servlet implementation class DisplayServlet
  */
 @WebServlet("/DisplayServlet")
 public class DisplayServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    
-    private UltrasoundDAO ultrasoundDAO;
+	private static final long serialVersionUID = 1L;
+
+	private UltrasoundDAO ultrasoundDAO;
 	private AuthDAO authDAO;
-    
-    public void init() throws ServletException {
-    }
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DisplayServlet() {
-        super();
-    }
+	public void init() throws ServletException {
+	}
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public DisplayServlet() {
+		super();
+	}
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 * response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
+	}
 
-        String uid = request.getParameter("id");
-        InputStream sImage;
-        
-        // Check if ID is supplied to the request.
-        if (uid == null) {
-            // Do your thing if the ID is not supplied to the request.
-            // Throw an exception, or send 404, or show default/warning image, or just ignore it.
-            response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
-            return;
-        }
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 * response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        try{
-        	DAOFactory prodDAO = DAOFactory.getProductionInstance();
-        	ultrasoundDAO = prodDAO.getUltrasoundDAO();
-        	sImage = ultrasoundDAO.getImageData(Long.parseLong(uid));
-        	String imageType = ultrasoundDAO.getImageType(Long.parseLong(uid));
+		String uid = request.getParameter("id");
+		InputStream sImage;
 
-        	byte[] byteArray = new byte[1048576];
-        	int size = 0;
-        	response.reset();
-        	//System.out.printf(imageType);
-        	response.setContentType(imageType);
-        	
-        	if (imageType == "application/pdf") { 
-        		BufferedOutputStream fos1 = new BufferedOutputStream(response.getOutputStream());
-        		byte[] byteArray2 = new byte[2048576];
-        		sImage.read(byteArray2);
-        		fos1.write(byteArray2);
-        		fos1.flush();
-        		fos1.close();
-        	}
-        	else {
-        		while ((size = sImage.read(byteArray)) != -1 ) {
-        			response.getOutputStream().
-        			write(byteArray, 0, size);
-        		}
-        	}
-        	
-        	if (imageType == "application/pdf") { 
-        		BufferedOutputStream fos1 = new BufferedOutputStream(response.getOutputStream());
-        		byte[] byteArray2 = new byte[2048576];
-        		sImage.read(byteArray2);
-        		fos1.write(byteArray2);
-        		fos1.flush();
-        		fos1.close();
-        	}
-        	else {
-        		while ((size = sImage.read(byteArray)) != -1 ) {
-        			response.getOutputStream().
-        			write(byteArray, 0, size);
-        		}
-        	}
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+		// Check if ID is supplied to the request.
+		if (uid == null) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404. id not supplied
+			return;
+		}
+
+		try {
+			DAOFactory prodDAO = DAOFactory.getProductionInstance();
+			ultrasoundDAO = prodDAO.getUltrasoundDAO();
+			sImage = ultrasoundDAO.getImageData(Long.parseLong(uid));
+			String imageType = ultrasoundDAO.getImageType(Long.parseLong(uid));
+
+			byte[] byteArray = new byte[8090];
+			int size = 0;
+			response.reset();
+			response.setContentType(imageType);
+
+			BufferedOutputStream fos1 = new BufferedOutputStream(response.getOutputStream());
+			while ((size = sImage.read(byteArray)) != -1) {
+				fos1.write(byteArray);
+			}
+			fos1.flush();
+			fos1.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
